@@ -14,7 +14,7 @@
       background-color: #f0f4f8;
       color: #333;
       height: 100vh;
-      overflow: hidden;
+      
     }
     header {
       background-color: #6c5ce7;
@@ -447,6 +447,17 @@
   };
 
   updateSchedule();
+</script>
+  <script>
+  function updateBodyOverflow() {
+    if (document.body.scrollHeight > window.innerHeight) {
+      document.body.style.overflowY = 'auto';
+    } else {
+      document.body.style.overflowY = 'hidden';
+    }
+  }
+  window.addEventListener('load', updateBodyOverflow);
+  window.addEventListener('resize', updateBodyOverflow);
 </script>
 
 </body>
