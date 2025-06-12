@@ -3,6 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Interactive study timetable with daily schedules and tasks">
+  <link rel="icon" type="image/png"
+        href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==">
   <title>Study Timetable</title>
 
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -17,44 +20,176 @@
       overflow-x: hidden;
       overflow-y: auto;
     }
+    body.modal-open { overflow: hidden; }
 
-    body.modal-open {
-      overflow: hidden;
+    #sidebar-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 999;
     }
 
-    @keyframes gradientHeader {
-      0% {
-        background-position: 0% 0%;
-      }
-      50% {
-        background-position: 100% 100%;
-      }
-      100% {
-        background-position: 0% 0%;
-      }
+    body.modal-open #sidebar-overlay {
+      display: block;
     }
 
+
+    #desktop-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.85);
+      color: white;
+      font-size: 1.6rem;
+      text-align: center;
+      padding-top: 40vh;
+      z-index: 9999;
+    }
+
+
+    #hamburger {
+      position: fixed;
+      right: 20px;
+      bottom: 20px;
+      z-index: 1001;
+      font-size: 2rem;
+      cursor: pointer;
+      color: rgba(108, 92, 231, 20);
+      opacity: 0.75;
+      transition: all 0.3s ease;
+      border: none;
+      background: transparent;
+    }
+
+    #sidebar {
+      position: fixed;
+      top: 0; right: -100%;
+      width: min(100%, 400px);
+      height: 100vh;
+      background: white;
+      box-shadow: -2px 0 12px rgba(0, 0, 0, 0.2);
+      transition: right 0.3s ease, height 0.3s ease, transform 0.3s ease;
+      z-index: 1000;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px;
+      overflow-y: auto;
+    }
+
+    #sidebar.open {
+      right: 0;
+      transform: translateX(0);
+    }
+
+    #sidebar .close-btn {
+      font-size: 2rem;
+      cursor: pointer;
+      align-self: flex-end;
+      color: #2d3748;
+      padding: 10px;
+      transition: transform 0.3s ease;
+    }
+
+
+    #sidebar .content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      color: #2d3748;
+    }
+    #sidebar button {
+      color: rgba(108, 92, 231, 20);
+      border: 2px solid rgba(108, 92, 231, 0.3);
+      padding: 16px;
+      margin: 10px auto;
+      border-radius: 16px;
+      font-size: 1.2rem;
+      cursor: pointer;
+      box-shadow: 0 10px 25px rgba(108, 92, 231, 0.3);
+      backdrop-filter: blur(5px);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      display: block;
+      width: 80%;
+    }
+    
+
+    #sidebar button:active {
+      transform: translateY(1px);
+    }
+    #sidebar .love {
+      text-align: center;
+      font-size: 0.9rem;
+      color: #aaa;
+      margin-top: auto;
+      opacity: 0.3;
+    }
+
+    /* Surprise Modal */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 999;
+      inset: 0;
+      background-color: rgba(0, 0, 0, 0.5);
+      padding-top: 60px;
+    }
+    .modal-content {
+      background: linear-gradient(145deg, #ffffff, #f8faff);
+      margin: auto;
+      padding: 32px;
+      border-radius: 32px;
+      width: 85%;
+      max-width: 400px;
+      box-shadow: 0 32px 64px rgba(108, 92, 231, 0.2);
+      overflow-y: auto;
+      max-height: 85vh;
+      animation: modalFadeIn 0.4s ease;
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      transform: translateZ(0);
+      will-change: transform;
+      position: relative;
+    }
+    @keyframes modalFadeIn {
+      from { opacity: 0; transform: translateY(-30px) scale(0.95); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+    .modal-content h3 { margin-top: 0; font-size: 1.5rem; color: #2d3748; }
+    .modal-content button {
+      margin: 10px 5px;
+      padding: 12px 24px;
+      font-size: 1rem;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      background: #6c5ce7;
+      color: white;
+      box-shadow: 0 6px 15px rgba(108,92,231,0.2);
+    }
+    
+    
+    
+
+
+    @keyframes gradientHeader { 0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
     header {
-      background: linear-gradient(135deg, #4834d4 0%, #686de0 50%, #4834d4 100%);
+      background: linear-gradient(135deg, #4834d4 0%, #686de0 25%, #7a6eea 50%, #686de0 75%, #4834d4 100%);
       background-size: 400% 400%;
-      animation: gradientHeader 8s ease infinite;
+      animation: gradientHeader 12s ease-in-out infinite;
       color: white;
       text-align: center;
       padding: 40px;
       margin: -20px -20px 30px -20px;
-      border-bottom: 2px solid rgba(255, 255, 255, 0.25);
+      border-bottom: 2px solid rgba(255,255,255,0.25);
       border-radius: 0 0 32px 32px;
-      box-shadow: 0 12px 36px rgba(108, 92, 231, 0.4);
+      box-shadow: 0 12px 36px rgba(108,92,231,0.4);
       position: relative;
       z-index: 1;
     }
-
-    h1 {
-      font-size: 2.8rem;
-      margin: 0;
-      font-weight: 600;
-    }
-
+    h1 { font-size: 2.8rem; margin:0; font-weight:600 }
     #day-title {
       font-size: 2.4rem;
       font-weight: bold;
@@ -63,6 +198,7 @@
       color: #6c5ce7;
       text-shadow: 2px 2px 4px rgba(108, 92, 231, 0.1);
       letter-spacing: 1px;
+      position: relative;
     }
 
     @keyframes gradientTask {
@@ -84,14 +220,18 @@
       background: linear-gradient(145deg, #e8eaff, #ffffff, #e8eaff);
       background-size: 400% 400%;
       animation: gradientTask 6s ease infinite;
-      padding: 30px;
-      border-radius: 25px;
+      padding: 32px;
+      border-radius: 32px;
       margin: 0 auto 30px auto;
-      box-shadow: 0 20px 45px rgba(108, 92, 231, 0.2), 0 8px 25px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 20px 45px rgba(108, 92, 231, 0.15),
+      0 8px 25px rgba(0, 0, 0, 0.05),
+      inset 0 -2px 10px rgba(255, 255, 255, 0.7);
       text-align: center;
       max-width: 650px;
       transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
       border: 1px solid rgba(255, 255, 255, 0.8);
+      backdrop-filter: blur(10px);
+      transform: translateY(0);
     }
 
     #current-task .time {
@@ -127,7 +267,10 @@
       border-radius: 12px;
       box-shadow: 0 4px 12px rgba(108, 92, 231, 0.12);
       font-size: 1.1rem;
-      transition: all 0.3s ease;
+      transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+      opacity 0.3s ease;
+      transform: translateX(0);
+      will-change: transform, opacity;
     }
 
     .show-full, .show-next {
@@ -138,8 +281,8 @@
       animation: gradientHeader 8s ease infinite;
       color: white;
       font-size: 1.2rem;
-      padding: 12px 24px;
-      border-radius: 12px;
+      padding: 16px 32px;
+      border-radius: 16px;
       cursor: pointer;
       text-decoration: none;
       box-shadow: 0 10px 25px rgba(108, 92, 231, 0.3);
@@ -154,10 +297,15 @@
       outline: none;
     }
 
+
+    .show-full:active, .show-next:active {
+      transform: translateY(1px);
+    }
+
     .modal {
       display: none;
       position: fixed;
-      z-index: 999;
+      z-index: 9999;
       left: 0;
       top: 0;
       width: 100%;
@@ -170,27 +318,29 @@
     .modal-content {
       background: linear-gradient(145deg, #ffffff, #f8faff);
       margin: auto;
-      padding: 35px;
-      border-radius: 25px;
+      padding: 32px;
+      border-radius: 32px;
       width: 85%;
       max-width: 700px;
-      box-shadow: 0 35px 60px rgba(108, 92, 231, 0.3), 0 25px 40px rgba(0, 0, 0, 0.2);
+      box-shadow: 0 32px 64px rgba(108, 92, 231, 0.2),
+      0 24px 48px rgba(0, 0, 0, 0.1),
+      inset 0 2px 12px rgba(255, 255, 255, 0.5);
       overflow-y: auto;
       max-height: 85vh;
       border: 1px solid rgba(255, 255, 255, 0.8);
       animation: modalFadeIn 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-      backdrop-filter: blur(10px);
+      backdrop-filter: blur(20px);
       position: relative;
     }
 
     @keyframes modalFadeIn {
-      from {
+      0% {
         opacity: 0;
-        transform: translateY(-20px);
+        transform: translateY(-30px) scale(0.95);
       }
-      to {
+      100% {
         opacity: 1;
-        transform: translateY(0);
+        transform: translateY(0) scale(1);
       }
     }
 
@@ -215,12 +365,14 @@
     }
 
     #full-schedule li, #next-day-schedule li {
-      padding: 12px;
+      padding: 16px;
       font-size: 1.2rem;
       background-color: #f4f6f9;
-      border-radius: 10px;
-      margin: 8px 0;
-      transition: background-color 0.3s ease-in-out;
+      border-radius: 16px;
+      margin: 16px 0;
+      transition: all 0.3s ease-in-out;
+      border: 1px solid rgba(255, 255, 255, 0.8);
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
     }
 
 
@@ -253,21 +405,19 @@
   </style>
 </head>
 <body>
+<div id="desktop-overlay">This website is not designed for desktop viewing. Switch to mobile.</div>
 
-<header>
+<header role="banner">
   <h1>Study Timetable</h1>
+  <button id="hamburger" aria-label="Open menu">&#9776;</button>
 </header>
 
-<div id="day-title"></div>
-
-<div id="current-task">
-  <div class="time">5:30 AM - 6:00 AM</div>
-  <div class="task-box">Wake up & morning routine</div>
+<div id="day-title">
 </div>
-
+<div id="current-task"><div class="time">Loading…</div><div class="task-box"></div></div>
 <div id="next-tasks"></div>
 
-<div style="display: flex; justify-content: center; gap: 15px; margin: 20px auto; max-width: 600px;">
+<div style="display:flex;justify-content:center;gap:15px;margin:20px auto;max-width:600px;">
   <a class="show-full" onclick="showFullSchedule()">Show Full Day's Schedule</a>
   <a class="show-next" onclick="showNextDaySchedule()">Show Next Day's Schedule</a>
 </div>
@@ -288,7 +438,109 @@
   </div>
 </div>
 
+<div id="sidebar">
+  <div class="close-btn">&times;</div>
+  <div class="content">
+    <div>
+    <button id="surprise-open-btn">Click Here for Surprise</button>
+    </div>
+    <div class="love">made with ❤️ by Subh</div>
+  </div>
+</div>
+<div id="sidebar-overlay"></div>
+
+<div id="surprise-modal" class="modal">
+  <div class="modal-content">
+    <h3 id="surprise-question">Do you like me?</h3>
+    <div id="surprise-buttons">
+      <button class="yes-btn">Yes</button>
+      <button class="no-btn">No</button>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
 <script>
+  function checkDesktop() {
+    if (window.innerWidth > 600) {
+      document.body.style.overflow='hidden';
+      document.getElementById('desktop-overlay').style.display='block';
+    }
+  }
+  window.addEventListener('load', checkDesktop);
+  window.addEventListener('resize', checkDesktop);
+
+  document.getElementById('hamburger').onclick = () => {
+    document.getElementById('sidebar').classList.add('open');
+    document.body.classList.add('modal-open');
+  };
+  document.querySelector('#sidebar .close-btn').onclick = () => {
+    document.getElementById('sidebar').classList.remove('open');
+    document.body.classList.remove('modal-open');
+  };
+
+  const questions = [
+    'Kya tum mujhe pasand karte ho?',
+          'pls maan jao',
+          'I will cry!!!','pls say yes!',
+          'kya aap itne pathhar dil ho madam',
+          'itni nautanki mat karo madam,say yes','Please',
+          'pleaseee','pleaseeeeee','last chance','very last chance',
+          'very very very last chance','final chance','mujhse acha nhi milega, soch lo',
+          'phirse soch lo','ye akhri mauka hai','aapne to had hi kardi','aap bahut gande ho',
+          'aap bure insaan ho','ye question nhi rukenge haha!!, yes bol do'
+  ];
+  let currentQuestionIndex = 0;
+  const qElem = document.getElementById('surprise-question');
+  const btns = document.getElementById('surprise-buttons');
+  const surpriseModal = document.getElementById('surprise-modal');
+
+  function popConfetti() {
+    confetti({
+      particleCount: 80,
+      spread: 60,
+      origin: {y: 0.6},
+      disableForReducedMotion: true,
+      useWorker: true
+    });
+  }
+
+  document.getElementById('surprise-open-btn').onclick = () => {
+    currentQuestionIndex = 0;
+    qElem.textContent = questions[currentQuestionIndex];
+    btns.innerHTML = `<button class="yes-btn">Yes</button><button class="no-btn">No</button>`;
+    surpriseModal.style.display = 'block';
+    document.body.classList.add('modal-open');
+    setupHandlers();
+  };
+
+  function setupHandlers() {
+    const yes = btns.querySelector('.yes-btn');
+    const no = btns.querySelector('.no-btn');
+    yes.onclick = () => {
+      popConfetti();
+      surpriseModal.style.display = 'none';
+      document.body.classList.remove('modal-open');
+      document.getElementById('sidebar').classList.remove('open');
+    };
+    no.onclick = () => {
+      currentQuestionIndex = (currentQuestionIndex + 1) % questions.length;
+      qElem.textContent = questions[currentQuestionIndex];
+      btns.innerHTML = `<button class="yes-btn">Yes</button><button class="no-btn">No</button>`;
+      setupHandlers();
+    };
+  }
+  
+  
+  
+
+  window.onclick = e => {
+    if (e.target.classList.contains('modal') && !e.target.id.includes('surprise')) {
+      e.target.style.display='none';
+      document.body.classList.remove('modal-open');
+    }
+  };
+
   const routines = {
     "Day 1": [
       { time: "5:30 AM - 6:00 AM", task: "Wake up & morning routine" },
@@ -424,6 +676,7 @@
   };
 
 
+
   function convertTo24Hour(time) {
     const [timePart, period] = time.split(' ');
     let [hours, minutes] = timePart.split(':').map(Number);
@@ -510,7 +763,8 @@
       document.body.classList.add('modal-open');
     }
   }
-  
+
+
   function closeModal(modalId) {
     const modal = document.getElementById(modalId);
     modal.style.display = 'none';
@@ -525,6 +779,5 @@
 
   updateSchedule();
 </script>
-
 </body>
 </html>
