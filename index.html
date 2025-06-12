@@ -162,9 +162,12 @@
       position: fixed;
       z-index: 999;
       inset: 0;
-      background-color: rgba(0, 0, 0, 0.5);
+      background-color: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(5px); 
+      -webkit-backdrop-filter: blur(10px); 
       padding-top: 60px;
     }
+
     .modal-content {
       background: linear-gradient(145deg, #ffffff, #f8faff);
       margin: auto;
@@ -803,10 +806,6 @@
       document.body.classList.add('modal-open');
     }
   }
-
-  
-
-
 
   function closeModal(modalId) {
     const modal = document.getElementById(modalId);
