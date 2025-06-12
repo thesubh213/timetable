@@ -18,15 +18,33 @@
       overflow-y: auto;
     }
 
+    body.modal-open {
+      overflow: hidden;
+    }
+
+    @keyframes gradientHeader {
+      0% {
+        background-position: 0% 0%;
+      }
+      50% {
+        background-position: 100% 100%;
+      }
+      100% {
+        background-position: 0% 0%;
+      }
+    }
+
     header {
-      background: linear-gradient(135deg, #6c5ce7 0%, #a594f9 50%, #837bff 100%);
+      background: linear-gradient(135deg, #4834d4 0%, #686de0 50%, #4834d4 100%);
+      background-size: 400% 400%;
+      animation: gradientHeader 8s ease infinite;
       color: white;
       text-align: center;
       padding: 40px;
       margin: -20px -20px 30px -20px;
-      border-bottom: 3px solid rgba(255, 255, 255, 0.3);
-      border-radius: 0 0 40px 40px;
-      box-shadow: 0 10px 30px rgba(108, 92, 231, 0.4);
+      border-bottom: 2px solid rgba(255, 255, 255, 0.25);
+      border-radius: 0 0 32px 32px;
+      box-shadow: 0 12px 36px rgba(108, 92, 231, 0.4);
       position: relative;
       z-index: 1;
     }
@@ -47,15 +65,29 @@
       letter-spacing: 1px;
     }
 
+    @keyframes gradientTask {
+      0% {
+        background-position: 0% 50%;
+      }
+      50% {
+        background-position: 100% 50%;
+      }
+      100% {
+        background-position: 0% 50%;
+      }
+    }
+
     #current-task {
       font-size: 2rem;
       font-weight: 600;
       color: #2d3748;
-      background: linear-gradient(145deg, #ffffff, #f8faff);
+      background: linear-gradient(145deg, #e8eaff, #ffffff, #e8eaff);
+      background-size: 400% 400%;
+      animation: gradientTask 6s ease infinite;
       padding: 30px;
       border-radius: 25px;
       margin: 0 auto 30px auto;
-      box-shadow: 0 15px 35px rgba(108, 92, 231, 0.1), 0 5px 15px rgba(0, 0, 0, 0.05);
+      box-shadow: 0 20px 45px rgba(108, 92, 231, 0.2), 0 8px 25px rgba(0, 0, 0, 0.1);
       text-align: center;
       max-width: 650px;
       transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
@@ -84,52 +116,38 @@
       padding: 25px;
       background: linear-gradient(145deg, #ffffff, #f8faff);
       border-radius: 20px;
-      box-shadow: 0 10px 25px rgba(108, 92, 231, 0.08);
+      box-shadow: 0 15px 35px rgba(108, 92, 231, 0.15);
       max-width: 700px;
-      border: 1px solid rgba(255, 255, 255, 0.8);
     }
 
     .task {
       margin: 15px 0;
       padding: 20px;
-      background: linear-gradient(145deg, #ffffff, #f8faff);
-      border-radius: 15px;
-      box-shadow: 0 8px 20px rgba(108, 92, 231, 0.06);
+      background: linear-gradient(145deg, #f0f2f8, #e8eaf6);
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(108, 92, 231, 0.12);
       font-size: 1.1rem;
-      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-      border: 1px solid rgba(255, 255, 255, 0.8);
-      cursor: pointer;
-    }
-
-    .task:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
-      background: linear-gradient(to right, #f7f7f7, #ffffff);
+      transition: all 0.3s ease;
     }
 
     .show-full, .show-next {
       display: inline-block;
       text-align: center;
-      background: linear-gradient(45deg, #6c5ce7, #837bff);
+      background: linear-gradient(135deg, #4834d4 0%, #686de0 50%, #4834d4 100%);
+      background-size: 400% 400%;
+      animation: gradientHeader 8s ease infinite;
       color: white;
       font-size: 1.2rem;
-      padding: 18px 35px;
-      border-radius: 50px;
-      margin: 15px;
+      padding: 12px 24px;
+      border-radius: 12px;
       cursor: pointer;
-      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
       text-decoration: none;
       box-shadow: 0 10px 25px rgba(108, 92, 231, 0.3);
-      border: 1px solid rgba(255, 255, 255, 0.3);
+      border: 1px solid rgba(255, 255, 255, 0.4);
       backdrop-filter: blur(5px);
-      width: calc(50% - 10px);
+      flex: 1;
+      min-width: 160px;
       max-width: 200px;
-    }
-
-    .show-full:hover, .show-next:hover {
-      background: linear-gradient(45deg, #7c8aff, #6c5ce7);
-      transform: translateY(-4px);
-      box-shadow: 0 8px 18px rgba(0, 0, 0, 0.3);
     }
 
     .show-full:focus, .show-next:focus {
@@ -139,13 +157,14 @@
     .modal {
       display: none;
       position: fixed;
-      z-index: 1;
+      z-index: 999;
       left: 0;
       top: 0;
       width: 100%;
       height: 100%;
       background-color: rgba(0, 0, 0, 0.5);
       padding-top: 60px;
+      overflow: hidden;
     }
 
     .modal-content {
@@ -155,12 +174,13 @@
       border-radius: 25px;
       width: 85%;
       max-width: 700px;
-      box-shadow: 0 20px 40px rgba(108, 92, 231, 0.15), 0 10px 20px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 35px 60px rgba(108, 92, 231, 0.3), 0 25px 40px rgba(0, 0, 0, 0.2);
       overflow-y: auto;
       max-height: 85vh;
       border: 1px solid rgba(255, 255, 255, 0.8);
       animation: modalFadeIn 0.4s cubic-bezier(0.4, 0, 0.2, 1);
       backdrop-filter: blur(10px);
+      position: relative;
     }
 
     @keyframes modalFadeIn {
@@ -203,29 +223,31 @@
       transition: background-color 0.3s ease-in-out;
     }
 
-    #full-schedule li:hover, #next-day-schedule li:hover {
-      background-color: #f1f5fa;
-    }
 
     @media (max-width: 600px) {
       header {
-        padding: 30px;
-      }
-      #current-task {
-        font-size: 1.8rem;
         padding: 20px;
       }
-      #next-tasks {
-        font-size: 1.2rem;
+
+      #current-task {
+        font-size: 1.6rem;
         padding: 15px;
       }
+
+      #next-tasks {
+        font-size: 1.1rem;
+        padding: 12px;
+      }
+
       .task {
-        font-size: 1rem;
+        font-size: 0.9rem;
         padding: 8px;
       }
+
       .show-full, .show-next {
-        font-size: 1rem;
-        padding: 12px 20px;
+        font-size: 0.9rem;
+        padding: 10px 16px;
+        min-width: 140px;
       }
     }
   </style>
@@ -245,7 +267,7 @@
 
 <div id="next-tasks"></div>
 
-<div style="display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; margin: 20px auto; max-width: 600px;">
+<div style="display: flex; justify-content: center; gap: 15px; margin: 20px auto; max-width: 600px;">
   <a class="show-full" onclick="showFullSchedule()">Show Full Day's Schedule</a>
   <a class="show-next" onclick="showNextDaySchedule()">Show Next Day's Schedule</a>
 </div>
@@ -301,105 +323,105 @@
       { time: "8:30 PM - 11:15 PM", task: "Revision and mock question practice" },
       { time: "11:15 PM - 11:30 PM", task: "Prepare for sleep" }
     ],
-    "Day 3": [  
-    { time: "5:30 AM - 6:00 AM", task: "Wake up & morning routine" },
-    { time: "6:00 AM - 8:00 AM", task: "Biology – Plant Kingdom" },
-    { time: "8:00 AM - 8:30 AM", task: "Breakfast" },
-    { time: "8:30 AM - 10:30 AM", task: "Chemistry – Thermodynamics" },
-    { time: "10:30 AM - 11:00 AM", task: "Break" },
-    { time: "11:00 AM - 1:00 PM", task: "Physics – Thermodynamics" },
-    { time: "1:00 PM - 2:30 PM", task: "Lunch & 1.5 hrs nap" },
-    { time: "2:30 PM - 4:30 PM", task: "Chemistry – Chemical Bonding" },
-    { time: "4:30 PM - 5:00 PM", task: "Break" },
-    { time: "5:00 PM - 8:00 PM", task: "Practice questions – today's topics" },
-    { time: "8:00 PM - 8:30 PM", task: "NCERT Reading" },
-    { time: "8:30 PM - 9:00 PM", task: "Dinner & Relax" },
-    { time: "9:00 PM - 11:15 PM", task: "Revision + mock question practice" },
-    { time: "11:15 PM - 11:30 PM", task: "Prepare for sleep" }
-  ],
+    "Day 3": [
+      { time: "5:30 AM - 6:00 AM", task: "Wake up & morning routine" },
+      { time: "6:00 AM - 8:00 AM", task: "Biology – Plant Kingdom" },
+      { time: "8:00 AM - 8:30 AM", task: "Breakfast" },
+      { time: "8:30 AM - 10:30 AM", task: "Chemistry – Thermodynamics" },
+      { time: "10:30 AM - 11:00 AM", task: "Break" },
+      { time: "11:00 AM - 1:00 PM", task: "Physics – Thermodynamics" },
+      { time: "1:00 PM - 2:30 PM", task: "Lunch & 1.5 hrs nap" },
+      { time: "2:30 PM - 4:30 PM", task: "Chemistry – Chemical Bonding" },
+      { time: "4:30 PM - 5:00 PM", task: "Break" },
+      { time: "5:00 PM - 8:00 PM", task: "Practice questions – today's topics" },
+      { time: "8:00 PM - 8:30 PM", task: "NCERT Reading" },
+      { time: "8:30 PM - 9:00 PM", task: "Dinner & Relax" },
+      { time: "9:00 PM - 11:15 PM", task: "Revision + mock question practice" },
+      { time: "11:15 PM - 11:30 PM", task: "Prepare for sleep" }
+    ],
 
-  "Day 4": [  
-    { time: "5:30 AM - 6:00 AM", task: "Wake up & morning routine" },
-    { time: "6:00 AM - 8:00 AM", task: "Mock test – Bio, Chem, Phys (Day 3 topics)" },
-    { time: "8:00 AM - 8:30 AM", task: "Breakfast" },
-    { time: "8:30 AM - 10:30 AM", task: "Mock test review + error analysis" },
-    { time: "10:30 AM - 11:00 AM", task: "Break" },
-    { time: "11:00 AM - 1:00 PM", task: "Practice questions – focus weak areas" },
-    { time: "1:00 PM - 2:30 PM", task: "Lunch & 1.5 hrs nap" },
-    { time: "2:30 PM - 4:30 PM", task: "Light study: Human Health & Disease (Chem/Phys intros)" },
-    { time: "4:30 PM - 5:00 PM", task: "Break" },
-    { time: "5:00 PM - 8:00 PM", task: "Practice + NCERT MCQs" },
-    { time: "8:00 PM - 8:30 PM", task: "NCERT Reading" },
-    { time: "8:30 PM - 9:00 PM", task: "Dinner & Relax" },
-    { time: "9:00 PM - 11:15 PM", task: "Timed mock + review" },
-    { time: "11:15 PM - 11:30 PM", task: "Prepare for sleep" }
-  ],
+    "Day 4": [
+      { time: "5:30 AM - 6:00 AM", task: "Wake up & morning routine" },
+      { time: "6:00 AM - 8:00 AM", task: "Mock test – Bio, Chem, Phys (Day 3 topics)" },
+      { time: "8:00 AM - 8:30 AM", task: "Breakfast" },
+      { time: "8:30 AM - 10:30 AM", task: "Mock test review + error analysis" },
+      { time: "10:30 AM - 11:00 AM", task: "Break" },
+      { time: "11:00 AM - 1:00 PM", task: "Practice questions – focus weak areas" },
+      { time: "1:00 PM - 2:30 PM", task: "Lunch & 1.5 hrs nap" },
+      { time: "2:30 PM - 4:30 PM", task: "Light study: Human Health & Disease (Chem/Phys intros)" },
+      { time: "4:30 PM - 5:00 PM", task: "Break" },
+      { time: "5:00 PM - 8:00 PM", task: "Practice + NCERT MCQs" },
+      { time: "8:00 PM - 8:30 PM", task: "NCERT Reading" },
+      { time: "8:30 PM - 9:00 PM", task: "Dinner & Relax" },
+      { time: "9:00 PM - 11:15 PM", task: "Timed mock + review" },
+      { time: "11:15 PM - 11:30 PM", task: "Prepare for sleep" }
+    ],
 
-  "Day 5": [  
-    { time: "5:30 AM - 6:00 AM", task: "Wake up & morning routine" },
-    { time: "6:00 AM - 8:00 AM", task: "Chemistry – Organic Chemistry" },
-    { time: "8:00 AM - 8:30 AM", task: "Breakfast" },
-    { time: "8:30 AM - 10:30 AM", task: "Physics – Moving Charges & Magnetism" },
-    { time: "10:30 AM - 11:00 AM", task: "Break" },
-    { time: "11:00 AM - 1:00 PM", task: "Biology – Human Reproduction" },
-    { time: "1:00 PM - 2:30 PM", task: "Lunch & 1.5 hrs nap" },
-    { time: "2:30 PM - 4:30 PM", task: "Physics – Electromagnetic Induction" },
-    { time: "4:30 PM - 5:00 PM", task: "Break" },
-    { time: "5:00 PM - 8:30 PM", task: "Practice questions – today's topics" },
-    { time: "8:30 PM - 9:00 PM", task: "NCERT Reading" },
-    { time: "9:00 PM - 9:30 PM", task: "Dinner & Relax" },
-    { time: "9:30 PM - 11:15 PM", task: "Revision + mock question practice" },
-    { time: "11:15 PM - 11:30 PM", task: "Prepare for sleep" }
-  ],
+    "Day 5": [
+      { time: "5:30 AM - 6:00 AM", task: "Wake up & morning routine" },
+      { time: "6:00 AM - 8:00 AM", task: "Chemistry – Organic Chemistry" },
+      { time: "8:00 AM - 8:30 AM", task: "Breakfast" },
+      { time: "8:30 AM - 10:30 AM", task: "Physics – Moving Charges & Magnetism" },
+      { time: "10:30 AM - 11:00 AM", task: "Break" },
+      { time: "11:00 AM - 1:00 PM", task: "Biology – Human Reproduction" },
+      { time: "1:00 PM - 2:30 PM", task: "Lunch & 1.5 hrs nap" },
+      { time: "2:30 PM - 4:30 PM", task: "Physics – Electromagnetic Induction" },
+      { time: "4:30 PM - 5:00 PM", task: "Break" },
+      { time: "5:00 PM - 8:30 PM", task: "Practice questions – today's topics" },
+      { time: "8:30 PM - 9:00 PM", task: "NCERT Reading" },
+      { time: "9:00 PM - 9:30 PM", task: "Dinner & Relax" },
+      { time: "9:30 PM - 11:15 PM", task: "Revision + mock question practice" },
+      { time: "11:15 PM - 11:30 PM", task: "Prepare for sleep" }
+    ],
 
-  "Day 6": [  
-    { time: "5:30 AM - 6:00 AM", task: "Wake up & morning routine" },
-    { time: "6:00 AM - 8:00 AM", task: "Mock test – Org chem, Magnetism, Reproduction, Induction" },
-    { time: "8:00 AM - 8:30 AM", task: "Breakfast" },
-    { time: "8:30 AM - 10:30 AM", task: "Review weak areas + error log" },
-    { time: "10:30 AM - 11:00 AM", task: "Break" },
-    { time: "11:00 AM - 1:00 PM", task: "Practice MCQs – mixed subjects" },
-    { time: "1:00 PM - 2:30 PM", task: "Lunch & 1.5 hrs nap" },
-    { time: "2:30 PM - 4:30 PM", task: "Timed sets – full syllabus" },
-    { time: "4:30 PM - 5:00 PM", task: "Break" },
-    { time: "5:00 PM - 8:30 PM", task: "Concept reinforcement + quizzes" },
-    { time: "8:30 PM - 9:00 PM", task: "Dinner & Relax" },
-    { time: "9:00 PM - 11:15 PM", task: "Final mock + review" },
-    { time: "11:15 PM - 11:30 PM", task: "Prepare for sleep" }
-  ],
+    "Day 6": [
+      { time: "5:30 AM - 6:00 AM", task: "Wake up & morning routine" },
+      { time: "6:00 AM - 8:00 AM", task: "Mock test – Org chem, Magnetism, Reproduction, Induction" },
+      { time: "8:00 AM - 8:30 AM", task: "Breakfast" },
+      { time: "8:30 AM - 10:30 AM", task: "Review weak areas + error log" },
+      { time: "10:30 AM - 11:00 AM", task: "Break" },
+      { time: "11:00 AM - 1:00 PM", task: "Practice MCQs – mixed subjects" },
+      { time: "1:00 PM - 2:30 PM", task: "Lunch & 1.5 hrs nap" },
+      { time: "2:30 PM - 4:30 PM", task: "Timed sets – full syllabus" },
+      { time: "4:30 PM - 5:00 PM", task: "Break" },
+      { time: "5:00 PM - 8:30 PM", task: "Concept reinforcement + quizzes" },
+      { time: "8:30 PM - 9:00 PM", task: "Dinner & Relax" },
+      { time: "9:00 PM - 11:15 PM", task: "Final mock + review" },
+      { time: "11:15 PM - 11:30 PM", task: "Prepare for sleep" }
+    ],
 
-  "Day 7": [  
-    { time: "5:30 AM - 6:00 AM", task: "Wake up & morning routine" },
-    { time: "6:00 AM - 8:00 AM", task: "Chemistry – Coordination Compounds" },
-    { time: "8:00 AM - 8:30 AM", task: "Breakfast" },
-    { time: "8:30 AM - 10:30 AM", task: "Physics – Electrostatic Potential" },
-    { time: "10:30 AM - 11:00 AM", task: "Break" },
-    { time: "11:00 AM - 1:00 PM", task: "Biology – Biotechnology & Applications" },
-    { time: "1:00 PM - 2:30 PM", task: "Lunch & 1.5 hrs nap" },
-    { time: "2:30 PM - 4:30 PM", task: "Physics – Alternating Current" },
-    { time: "4:30 PM - 5:00 PM", task: "Break" },
-    { time: "5:00 PM - 9:00 PM", task: "Practice questions – today’s topics" },
-    { time: "9:00 PM - 9:30 PM", task: "Dinner & Relax" },
-    { time: "9:30 PM - 11:15 PM", task: "Final mock + revision" },
-    { time: "11:15 PM - 11:30 PM", task: "Prepare for sleep" }
-  ],
+    "Day 7": [
+      { time: "5:30 AM - 6:00 AM", task: "Wake up & morning routine" },
+      { time: "6:00 AM - 8:00 AM", task: "Chemistry – Coordination Compounds" },
+      { time: "8:00 AM - 8:30 AM", task: "Breakfast" },
+      { time: "8:30 AM - 10:30 AM", task: "Physics – Electrostatic Potential" },
+      { time: "10:30 AM - 11:00 AM", task: "Break" },
+      { time: "11:00 AM - 1:00 PM", task: "Biology – Biotechnology & Applications" },
+      { time: "1:00 PM - 2:30 PM", task: "Lunch & 1.5 hrs nap" },
+      { time: "2:30 PM - 4:30 PM", task: "Physics – Alternating Current" },
+      { time: "4:30 PM - 5:00 PM", task: "Break" },
+      { time: "5:00 PM - 9:00 PM", task: "Practice questions – today’s topics" },
+      { time: "9:00 PM - 9:30 PM", task: "Dinner & Relax" },
+      { time: "9:30 PM - 11:15 PM", task: "Final mock + revision" },
+      { time: "11:15 PM - 11:30 PM", task: "Prepare for sleep" }
+    ],
 
-  "Day 8": [ 
-    { time: "5:30 AM - 6:00 AM", task: "Wake up & morning routine" },
-    { time: "6:00 AM - 8:00 AM", task: "Final revision – Phys/ Chem/ Bio quick recap" },
-    { time: "8:00 AM - 8:30 AM", task: "Breakfast" },
-    { time: "8:30 AM - 10:30 AM", task: "Mock test – full syllabus" },
-    { time: "10:30 AM - 11:00 AM", task: "Break" },
-    { time: "11:00 AM - 1:00 PM", task: "Mock test review + error log refinement" },
-    { time: "1:00 PM - 2:30 PM", task: "Lunch & 1.5 hrs nap" },
-    { time: "2:30 PM - 4:30 PM", task: "Timed practice – weak areas" },
-    { time: "4:30 PM - 5:00 PM", task: "Break" },
-    { time: "5:00 PM - 9:00 PM", task: "Mock test review + question practice" },
-    { time: "9:00 PM - 9:30 PM", task: "Dinner & Relax" },
-    { time: "9:30 PM - 11:15 PM", task: "Final mock + revision" },
-    { time: "11:15 PM - 11:30 PM", task: "Prepare for sleep" }
-  ]
-};
+    "Day 8": [
+      { time: "5:30 AM - 6:00 AM", task: "Wake up & morning routine" },
+      { time: "6:00 AM - 8:00 AM", task: "Final revision – Phys/ Chem/ Bio quick recap" },
+      { time: "8:00 AM - 8:30 AM", task: "Breakfast" },
+      { time: "8:30 AM - 10:30 AM", task: "Mock test – full syllabus" },
+      { time: "10:30 AM - 11:00 AM", task: "Break" },
+      { time: "11:00 AM - 1:00 PM", task: "Mock test review + error log refinement" },
+      { time: "1:00 PM - 2:30 PM", task: "Lunch & 1.5 hrs nap" },
+      { time: "2:30 PM - 4:30 PM", task: "Timed practice – weak areas" },
+      { time: "4:30 PM - 5:00 PM", task: "Break" },
+      { time: "5:00 PM - 9:00 PM", task: "Mock test review + question practice" },
+      { time: "9:00 PM - 9:30 PM", task: "Dinner & Relax" },
+      { time: "9:30 PM - 11:15 PM", task: "Final mock + revision" },
+      { time: "11:15 PM - 11:30 PM", task: "Prepare for sleep" }
+    ]
+  };
 
 
   function convertTo24Hour(time) {
@@ -468,6 +490,7 @@
   function showFullSchedule() {
     const fullDayModal = document.getElementById('full-day-modal');
     fullDayModal.style.display = 'block';
+    document.body.classList.add('modal-open');
   }
 
   function showNextDaySchedule() {
@@ -484,12 +507,14 @@
       document.getElementById('next-day-schedule').innerHTML = nextDayHTML;
       const nextDayModal = document.getElementById('next-day-modal');
       nextDayModal.style.display = 'block';
+      document.body.classList.add('modal-open');
     }
   }
-
+  
   function closeModal(modalId) {
     const modal = document.getElementById(modalId);
     modal.style.display = 'none';
+    document.body.classList.remove('modal-open');
   }
 
   window.onclick = function(event) {
