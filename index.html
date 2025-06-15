@@ -387,20 +387,51 @@
       cursor: pointer;
     }
 
-    #full-schedule, #next-day-schedule {
+    #full-schedule, #next-day-schedule, #scheduleDetails {
       list-style-type: none;
       padding-left: 0;
     }
 
-    #full-schedule li, #next-day-schedule li {
-      padding: 9px;
+    #full-schedule li, #next-day-schedule li, #scheduleDetails li {
+      padding: 18px;
       font-size: 1.1rem;
       background-color: #f4f6f9;
-      border-radius: 10px;
-      margin: 15px 0;
-      transition: all 0.3s ease-in-out;
+      border-radius: 15px;
+      margin: 20px 0;
       border: 2px solid rgba(255, 255, 255, 0.8);
-      box-shadow: 4px 4px 6px rgba(0, 0, 0, 0.05);
+      box-shadow: 6px 6px 12px rgba(0, 0, 0, 0.1);
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      color: #333;
+      line-height: 1.6;
+      transition: all 0.3s ease-in-out;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+
+    #full-schedule li .time, #next-day-schedule li .time, #scheduleDetails li .time {
+      font-size: 1.2rem;
+      font-weight: bold;
+      margin-bottom: 12px;
+      color: #4a90e2;
+    }
+
+    #full-schedule li .task, #next-day-schedule li .task,#scheduleDetails li .task {
+      font-size: 1rem;
+      color: #333;
+    }
+
+    #full-schedule li:last-child, #next-day-schedule li:last-child, #scheduleDetails li:last-child {
+      margin-bottom: 0;
+    }
+
+    #full-schedule li, #next-day-schedule li, #scheduleDetails li{
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
     }
 
 
@@ -447,22 +478,9 @@
         opacity: 1;
       }
     }
-    #scheduleDetails
-    {
-      list-style-type: none;
-      padding-left: 0;
-    }
 
-    #scheduleDetails li {
-      padding: 9px;
-      font-size: 1.1rem;
-      background-color: #f4f6f9;
-      border-radius: 10px;
-      margin: 15px 0;
-      transition: all 0.3s ease-in-out;
-      border: 2px solid rgba(255, 255, 255, 0.8);
-      box-shadow: 4px 4px 6px rgba(0, 0, 0, 0.05);
-    }
+
+
 
   </style>
 </head>
@@ -621,9 +639,6 @@
     };
   }
 
-
-
-
   window.onclick = e => {
     if (e.target.classList.contains('modal')) {
       if (!e.target.id.includes('surprise')) {
@@ -635,170 +650,183 @@
 
   const routines = {
     "Day 1": [
-      {time: "5:30 AM - 6:00 AM", task: "Wake up & morning routine"},
-      {time: "6:00 AM - 8:00 AM", task: "Physics – Dual Nature of Radiation and Matter"},
-      {time: "8:00 AM - 8:30 AM", task: "Breakfast"},
-      {time: "8:30 AM - 10:30 AM", task: "Chemistry – Some Basic Concepts of Chemistry"},
-      {time: "10:30 AM - 11:00 AM", task: "Break"},
-      {time: "11:00 AM - 1:00 PM", task: "Biology – The Living World"},
-      {time: "1:00 PM - 2:30 PM", task: "Lunch & 1.5 hrs nap"},
-      {time: "2:30 PM - 4:30 PM", task: "Physics – Atoms & Nuclei"},
-      {time: "4:30 PM - 5:00 PM", task: "Break"},
-      {time: "5:00 PM - 7:00 PM", task: "Chemistry – Structure of Atom"},
-      {time: "7:00 PM - 8:00 PM", task: "Practice questions"},
-      {time: "8:00 PM - 9:00 PM", task: "NCERT Reading"},
-      {time: "9:00 PM - 9:30 PM", task: "Dinner & Relax"},
-      {time: "9:30 PM - 11:15 PM", task: "Revision and mock question practice"},
-      {time: "11:15 PM - 11:30 PM", task: "Prepare for sleep"}
-    ],
-    "Day 2": [
-      {time: "5:30 AM - 6:00 AM", task: "Wake up & morning routine"},
-      {time: "6:00 AM - 8:00 AM", task: "Chemistry – Classification of Elements"},
-      {time: "8:00 AM - 8:30 AM", task: "Breakfast"},
-      {time: "8:30 AM - 10:30 AM", task: "Physics – Semiconductor Devices"},
-      {time: "10:30 AM - 11:00 AM", task: "Break"},
-      {time: "11:00 AM - 1:00 PM", task: "Biology – Biological Classification"},
-      {time: "1:00 PM - 2:30 PM", task: "Lunch & 1.5 hrs nap"},
-      {time: "2:30 PM - 4:30 PM", task: "Chemistry – Periodicity in Properties"},
-      {time: "4:30 PM - 5:00 PM", task: "Break"},
-      {time: "5:00 PM - 7:30 PM", task: "Practice questions"},
-      {time: "7:30 PM - 8:00 PM", task: "NCERT Reading"},
-      {time: "8:00 PM - 8:30 PM", task: "Dinner & Relax"},
-      {time: "8:30 PM - 11:15 PM", task: "Revision and mock question practice"},
-      {time: "11:15 PM - 11:30 PM", task: "Prepare for sleep"}
-    ],
-    "Day 3": [
-      {time: "5:30 AM - 6:00 AM", task: "Wake up & morning routine"},
-      {time: "6:00 AM - 8:00 AM", task: "Biology – Plant Kingdom"},
-      {time: "8:00 AM - 8:30 AM", task: "Breakfast"},
-      {time: "8:30 AM - 10:30 AM", task: "Chemistry – Thermodynamics"},
-      {time: "10:30 AM - 11:00 AM", task: "Break"},
-      {time: "11:00 AM - 1:00 PM", task: "Physics – Thermodynamics"},
-      {time: "1:00 PM - 2:30 PM", task: "Lunch & 1.5 hrs nap"},
-      {time: "2:30 PM - 4:30 PM", task: "Chemistry – Chemical Bonding"},
-      {time: "4:30 PM - 5:00 PM", task: "Break"},
-      {time: "5:00 PM - 8:00 PM", task: "Practice questions – today's topics"},
-      {time: "8:00 PM - 8:30 PM", task: "NCERT Reading"},
-      {time: "8:30 PM - 9:00 PM", task: "Dinner & Relax"},
-      {time: "9:00 PM - 11:15 PM", task: "Revision + mock question practice"},
-      {time: "11:15 PM - 11:30 PM", task: "Prepare for sleep"}
-    ],
+    { time: "5:30 AM - 6:00 AM", task: "Wake up & morning routine" },
+    { time: "6:00 AM - 8:00 AM", task: "Study: Dual Nature of Radiation and Matter" },
+    { time: "8:00 AM - 8:45 AM", task: "Breakfast" },
+    { time: "8:45 AM - 10:45 AM", task: "Study: Structure of Atom" },
+    { time: "10:45 AM - 11:15 AM", task: "Break" },
+    { time: "11:15 AM - 1:00 PM", task: "Study: The Living World" },
+    { time: "1:00 PM - 2:30 PM", task: "Lunch & Nap" },
+    { time: "2:30 PM - 4:30 PM", task: "Study: Biological Classification" },
+    { time: "4:30 PM - 5:00 PM", task: "Break" },
+    { time: "5:00 PM - 7:00 PM", task: "Study: Some Basic Concepts of Chemistry" },
+    { time: "7:00 PM - 8:30 PM", task: "Practice: Multiple choice questions on Physics" },
+    { time: "8:30 PM - 9:00 PM", task: "Break" },
+    { time: "9:00 PM - 9:45 PM", task: "Dinner" },
+    { time: "9:45 PM - 11:15 PM", task: "Review & revise the day’s topics" },
+    { time: "11:15 PM - 11:30 PM", task: "Prepare for sleep" }
+  ],
 
-    "Day 4": [
-      {time: "5:30 AM - 6:00 AM", task: "Wake up & morning routine"},
-      {time: "6:00 AM - 8:00 AM", task: "Mock test – Bio, Chem, Phys (Day 3 topics)"},
-      {time: "8:00 AM - 8:30 AM", task: "Breakfast"},
-      {time: "8:30 AM - 10:30 AM", task: "Mock test review + error analysis"},
-      {time: "10:30 AM - 11:00 AM", task: "Break"},
-      {time: "11:00 AM - 1:00 PM", task: "Practice questions – focus weak areas"},
-      {time: "1:00 PM - 2:30 PM", task: "Lunch & 1.5 hrs nap"},
-      {time: "2:30 PM - 4:30 PM", task: "Light study: Human Health & Disease (Chem/Phys intros)"},
-      {time: "4:30 PM - 5:00 PM", task: "Break"},
-      {time: "5:00 PM - 8:00 PM", task: "Practice + NCERT MCQs"},
-      {time: "8:00 PM - 8:30 PM", task: "NCERT Reading"},
-      {time: "8:30 PM - 9:00 PM", task: "Dinner & Relax"},
-      {time: "9:00 PM - 11:15 PM", task: "Timed mock + review"},
-      {time: "11:15 PM - 11:30 PM", task: "Prepare for sleep"}
-    ],
+          "Day 2": [
+    { time: "5:30 AM - 6:00 AM", task: "Wake up & morning routine" },
+    { time: "6:00 AM - 8:00 AM", task: "Study: Semiconductor Devices" },
+    { time: "8:00 AM - 8:45 AM", task: "Breakfast" },
+    { time: "8:45 AM - 10:45 AM", task: "Study: Classification of Elements and Periodicity in Properties" },
+    { time: "10:45 AM - 11:15 AM", task: "Break" },
+    { time: "11:15 AM - 1:00 PM", task: "Study: Plant Kingdom" },
+    { time: "1:00 PM - 2:30 PM", task: "Lunch & Nap" },
+    { time: "2:30 PM - 4:30 PM", task: "Study: Biotechnology: Principles and Processes" },
+    { time: "4:30 PM - 5:00 PM", task: "Break" },
+    { time: "5:00 PM - 7:00 PM", task: "Practice: Solve Numerical Problems on Atomic Structure" },
+    { time: "7:00 PM - 8:30 PM", task: "Practice: Short answer questions on Biology" },
+    { time: "8:30 PM - 9:00 PM", task: "Break" },
+    { time: "9:00 PM - 9:45 PM", task: "Dinner" },
+    { time: "9:45 PM - 11:15 PM", task: "Review & revise the day’s topics" },
+    { time: "11:15 PM - 11:30 PM", task: "Prepare for sleep" }
+  ],
 
-    "Day 5": [
-      {time: "5:30 AM - 6:00 AM", task: "Wake up & morning routine"},
-      {time: "6:00 AM - 8:00 AM", task: "Chemistry – Organic Chemistry"},
-      {time: "8:00 AM - 8:30 AM", task: "Breakfast"},
-      {time: "8:30 AM - 10:30 AM", task: "Physics – Moving Charges & Magnetism"},
-      {time: "10:30 AM - 11:00 AM", task: "Break"},
-      {time: "11:00 AM - 1:00 PM", task: "Biology – Human Reproduction"},
-      {time: "1:00 PM - 2:30 PM", task: "Lunch & 1.5 hrs nap"},
-      {time: "2:30 PM - 4:30 PM", task: "Physics – Electromagnetic Induction"},
-      {time: "4:30 PM - 5:00 PM", task: "Break"},
-      {time: "5:00 PM - 8:30 PM", task: "Practice questions – today's topics"},
-      {time: "8:30 PM - 9:00 PM", task: "NCERT Reading"},
-      {time: "9:00 PM - 9:30 PM", task: "Dinner & Relax"},
-      {time: "9:30 PM - 11:15 PM", task: "Revision + mock question practice"},
-      {time: "11:15 PM - 11:30 PM", task: "Prepare for sleep"}
-    ],
+          "Day 3": [
+    { time: "5:30 AM - 6:00 AM", task: "Wake up & morning routine" },
+    { time: "6:00 AM - 8:00 AM", task: "Study: Nuclei" },
+    { time: "8:00 AM - 8:45 AM", task: "Breakfast" },
+    { time: "8:45 AM - 10:45 AM", task: "Study: Biotechnology and Its Applications" },
+    { time: "10:45 AM - 11:15 AM", task: "Break" },
+    { time: "11:15 AM - 1:00 PM", task: "Study: Experimental Skills" },
+    { time: "1:00 PM - 2:30 PM", task: "Lunch & Nap" },
+    { time: "2:30 PM - 4:30 PM", task: "Practice: Physics problems on Semiconductor Devices" },
+    { time: "4:30 PM - 5:00 PM", task: "Break" },
+    { time: "5:00 PM - 7:00 PM", task: "Study: Atomic Structure Review" },
+    { time: "7:00 PM - 8:30 PM", task: "Practice: Solve Chemistry questions" },
+    { time: "8:30 PM - 9:00 PM", task: "Break" },
+    { time: "9:00 PM - 9:45 PM", task: "Dinner" },
+    { time: "9:45 PM - 11:15 PM", task: "Review & revise the day’s topics" },
+    { time: "11:15 PM - 11:30 PM", task: "Prepare for sleep" }
+  ],
 
-    "Day 6": [
-      {time: "5:30 AM - 6:00 AM", task: "Wake up & morning routine"},
-      {time: "6:00 AM - 8:00 AM", task: "Mock test – Org chem, Magnetism, Reproduction, Induction"},
-      {time: "8:00 AM - 8:30 AM", task: "Breakfast"},
-      {time: "8:30 AM - 10:30 AM", task: "Review weak areas + error log"},
-      {time: "10:30 AM - 11:00 AM", task: "Break"},
-      {time: "11:00 AM - 1:00 PM", task: "Practice MCQs – mixed subjects"},
-      {time: "1:00 PM - 2:30 PM", task: "Lunch & 1.5 hrs nap"},
-      {time: "2:30 PM - 4:30 PM", task: "Timed sets – full syllabus"},
-      {time: "4:30 PM - 5:00 PM", task: "Break"},
-      {time: "5:00 PM - 8:30 PM", task: "Concept reinforcement + quizzes"},
-      {time: "8:30 PM - 9:00 PM", task: "Dinner & Relax"},
-      {time: "9:00 PM - 11:15 PM", task: "Final mock + review"},
-      {time: "11:15 PM - 11:30 PM", task: "Prepare for sleep"}
-    ],
+          "Day 4": [
+    { time: "5:30 AM - 6:00 AM", task: "Wake up & morning routine" },
+    { time: "6:00 AM - 8:00 AM", task: "Study: Dual Nature of Radiation and Matter" },
+    { time: "8:00 AM - 8:45 AM", task: "Breakfast" },
+    { time: "8:45 AM - 10:45 AM", task: "Study: The Living World" },
+    { time: "10:45 AM - 11:15 AM", task: "Break" },
+    { time: "11:15 AM - 1:00 PM", task: "Study: Plant Kingdom" },
+    { time: "1:00 PM - 2:30 PM", task: "Lunch & Nap" },
+    { time: "2:30 PM - 4:30 PM", task: "Practice: Solve questions on Physics (Nuclei)" },
+    { time: "4:30 PM - 5:00 PM", task: "Break" },
+    { time: "5:00 PM - 7:00 PM", task: "Practice: Biology question solving (Biotech)" },
+    { time: "7:00 PM - 8:30 PM", task: "Practice: Chemistry MCQs on Structure of Atom" },
+    { time: "8:30 PM - 9:00 PM", task: "Break" },
+    { time: "9:00 PM - 9:45 PM", task: "Dinner" },
+    { time: "9:45 PM - 11:15 PM", task: "Review & revise the day’s topics" },
+    { time: "11:15 PM - 11:30 PM", task: "Prepare for sleep" }
+  ],
 
-    "Day 7": [
-      {time: "5:30 AM - 6:00 AM", task: "Wake up & morning routine"},
-      {time: "6:00 AM - 8:00 AM", task: "Chemistry – Coordination Compounds"},
-      {time: "8:00 AM - 8:30 AM", task: "Breakfast"},
-      {time: "8:30 AM - 10:30 AM", task: "Physics – Electrostatic Potential"},
-      {time: "10:30 AM - 11:00 AM", task: "Break"},
-      {time: "11:00 AM - 1:00 PM", task: "Biology – Biotechnology & Applications"},
-      {time: "1:00 PM - 2:30 PM", task: "Lunch & 1.5 hrs nap"},
-      {time: "2:30 PM - 4:30 PM", task: "Physics – Alternating Current"},
-      {time: "4:30 PM - 5:00 PM", task: "Break"},
-      {time: "5:00 PM - 9:00 PM", task: "Practice questions – today’s topics"},
-      {time: "9:00 PM - 9:30 PM", task: "Dinner & Relax"},
-      {time: "9:30 PM - 11:15 PM", task: "Final mock + revision"},
-      {time: "11:15 PM - 11:30 PM", task: "Prepare for sleep"}
-    ],
+          "Day 5": [
+    { time: "5:30 AM - 6:00 AM", task: "Wake up & morning routine" },
+    { time: "6:00 AM - 8:00 AM", task: "Study: Atomic Structure" },
+    { time: "8:00 AM - 8:45 AM", task: "Breakfast" },
+    { time: "8:45 AM - 10:45 AM", task: "Study: Biotechnology Principles" },
+    { time: "10:45 AM - 11:15 AM", task: "Break" },
+    { time: "11:15 AM - 1:00 PM", task: "Study: Semiconductor Devices Review" },
+    { time: "1:00 PM - 2:30 PM", task: "Lunch & Nap" },
+    { time: "2:30 PM - 4:30 PM", task: "Study: Biological Classification" },
+    { time: "4:30 PM - 5:00 PM", task: "Break" },
+    { time: "5:00 PM - 7:00 PM", task: "Practice: Solve problems on Nuclei" },
+    { time: "7:00 PM - 8:30 PM", task: "Practice: Solve Botany questions" },
+    { time: "8:30 PM - 9:00 PM", task: "Break" },
+    { time: "9:00 PM - 9:45 PM", task: "Dinner" },
+    { time: "9:45 PM - 11:15 PM", task: "Review & revise the day’s topics" },
+    { time: "11:15 PM - 11:30 PM", task: "Prepare for sleep" }
+  ],
 
-    "Day 8": [
-      {time: "5:30 AM - 6:00 AM", task: "Wake up & morning routine"},
-      {time: "6:00 AM - 8:00 AM", task: "Final revision – Phys/ Chem/ Bio quick recap"},
-      {time: "8:00 AM - 8:30 AM", task: "Breakfast"},
-      {time: "8:30 AM - 10:30 AM", task: "Mock test – full syllabus"},
-      {time: "10:30 AM - 11:00 AM", task: "Break"},
-      {time: "11:00 AM - 1:00 PM", task: "Mock test review + error log refinement"},
-      {time: "1:00 PM - 2:30 PM", task: "Lunch & 1.5 hrs nap"},
-      {time: "2:30 PM - 4:30 PM", task: "Timed practice – weak areas"},
-      {time: "4:30 PM - 5:00 PM", task: "Break"},
-      {time: "5:00 PM - 9:00 PM", task: "Mock test review + question practice"},
-      {time: "9:00 PM - 9:30 PM", task: "Dinner & Relax"},
-      {time: "9:30 PM - 11:15 PM", task: "Final mock + revision"},
-      {time: "11:15 PM - 11:30 PM", task: "Prepare for sleep"}
-    ],
+          "Day 6": [
+    { time: "5:30 AM - 6:00 AM", task: "Wake up & morning routine" },
+    { time: "6:00 AM - 8:00 AM", task: "Study: Atoms" },
+    { time: "8:00 AM - 8:45 AM", task: "Breakfast" },
+    { time: "8:45 AM - 10:45 AM", task: "Study: Nuclei Review" },
+    { time: "10:45 AM - 11:15 AM", task: "Break" },
+    { time: "11:15 AM - 1:00 PM", task: "Study: Experimental Skills" },
+    { time: "1:00 PM - 2:30 PM", task: "Lunch & Nap" },
+    { time: "2:30 PM - 4:30 PM", task: "Practice: Biology MCQs" },
+    { time: "4:30 PM - 5:00 PM", task: "Break" },
+    { time: "5:00 PM - 7:00 PM", task: "Practice: Solve Physics problems on Dual Nature of Radiation" },
+    { time: "7:00 PM - 8:30 PM", task: "Practice: Chemistry questions on Classification of Elements" },
+    { time: "8:30 PM - 9:00 PM", task: "Break" },
+    { time: "9:00 PM - 9:45 PM", task: "Dinner" },
+    { time: "9:45 PM - 11:15 PM", task: "Review & revise the day’s topics" },
+    { time: "11:15 PM - 11:30 PM", task: "Prepare for sleep" }
+  ],
+
+          "Day 7": [
+    { time: "5:30 AM - 6:00 AM", task: "Wake up & morning routine" },
+    { time: "6:00 AM - 8:00 AM", task: "Study: Biotechnology Applications" },
+    { time: "8:00 AM - 8:45 AM", task: "Breakfast" },
+    { time: "8:45 AM - 10:45 AM", task: "Study: Plant Kingdom" },
+    { time: "10:45 AM - 11:15 AM", task: "Break" },
+    { time: "11:15 AM - 1:00 PM", task: "Study: Biotechnology Principles" },
+    { time: "1:00 PM - 2:30 PM", task: "Lunch & Nap" },
+    { time: "2:30 PM - 4:30 PM", task: "Practice: Solve Physics questions on Nuclei" },
+    { time: "4:30 PM - 5:00 PM", task: "Break" },
+    { time: "5:00 PM - 7:00 PM", task: "Practice: Chemistry MCQs on Atomic Structure" },
+    { time: "7:00 PM - 8:30 PM", task: "Practice: Solve Biology questions" },
+    { time: "8:30 PM - 9:00 PM", task: "Break" },
+    { time: "9:00 PM - 9:45 PM", task: "Dinner" },
+    { time: "9:45 PM - 11:15 PM", task: "Review & revise the day’s topics" },
+    { time: "11:15 PM - 11:30 PM", task: "Prepare for sleep" }
+  ],
+
+          "Day 8": [
+    { time: "5:30 AM - 6:00 AM", task: "Wake up & morning routine" },
+    { time: "6:00 AM - 8:00 AM", task: "Study: Dual Nature of Radiation and Matter" },
+    { time: "8:00 AM - 8:45 AM", task: "Breakfast" },
+    { time: "8:45 AM - 10:45 AM", task: "Study: Atoms & Nuclei" },
+    { time: "10:45 AM - 11:15 AM", task: "Break" },
+    { time: "11:15 AM - 1:00 PM", task: "Study: Some Basic Concepts of Chemistry" },
+    { time: "1:00 PM - 2:30 PM", task: "Lunch & Nap" },
+    { time: "2:30 PM - 4:30 PM", task: "Study: Plant Kingdom" },
+    { time: "4:30 PM - 5:00 PM", task: "Break" },
+    { time: "5:00 PM - 7:00 PM", task: "Practice: Physics & Chemistry MCQs" },
+    { time: "7:00 PM - 8:30 PM", task: "Practice: Solve Botany & Zoology problems" },
+    { time: "8:30 PM - 9:00 PM", task: "Break" },
+    { time: "9:00 PM - 9:45 PM", task: "Dinner" },
+    { time: "9:45 PM - 11:15 PM", task: "Review & revise the day’s topics" },
+    { time: "11:15 PM - 11:30 PM", task: "Prepare for sleep" }
+  ],
+
+
     "Day 9": [
-      { time: "5:30 AM - 6:00 AM", task: "Wake up" },
-      { time: "6:00 AM - 8:00 AM", task: "Physics: Alternating Current (Study)" },
-      { time: "8:00 AM - 8:45 AM", task: "Break" },
-      { time: "8:45 AM - 10:45 AM", task: "Chemistry: Chemical Bonding and Molecular Structure (Study)" },
-      { time: "10:45 AM - 11:30 AM", task: "Break" },
-      { time: "11:30 AM - 12:30 PM", task: "Botany: Morphology of Flowering Plants (Study)" },
-      { time: "12:30 PM - 1:00 PM", task: "Gap for extra study or review" },
-      { time: "1:00 PM - 2:45 PM", task: "Lunch and Nap" },
-      { time: "2:45 PM - 4:15 PM", task: "Zoology: Human Health and Disease (Study)" },
-      { time: "4:15 PM - 5:00 PM", task: "Break" },
-      { time: "5:00 PM - 7:00 PM", task: "Mixed Subject Revision (Study)" },
-      { time: "7:00 PM - 8:15 PM", task: "Formula / Charts Recap" },
-      { time: "8:15 PM - 9:00 PM", task: "Review of the day's study and practice key concepts" },
-      { time: "9:00 PM - 9:45 PM", task: "Dinner" },
-      { time: "9:45 PM - 11:15 PM", task: "Revision of today's learnings and practice questions" },
-      { time: "11:15 PM - 11:30 PM", task: "Prepare for sleep" }
-    ],
+    { time: "5:30 AM - 6:00 AM", task: "Wake up & morning routine" },
+    { time: "6:00 AM - 8:00 AM", task: "Preparation: Review key topics from Physics, Chemistry, & Biology" },
+    { time: "8:00 AM - 8:45 AM", task: "Breakfast" },
+    { time: "8:45 AM - 10:45 AM", task: "Preparation: Revise major chapters and practice problems (focus on weak areas)" },
+    { time: "10:45 AM - 11:15 AM", task: "Break" },
+    { time: "11:15 AM - 1:00 PM", task: "Preparation: Practice previous year NEET questions (all subjects)" },
+    { time: "1:00 PM - 2:00 PM", task: "Lunch & Relax" },
+    { time: "2:00 PM - 5:00 PM", task: "Test: Full-length mock test (Physics, Chemistry & Biology, 3 hours)" },
+    { time: "5:00 PM - 5:30 PM", task: "Break" },
+    { time: "5:30 PM - 7:00 PM", task: "Practice: Solve short answer questions (focus on weak topics)" },
+    { time: "7:00 PM - 8:30 PM", task: "Practice: Solve additional practice problems (Physics, Chemistry & Biology)" },
+    { time: "8:30 PM - 9:00 PM", task: "Break" },
+    { time: "9:00 PM - 9:45 PM", task: "Dinner" },
+    { time: "9:45 PM - 11:15 PM", task: "Relaxation: Light revision of any important concepts" },
+    { time: "11:15 PM - 11:30 PM", task: "Prepare for sleep" }
+  ]
+  ,
     "Day 10": [
-      { time: "5:30 AM - 6:00 AM", task: "Wake up" },
-      { time: "6:00 AM - 8:00 AM", task: "Physics Practice (Numericals + Concept Qs)" },
-      { time: "8:00 AM - 8:45 AM", task: "Break" },
-      { time: "8:45 AM - 10:45 AM", task: "Chemistry Practice (MCQs + Concept Maps)" },
-      { time: "10:45 AM - 11:30 AM", task: "Break" },
-      { time: "11:30 AM - 12:30 PM", task: "Botany Practice (Labeling + MCQs)" },
-      { time: "12:30 PM - 1:00 PM", task: "Gap for extra study or review" },
-      { time: "1:00 PM - 2:45 PM", task: "Lunch and Nap" },
-      { time: "2:45 PM - 4:15 PM", task: "Zoology Practice (Visual Recall + MCQs)" },
-      { time: "4:15 PM - 5:00 PM", task: "Break" },
-      { time: "5:00 PM - 7:00 PM", task: "Mock Drill: Quick Fire Questions" },
-      { time: "7:00 PM - 8:15 PM", task: "Answer Review + Flash Notes" },
-      { time: "8:15 PM - 9:00 PM", task: "Review of today's practice and focus on difficult questions" },
-      { time: "9:00 PM - 9:45 PM", task: "Dinner" },
-      { time: "9:45 PM - 11:15 PM", task: "Revision of today's practice questions and weak areas" },
+      { time: "5:30 AM - 6:00 AM", task: "Wake up & morning routine" },
+      { time: "6:00 AM - 8:00 AM", task: "Analysis: Review results from Day 9 mock test" },
+      { time: "8:00 AM - 8:45 AM", task: "Breakfast" },
+      { time: "8:45 AM - 10:45 AM", task: "Review weak areas: Focus on difficult topics identified in the mock test" },
+      { time: "10:45 AM - 11:15 AM", task: "Break" },
+      { time: "11:15 AM - 1:00 PM", task: "Finalize strategy for last-minute revision (list out key chapters)" },
+      { time: "1:00 PM - 2:00 PM", task: "Lunch & Relax" },
+      { time: "2:00 PM - 4:00 PM", task: "Practice: Focus on weak areas & revise high-yield topics" },
+      { time: "4:00 PM - 4:30 PM", task: "Break" },
+      { time: "4:30 PM - 6:30 PM", task: "Complete remaining revisions & practice specific topics from each subject" },
+      { time: "6:30 PM - 8:00 PM", task: "Mock exam simulation: Timed exam (1 hour per subject)" },
+      { time: "8:00 PM - 8:30 PM", task: "Break" },
+      { time: "8:30 PM - 9:00 PM", task: "Dinner" },
+      { time: "9:00 PM - 11:15 PM", task: "Final revision: Relax and go over key concepts, stay calm" },
       { time: "11:15 PM - 11:30 PM", task: "Prepare for sleep" }
     ],
     "Day 11": [
@@ -2005,7 +2033,7 @@
     return hours * 60 + minutes;
   }
 
-  const startDate = new Date("2025-06-11");
+  const startDate = new Date("2025-06-15");
 
   function getCurrentDayIndex() {
     const currentDate = new Date();
