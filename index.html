@@ -8,13 +8,15 @@
         href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==">
   <title>Study Timetable</title>
 
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&family=Dancing+Script:wght@400;700&display=swap"
+        rel="stylesheet">
   <style>
     body {
       font-family: 'Poppins', sans-serif;
       margin: 0;
       padding: 20px;
-      background: linear-gradient(135deg, #f6f9fc 0%, #eef2f7 100%);
+      scroll-behavior: smooth;
+      background: linear-gradient(145deg, #f8faff 0%, #eef2f7 100%);
       color: #2d3748;
       min-height: 100vh;
       overflow-x: hidden;
@@ -43,6 +45,8 @@
     }
 
 
+
+
     #desktop-overlay {
       display: none;
       position: fixed;
@@ -59,20 +63,27 @@
     #hamburger {
       position: fixed;
       right: 20px;
-      bottom: 20px;
-      z-index: 1001;
+      z-index: 999;
+      animation: pulse 2s ease-in-out infinite;
       font-size: 2rem;
       cursor: pointer;
-      color: rgba(108, 92, 231, 20);
-      opacity: 0.85;
+      color: rgba(108, 92, 231, 0.9);
+      opacity: 0.9;
       transition: all 0.3s ease;
       border: none;
-      background: rgba(255, 255, 255, 0.8);
-      padding: 10px 15px;
-      border-radius: 30%;
-      backdrop-filter: blur(5px);
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      background: rgba(255, 255, 255, 0.95);
+      padding: 15px 20px;
+      border-radius: 25px;
+      backdrop-filter: blur(15px);
+      box-shadow: 0 10px 25px rgba(108, 92, 231, 0.2),
+      0 5px 15px rgba(0, 0, 0, 0.1),
+      inset 0 -2px 5px rgba(108, 92, 231, 0.1);
+      transform: scale(1);
+      bottom: 30px;
     }
+
+
+
 
     #sidebar {
       position: fixed;
@@ -81,23 +92,26 @@
       right: 0;
       width: 100vw;
       max-width: 100vw;
-      height: min(60vh, 400px);
-      background: white;
-      box-shadow: 0 -2px 12px rgba(0, 0, 0, 0.2);
-      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      height: min(65vh, 450px);
+      background: linear-gradient(180deg, #ffffff, #f8faff);
+      box-shadow: 0 -5px 25px rgba(0, 0, 0, 0.15),
+      0 -2px 15px rgba(108, 92, 231, 0.1);
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
       z-index: 1000;
       display: flex;
       flex-direction: column;
       align-items: center;
-      padding: 20px;
+      padding: 25px;
       overflow-y: auto;
-      border-radius: 24px 24px 0 0;
+      border-radius: 32px 32px 0 0;
       transform: translateY(100%);
       transform-origin: bottom;
       will-change: transform;
       backface-visibility: hidden;
       -webkit-backface-visibility: hidden;
       box-sizing: border-box;
+      backdrop-filter: blur(20px);
+      border-top: 1px solid rgba(255, 255, 255, 0.8);
     }
 
 
@@ -130,18 +144,37 @@
       text-align: center;
     }
     #sidebar button {
-      color: rgba(108, 92, 231, 20);
-      border: 2px solid rgba(108, 92, 231, 0.3);
-      padding: 16px;
-      margin: 10px auto;
-      border-radius: 16px;
+      color: rgba(108, 92, 231, 0.9);
+      border: 2px solid rgba(108, 92, 231, 0.35);
+      padding: 22px;
+      margin: 15px auto;
+      border-radius: 28px;
       font-size: 1.2rem;
+      font-weight: 500;
       cursor: pointer;
-      box-shadow: 0 10px 25px rgba(108, 92, 231, 0.3);
-      backdrop-filter: blur(5px);
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      background: linear-gradient(165deg, #ffffff, #f8faff);
+      box-shadow: 0 35px 70px rgba(108, 92, 231, 0.25),
+      0 25px 45px rgba(0, 0, 0, 0.12),
+      0 15px 30px rgba(108, 92, 231, 0.12),
+      inset 0 -2px 10px rgba(108, 92, 231, 0.1),
+      inset 0 2px 10px rgba(255, 255, 255, 0.8);
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      transform: translateY(0);
+      will-change: transform, box-shadow;
+      backdrop-filter: blur(10px);
       display: block;
-      width: 80%;
+      width: 85%;
+      position: relative;
+      overflow: hidden;
+      letter-spacing: 0.5px;
+    }
+
+    #sidebar button:hover {
+      background-position: 100% 100%;
+      transform: translateY(-2px);
+      box-shadow: 0 25px 45px rgba(108, 92, 231, 0.4),
+      0 12px 25px rgba(0, 0, 0, 0.2),
+      inset 0 -2px 10px rgba(108, 92, 231, 0.15);
     }
 
 
@@ -155,6 +188,7 @@
       margin-top: auto;
       opacity: 0.2;
     }
+
 
     .modal {
       display: none;
@@ -170,16 +204,20 @@
     .modal-content {
       background: linear-gradient(145deg, #ffffff, #f8faff);
       margin: auto;
-      padding: 32px;
-      border-radius: 32px;
+      padding: 35px;
+      border-radius: 35px;
       width: 85%;
       max-width: 400px;
-      box-shadow: 0 32px 64px rgba(108, 92, 231, 0.2);
+      box-shadow: 0 35px 70px rgba(108, 92, 231, 0.25),
+      0 25px 45px rgba(0, 0, 0, 0.1),
+      inset 0 2px 15px rgba(255, 255, 255, 0.6);
       overflow-y: auto;
       max-height: 85vh;
-      animation: modalFadeIn 0.4s ease;
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(21px);
+      animation: modalFadeIn 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      backdrop-filter: blur(25px);
+      -webkit-backdrop-filter: blur(25px);
+      border: 1px solid rgba(255, 255, 255, 0.8);
+      transform: translateZ(0);
       transform: translateZ(0);
       will-change: transform;
       position: relative;
@@ -201,21 +239,41 @@
       box-shadow: 0 6px 15px rgba(108,92,231,0.2);
     }
 
+    @keyframes gradientHeader {
+      0% {
+        background-position: 0% 50%;
+      }
+      50% {
+        background-position: 100% 50%;
+      }
+      100% {
+        background-position: 0% 50%;
+      }
+    }
 
-    @keyframes gradientHeader { 0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
+
     header {
-      background: linear-gradient(135deg, #4834d4 0%, #686de0 25%, #7a6eea 50%, #686de0 75%, #4834d4 100%);
+      background: linear-gradient(165deg, #4834d4 0%, #686de0 25%, #7a6eea 50%, #686de0 75%, #4834d4 100%);
       background-size: 400% 400%;
-      animation: gradientHeader 12s ease-in-out infinite;
+      animation: gradientHeader 15s ease-in-out infinite;
       color: white;
       text-align: center;
-      padding: 40px;
-      margin: -20px -20px 30px -20px;
-      border-bottom: 2px solid rgba(255,255,255,0.25);
-      border-radius: 0 0 32px 32px;
-      box-shadow: 0 12px 36px rgba(108,92,231,0.4);
+      padding: 45px 40px 65px 40px;
+      margin: -20px -20px 35px -20px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.4);
+      border-radius: 0 0 35px 35px;
+      box-shadow: 0 25px 60px rgba(108, 92, 231, 0.4),
+      0 15px 35px rgba(0, 0, 0, 0.2),
+      0 10px 20px rgba(108, 92, 231, 0.2),
+      inset 0 -15px 30px rgba(255, 255, 255, 0.2),
+      inset 0 5px 15px rgba(255, 255, 255, 0.1);
+      transform: translateZ(0);
+      backface-visibility: hidden;
       position: relative;
       z-index: 1;
+      backdrop-filter: blur(15px);
+      will-change: transform;
+      transition: all 0.3s ease-out;
     }
     h1 { font-size: 2.8rem; margin:0; font-weight:600 }
     #day-title {
@@ -232,34 +290,49 @@
     @keyframes gradientTask {
       0% {
         background-position: 0% 50%;
+        opacity: 0.95;
       }
       50% {
         background-position: 100% 50%;
+        opacity: 1;
       }
       100% {
         background-position: 0% 50%;
+        opacity: 0.95;
       }
     }
 
+
     #current-task {
-      font-size: 2rem;
-      font-weight: 600;
+      font-size: 1.8rem;
+      font-weight: 500;
       color: #2d3748;
-      background: linear-gradient(145deg, #e8eaff, #ffffff, #e8eaff);
-      background-size: 400% 400%;
-      animation: gradientTask 6s ease infinite;
-      padding: 32px;
-      border-radius: 32px;
+      background: linear-gradient(165deg, #ffffff, #f8faff, #ffffff);
+      background-size: 300% 300%;
+      animation: gradientTask 15s ease infinite;
+      padding: 40px 30px;
+      border-radius: 30px;
+      backdrop-filter: blur(15px);
+      -webkit-backdrop-filter: blur(15px);
       margin: 0 auto 30px auto;
-      box-shadow: 0 20px 45px rgba(108, 92, 231, 0.15),
-      0 8px 25px rgba(0, 0, 0, 0.05),
-      inset 0 -2px 10px rgba(255, 255, 255, 0.7);
+      box-shadow: 0 35px 70px rgba(108, 92, 231, 0.15),
+      0 25px 45px rgba(0, 0, 0, 0.1),
+      0 15px 30px rgba(108, 92, 231, 0.1),
+      inset 0 -2px 10px rgba(255, 255, 255, 0.9),
+      inset 0 2px 10px rgba(108, 92, 231, 0.12);
+      border: 1px solid rgba(255, 255, 255, 0.9);
+      transform: translateY(0);
+      transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
       text-align: center;
       max-width: 650px;
-      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-      border: 1px solid rgba(255, 255, 255, 0.8);
-      backdrop-filter: blur(10px);
-      transform: translateY(0);
+      will-change: transform, box-shadow;
+      overflow: hidden;
+    }
+
+    #current-task {
+      box-shadow: 0 35px 70px rgba(108, 92, 231, 0.2),
+      0 25px 45px rgba(0, 0, 0, 0.15),
+      inset 0 -3px 15px rgba(255, 255, 255, 0.9);
     }
 
     #current-task .time {
@@ -277,6 +350,55 @@
       box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
     }
 
+    #current-task .message-container {
+      display: none;
+      position: relative;
+      overflow: hidden;
+      background-color: #e8eaf6;
+      border-radius: 16px;
+      margin-top: 20px;
+      padding: 15px;
+      box-shadow: 0 8px 25px rgba(108, 92, 231, 0.15);
+      border: 1px solid rgba(255, 255, 255, 0.8);
+      backdrop-filter: blur(10px);
+      transition: all 0.3s ease;
+      width: calc(100% - 30px);
+      height: 40px;
+      line-height: 40px;
+    }
+
+
+    #current-task .message-text {
+      position: absolute;
+      white-space: nowrap;
+      animation: scrollMessage linear infinite;
+      color: #000000;
+      font-weight: 500;
+      letter-spacing: 0.5px;
+      text-shadow: 0 1px 2px rgba(108, 92, 231, 0.1);
+      will-change: transform;
+      top: 0;
+      height: 100%;
+      display: flex;
+      align-items: center;
+    }
+
+
+
+
+    @keyframes scrollMessage {
+      0% {
+        transform: translateX(100%);
+      }
+      100% {
+        transform: translateX(-100%);
+      }
+    }
+
+
+
+
+
     #next-tasks {
       font-size: 1.5rem;
       color: #4a5568;
@@ -289,46 +411,65 @@
     }
 
     .task {
-      margin: 15px 0;
-      padding: 20px;
-      background: linear-gradient(145deg, #f0f2f8, #e8eaf6);
-      border-radius: 12px;
-      box-shadow: 0 4px 12px rgba(108, 92, 231, 0.12);
+      margin: 20px 0;
+      padding: 25px;
+      background: linear-gradient(165deg, #f0f2f8, #e8eaf6);
+      transition: all 0.3s ease;
+      cursor: pointer;
+      border-radius: 25px;
+      box-shadow: 0 25px 50px rgba(108, 92, 231, 0.15),
+      0 15px 30px rgba(0, 0, 0, 0.08),
+      0 10px 20px rgba(108, 92, 231, 0.08),
+      inset 0 -2px 5px rgba(255, 255, 255, 0.7),
+      inset 0 2px 5px rgba(108, 92, 231, 0.05);
       font-size: 1.1rem;
-      transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1),
-      opacity 0.3s ease;
-      transform: translateX(0);
-      will-change: transform, opacity;
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      transform: translateX(0) scale(1);
+      will-change: transform, box-shadow;
+      border: 1px solid rgba(255, 255, 255, 0.8);
+      backdrop-filter: blur(10px);
     }
 
     .show-full, .show-next {
       display: inline-block;
       text-align: center;
-      background: linear-gradient(135deg, #4834d4 0%, #686de0 50%, #4834d4 100%);
+      background: linear-gradient(165deg, #4834d4 0%, #686de0 25%, #7a6eea 50%, #686de0 75%, #4834d4 100%);
       background-size: 400% 400%;
-      animation: gradientHeader 8s ease infinite;
+      animation: gradientHeader 15s ease-in-out infinite;
       color: white;
       font-size: 1.2rem;
-      padding: 16px 32px;
+      padding: 18px 35px;
       border-radius: 20px;
       cursor: pointer;
       text-decoration: none;
-      box-shadow: 0 10px 25px rgba(108, 92, 231, 0.3);
-      border: 1px solid rgba(255, 255, 255, 0.4);
-      backdrop-filter: blur(5px);
+      box-shadow: 0 25px 60px rgba(108, 92, 231, 0.4),
+      0 15px 35px rgba(0, 0, 0, 0.2),
+      0 10px 20px rgba(108, 92, 231, 0.2),
+      inset 0 -15px 30px rgba(255, 255, 255, 0.2),
+      inset 0 5px 15px rgba(255, 255, 255, 0.1);
+
+
       flex: 1;
       min-width: 160px;
       max-width: 200px;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      transform: translateY(0);
+      will-change: transform;
     }
+
+
 
     .show-full:focus, .show-next:focus {
       outline: none;
+      transform: translateY(-3px);
+      box-shadow: 0 15px 30px rgba(108, 92, 231, 0.4);
     }
 
 
     .show-full:active, .show-next:active {
       transform: translateY(1px);
     }
+
 
     .modal {
       display: none;
@@ -343,22 +484,27 @@
       overflow: hidden;
     }
 
+
     .modal-content {
-      background: linear-gradient(145deg, #ffffff, #f8faff);
+      background: linear-gradient(165deg, #ffffff, #f8faff);
       margin: auto;
-      padding: 32px;
-      border-radius: 32px;
+      padding: 35px;
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-radius: 35px;
       width: 85%;
       max-width: 700px;
-      box-shadow: 0 32px 64px rgba(108, 92, 231, 0.2),
-      0 24px 48px rgba(0, 0, 0, 0.1),
+      box-shadow: 0 40px 80px rgba(108, 92, 231, 0.15),
+      0 30px 60px rgba(0, 0, 0, 0.1),
+      0 15px 30px rgba(108, 92, 231, 0.1),
       inset 0 2px 12px rgba(255, 255, 255, 0.5);
       overflow-y: auto;
       max-height: 85vh;
       border: 1px solid rgba(255, 255, 255, 0.8);
-      animation: modalFadeIn 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-      backdrop-filter: blur(20px);
+      animation: modalFadeIn 0.5s cubic-bezier(0.4, 0, 0.2, 1);
       position: relative;
+
     }
 
     @keyframes modalFadeIn {
@@ -397,7 +543,7 @@
       font-size: 1.1rem;
       background-color: #f4f6f9;
       border-radius: 15px;
-      margin: 20px 0;
+      margin: 20px auto;
       border: 2px solid rgba(255, 255, 255, 0.8);
       box-shadow: 6px 6px 12px rgba(0, 0, 0, 0.1);
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -409,6 +555,8 @@
       flex-direction: column;
       justify-content: center;
       align-items: center;
+      width: calc(100% - 40px);
+      max-width: 600px;
     }
 
     #full-schedule li .time, #next-day-schedule li .time, #scheduleDetails li .time {
@@ -462,10 +610,10 @@
       }
     }
 
+
     .modal-content.top-modal {
-      transform: translateY(-100px);
+      margin: 5vh auto;
       animation: slideDownModal 0.5s ease-out forwards;
-      top: 5%;
     }
 
     @keyframes slideDownModal {
@@ -486,10 +634,13 @@
 </head>
 <body>
 <div id="desktop-overlay">This website is not designed for desktop viewing. Switch to mobile.</div>
+<button id="hamburger" aria-label="Open menu">&#9776;</button>
 
 <header role="banner">
   <h1>Study Timetable</h1>
-  <button id="hamburger" aria-label="Open menu">&#9776;</button>
+  <div style="font-family: 'Dancing Script', cursive; font-size: 1.2rem; margin-top: -5px; opacity: 0.9;">for
+    adyasha
+  </div>
 </header>
 
 <div id="day-title">
@@ -510,6 +661,7 @@
   </div>
 </div>
 
+
 <div id="next-day-modal" class="modal">
   <div class="modal-content">
     <span class="close" onclick="closeModal('next-day-modal')">&times;</span>
@@ -517,6 +669,7 @@
     <ul id="next-day-schedule"></ul>
   </div>
 </div>
+
 
 <div id="sidebar">
   <div class="close-btn">&times;</div>
@@ -648,1353 +801,170 @@
     }
   };
 
+
+
   const routines = {
     "Day 1": [
-      { time: "5:30 AM - 6:30 AM", task: "Wake up & Morning Routine" },
-      { time: "6:30 AM - 9:00 AM", task: "Physics: Dual Nature of Radiation and Matter" },
-      { time: "9:00 AM - 9:15 AM", task: "Break" },
-      { time: "9:15 AM - 11:45 AM", task: "Biology: The Living World" },
-      { time: "11:45 AM - 12:30 PM", task: "Break" },
-      { time: "12:30 PM - 1:00 PM", task: "Quick revision of morning topics" },
-      { time: "1:00 PM - 3:00 PM", task: "Lunch + 1.5 hrs Nap" },
-      { time: "3:00 PM - 5:30 PM", task: "Physics: Dual Nature of Radiation and Matter (Practice/Problem Solving)" },
-      { time: "5:30 PM - 5:45 PM", task: "Break" },
-      { time: "5:45 PM - 8:15 PM", task: "Biology: The Living World (Practice/MCQs)" },
-      { time: "8:15 PM - 9:00 PM", task: "Break/Dinner" },
-      { time: "9:00 PM - 9:45 PM", task: "Biology: The Living World (Revision)" },
-      { time: "9:45 PM - 11:00 PM", task: "Physics: Dual Nature of Radiation and Matter (Revision)" },
-      { time: "11:00 PM - 11:15 PM", task: "Prepare for sleep" }
+      { time: "6:00 AM - 8:00 AM", task: "Study Session 1: Physics – Dual Nature of Radiation", message: "📚 Deep focus on the topic!" },
+      { time: "8:00 AM - 8:30 AM", task: "Break 1: Walk/stretch, breakfast, light refresh", message: "🧘 Rest your mind and recharge!" },
+      { time: "8:30 AM - 10:30 AM", task: "Study Session 2: Chemistry – Basic Concepts", message: "🧪 Deep focus on mastering the basics!" },
+      { time: "10:30 AM - 11:00 AM", task: "Break 2: Relax, snack, do something light", message: "☕ Take a short break to recharge!" },
+      { time: "11:00 AM - 1:00 PM", task: "Study Session 3: Numericals & Concepts for both chapters", message: "🧠 Engage in active learning with problem-solving!" },
+      { time: "1:00 PM - 2:30 PM", task: "Lunch + Nap (1.5 hrs)", message: "🍽️ Strict rest to re-energize for the afternoon!" },
+      { time: "2:30 PM - 4:30 PM", task: "Study Session 4: Problem Solving / Practice Questions", message: "✍️ Application-focused study to test your knowledge!" },
+      { time: "4:30 PM - 5:00 PM", task: "Break 3: Light movement, quick snack", message: "🌳 Step away from screens and refresh!" },
+      { time: "5:00 PM - 6:00 PM", task: "Summary + Flashcard Review + Create Quick Revision Notes", message: "📝 Prepare for Day 2 with efficient review!" },
+      { time: "6:00 PM - 7:00 PM", task: "Free Hour: Hobbies, music, rest", message: "🎨 Mental reset with your favorite hobbies!" },
+      { time: "7:00 PM - 9:00 PM", task: "Optional: Concept videos or light revision", message: "🔍 Flexible study to reinforce your learning!" },
+      { time: "9:00 PM - 10:00 PM", task: "Dinner + Wind-down", message: "🍽️ No heavy work, just unwind!" },
+      { time: "10:00 PM - 11:45 PM", task: "Light reading / prep for tomorrow / sleep", message: "🌙 Rest mode – reflect and relax before bed!" }
     ],
     "Day 2": [
-      { time: "5:30 AM - 6:30 AM", task: "Wake up & Morning Routine" },
-      { time: "6:30 AM - 9:00 AM", task: "Chemistry: Some Basic Concepts of Chemistry" },
-      { time: "9:00 AM - 9:15 AM", task: "Break" },
-      { time: "9:15 AM - 11:45 AM", task: "Biology: Biological Classification" },
-      { time: "11:45 AM - 12:30 PM", task: "Break" },
-      { time: "12:30 PM - 1:00 PM", task: "Quick revision of morning topics" },
-      { time: "1:00 PM - 3:00 PM", task: "Lunch + 1.5 hrs Nap" },
-      { time: "3:00 PM - 5:30 PM", task: "Chemistry: Some Basic Concepts of Chemistry (Practice/Problem Solving)" },
-      { time: "5:30 PM - 5:45 PM", task: "Break" },
-      { time: "5:45 PM - 8:15 PM", task: "Biology: Biological Classification (Practice/MCQs)" },
-      { time: "8:15 PM - 9:00 PM", task: "Break/Dinner" },
-      { time: "9:00 PM - 9:45 PM", task: "Biology: Biological Classification (Revision)" },
-      { time: "9:45 PM - 11:00 PM", task: "Chemistry: Some Basic Concepts of Chemistry (Revision)" },
-      { time: "11:00 PM - 11:15 PM", task: "Prepare for sleep" }
-    ],
+      { time: "6:00 AM - 8:00 AM", task: "Study Session 1: New Chapter – Chemistry: Structure of Atom", message: "🧪 Conceptual learning" },
+      { time: "8:00 AM - 8:30 AM", task: "Break 1: Breakfast, short walk/stretch", message: "🧘 Refresh" },
+      { time: "8:30 AM - 10:30 AM", task: "Study Session 2: New Chapter – Physics: Atoms", message: "🔬 Deep focus" },
+      { time: "10:30 AM - 11:00 AM", task: "Break 2: Relax, snack, light reset", message: "☕ Mental recovery" },
+      { time: "11:00 AM - 1:00 PM", task: "Study Session 3: Revision – Dual Nature + Basic Concepts", message: "📘 Notes + flashcards" },
+      { time: "1:00 PM - 2:30 PM", task: "Lunch + Nap (1.5 hrs)", message: "🍽️ Physical & mental rest" },
+      { time: "2:30 PM - 4:30 PM", task: "Study Session 4: Numericals & Concept Drills for new chapters", message: "✍️ Strengthen application" },
+      { time: "4:30 PM - 5:00 PM", task: "Break 3: Tea/snack, gentle movement", message: "🌿 Unwind" },
+      { time: "5:00 PM - 6:00 PM", task: "Quick Revision Recap for all 4 chapters", message: "📝 Summary sheets" },
+      { time: "6:00 PM - 7:00 PM", task: "Free Hour: Personal time / light walk / music", message: "🎧 Reset for evening" },
+      { time: "7:00 PM - 9:00 PM", task: "Optional: MCQs / concept mapping for today’s chapters", message: "🤔 Low-pressure recall" },
+      { time: "9:00 PM - 10:00 PM", task: "Dinner + Wind-down", message: "🍽️ End of core work" },
+      { time: "10:00 PM - 11:45 PM", task: "Light reading / tomorrow prep / Sleep", message: "🌙 Rest mode" }
+    ]
+    ,
     "Day 3": [
-      { time: "5:30 AM - 6:30 AM", task: "Wake up & Morning Routine" },
-      { time: "6:30 AM - 9:00 AM", task: "Physics: Atoms" },
-      { time: "9:00 AM - 9:15 AM", task: "Break" },
-      { time: "9:15 AM - 11:45 AM", task: "Biology: Plant Kingdom" },
-      { time: "11:45 AM - 12:30 PM", task: "Break" },
-      { time: "12:30 PM - 1:00 PM", task: "Quick revision of morning topics" },
-      { time: "1:00 PM - 3:00 PM", task: "Lunch + 1.5 hrs Nap" },
-      { time: "3:00 PM - 5:30 PM", task: "Physics: Atoms (Practice/Problem Solving)" },
-      { time: "5:30 PM - 5:45 PM", task: "Break" },
-      { time: "5:45 PM - 8:15 PM", task: "Biology: Plant Kingdom (Practice/MCQs)" },
-      { time: "8:15 PM - 9:00 PM", task: "Break/Dinner" },
-      { time: "9:00 PM - 9:45 PM", task: "Biology: Plant Kingdom (Revision)" },
-      { time: "9:45 PM - 11:00 PM", task: "Physics: Atoms (Revision)" },
-      { time: "11:00 PM - 11:15 PM", task: "Prepare for sleep" }
-    ],
+      { time: "6:00 AM - 8:00 AM", task: "Study Session 1: New Chapter – Chemistry: Periodicity in Properties", message: "📊 Learn trends & logic" },
+      { time: "8:00 AM - 8:30 AM", task: "Break 1: Breakfast, move around, brain reset", message: "☕ Light movement" },
+      { time: "8:30 AM - 10:30 AM", task: "Study Session 2: New Chapter – Physics: Nuclei", message: "🔬 Deep understanding" },
+      { time: "10:30 AM - 11:00 AM", task: "Break 2: Tea/snack, breathing, rest", message: "🍎 Detach from screens" },
+      { time: "11:00 AM - 1:00 PM", task: "Study Session 3: Revision – Structure of Atom + Atoms", message: "📘 Notes, summaries, recall" },
+      { time: "1:00 PM - 2:30 PM", task: "Lunch + Nap (1.5 hrs)", message: "🍽️ Full physical reset" },
+      { time: "2:30 PM - 4:30 PM", task: "Study Session 4: Numericals + Graphs/Diagrams Practice", message: "📈 Practice & solve" },
+      { time: "4:30 PM - 5:00 PM", task: "Break 3: Stretch, snack, light walk", message: "🌿 Decompress" },
+      { time: "5:00 PM - 6:00 PM", task: "Quick Review Notes for all 4 chapters (2 new + 2 revised)", message: "📝 Final revision" },
+      { time: "6:00 PM - 7:00 PM", task: "Free Hour: Creative rest, music, low-effort hobby", message: "🎨 Reset for the night" },
+      { time: "7:00 PM - 9:00 PM", task: "Optional: Practice MCQs / concept mapping", message: "🤔 Consolidation (optional)" },
+      { time: "9:00 PM - 10:00 PM", task: "Dinner", message: "🍽️ Digest + light recap if needed" },
+      { time: "10:00 PM - 11:45 PM", task: "Wind down + light reading / sleep", message: "🌙 Full rest mode" }
+    ]
+    ,
     "Day 4": [
-      { time: "5:30 AM - 6:30 AM", task: "Wake up & Morning Routine" },
-      { time: "6:30 AM - 9:00 AM", task: "Chemistry: Structure of Atom" },
-      { time: "9:00 AM - 9:15 AM", task: "Break" },
-      { time: "9:15 AM - 11:45 AM", task: "Biology: Biotechnology - Principles and Processes" },
-      { time: "11:45 AM - 12:30 PM", task: "Break" },
-      { time: "12:30 PM - 1:00 PM", task: "Quick revision of morning topics" },
-      { time: "1:00 PM - 3:00 PM", task: "Lunch + 1.5 hrs Nap" },
-      { time: "3:00 PM - 5:30 PM", task: "Chemistry: Structure of Atom (Practice/Problem Solving)" },
-      { time: "5:30 PM - 5:45 PM", task: "Break" },
-      { time: "5:45 PM - 8:15 PM", task: "Biology: Biotechnology - Principles and Processes (Practice/MCQs)" },
-      { time: "8:15 PM - 9:00 PM", task: "Break/Dinner" },
-      { time: "9:00 PM - 9:45 PM", task: "Biology: Biotechnology - Principles and Processes (Revision)" },
-      { time: "9:45 PM - 11:00 PM", task: "Chemistry: Structure of Atom (Revision)" },
-      { time: "11:00 PM - 11:15 PM", task: "Prepare for sleep" }
-    ],
+      { time: "6:00 AM - 8:00 AM", task: "Study Session 1: Botany – The Living World", message: "🌱 Biological terms & concepts" },
+      { time: "8:00 AM - 8:30 AM", task: "Break 1: Breakfast, light stretch or walk", message: "☕ Recharge brain" },
+      { time: "8:30 AM - 10:30 AM", task: "Study Session 2: Physics – Semiconductor Devices", message: "🌟 Diagrams, logic, formulas" },
+      { time: "10:30 AM - 11:00 AM", task: "Break 2: Short rest, light snack", message: "🍎 Refresh and reset" },
+      { time: "11:00 AM - 1:00 PM", task: "Study Session 3: Revision – Periodicity & Nuclei", message: "📘 Notes + formula review" },
+      { time: "1:00 PM - 2:30 PM", task: "Lunch + Nap (1.5 hrs)", message: "🍽️ Mental + physical rest" },
+      { time: "2:30 PM - 4:30 PM", task: "Study Session 4: Practice: NCERT Qs, diagrams, short answers", message: "✍️ Recall & apply" },
+      { time: "4:30 PM - 5:00 PM", task: "Break 3: Tea/snack, unwind", message: "🌳 Light refresh" },
+      { time: "5:00 PM - 6:00 PM", task: "Summary writing + flashcards for today’s chapters", message: "📝 Prepare for Day 5 revision" },
+      { time: "6:00 PM - 7:00 PM", task: "Free Hour: Hobby, walk, unwind", message: "🎨 Mental reset" },
+      { time: "7:00 PM - 9:00 PM", task: "Optional: MCQ solving, concept maps, light recall", message: "🤔 Flexible learning" },
+      { time: "9:00 PM - 10:00 PM", task: "Dinner", message: "🍽️ Final relax of the day" },
+      { time: "10:00 PM - 11:45 PM", task: "Light reading or tomorrow prep + sleep", message: "🌙 Cooldown phase" }
+    ]
+    ,
     "Day 5": [
-      { time: "5:30 AM - 6:30 AM", task: "Wake up & Morning Routine" },
-      { time: "6:30 AM - 9:00 AM", task: "Physics: Nuclei" },
-      { time: "9:00 AM - 9:15 AM", task: "Break" },
-      { time: "9:15 AM - 11:45 AM", task: "Biology: Biotechnology and Its Applications" },
-      { time: "11:45 AM - 12:30 PM", task: "Break" },
-      { time: "12:30 PM - 1:00 PM", task: "Quick revision of morning topics" },
-      { time: "1:00 PM - 3:00 PM", task: "Lunch + 1.5 hrs Nap" },
-      { time: "3:00 PM - 5:30 PM", task: "Physics: Nuclei (Practice/Problem Solving)" },
-      { time: "5:30 PM - 5:45 PM", task: "Break" },
-      { time: "5:45 PM - 8:15 PM", task: "Biology: Biotechnology and Its Applications (Practice/MCQs)" },
-      { time: "8:15 PM - 9:00 PM", task: "Break/Dinner" },
-      { time: "9:00 PM - 9:45 PM", task: "Biology: Biotechnology and Its Applications (Revision)" },
-      { time: "9:45 PM - 11:00 PM", task: "Physics: Nuclei (Revision)" },
-      { time: "11:00 PM - 11:15 PM", task: "Prepare for sleep" }
-    ],
+      { time: "6:00 AM - 8:00 AM", task: "Study Session 1: Botany – Biological Classification", message: "🌿 Concepts + flowcharts" },
+      { time: "8:00 AM - 8:30 AM", task: "Break 1: Breakfast + stretch or walk", message: "☕ Light recovery" },
+      { time: "8:30 AM - 10:30 AM", task: "Study Session 2: Physics – Experimental Skills", message: "📊 Graphs, error analysis" },
+      { time: "10:30 AM - 11:00 AM", task: "Break 2: Tea/snack, short rest", message: "🍎 Refresh and reset" },
+      { time: "11:00 AM - 1:00 PM", task: "Study Session 3: Revision – Living World + Semiconductors", message: "📝 Flashcards, summaries" },
+      { time: "1:00 PM - 2:30 PM", task: "Lunch + Nap (1.5 hrs)", message: "🍽️ Mental reset" },
+      { time: "2:30 PM - 4:30 PM", task: "Study Session 4: Application – Solving Qs, concept-based diagrams", message: "✍️ Practice-based learning" },
+      { time: "4:30 PM - 5:00 PM", task: "Break 3: Snack, light stretch", message: "🌿 Relaxation" },
+      { time: "5:00 PM - 6:30 PM", task: "Deep Review + Summary Sheet Prep for Day 6", message: "📘 Final consolidation" },
+      { time: "6:30 PM - 7:00 PM", task: "Light break / relax / optional stretch", message: "🧘 Buffer for next phase" },
+      { time: "7:00 PM - 9:00 PM", task: "Optional: MCQs, cross-topic linking, practice worksheet", message: "🧠 Active revision (optional)" },
+      { time: "9:00 PM - 10:00 PM", task: "Dinner", message: "🍽️ End of study" },
+      { time: "10:00 PM - 11:45 PM", task: "Wind-down: Light reading, prep for tomorrow, sleep", message: "🌙 Rest mode" }
+    ]
+    ,
     "Day 6": [
-      { time: "5:30 AM - 6:30 AM", task: "Wake up & Morning Routine" },
-      { time: "6:30 AM - 9:00 AM", task: "Chemistry: Classification of Elements and Periodicity in Properties" },
-      { time: "9:00 AM - 9:15 AM", task: "Break" },
-      { time: "9:15 AM - 11:45 AM", task: "Biology: The Living World (Revision and MCQs)" },
-      { time: "11:45 AM - 12:30 PM", task: "Break" },
-      { time: "12:30 PM - 1:00 PM", task: "Quick revision of morning topics" },
-      { time: "1:00 PM - 3:00 PM", task: "Lunch + 1.5 hrs Nap" },
-      { time: "3:00 PM - 5:30 PM", task: "Chemistry: Classification of Elements and Periodicity in Properties (Practice/Problem Solving)" },
-      { time: "5:30 PM - 5:45 PM", task: "Break" },
-      { time: "5:45 PM - 8:15 PM", task: "Biology: Biological Classification (Revision and MCQs)" },
-      { time: "8:15 PM - 9:00 PM", task: "Break/Dinner" },
-      { time: "9:00 PM - 9:45 PM", task: "Biology: Biological Classification (Revision)" },
-      { time: "9:45 PM - 11:00 PM", task: "Chemistry: Classification of Elements and Periodicity in Properties (Revision)" },
-      { time: "11:00 PM - 11:15 PM", task: "Prepare for sleep" }
-    ],
+      { time: "6:00 AM - 8:00 AM", task: "Study Session 1: Botany – Plant Kingdom", message: "🌳 Learn classifications, examples, flowcharts" },
+      { time: "8:00 AM - 8:30 AM", task: "Break 1: Breakfast, short movement", message: "☕ ⚡ Refresh body & mind" },
+      { time: "8:30 AM - 10:30 AM", task: "Study Session 2: Zoology – Biotechnology: Principles & Processes", message: "🧪 Process diagrams, steps, techniques" },
+      { time: "10:30 AM - 11:00 AM", task: "Break 2: Tea/snack, walk/stretch", message: "🍎 🧘 Recovery time" },
+      { time: "11:00 AM - 1:00 PM", task: "Study Session 3: Revision – Biological Classification + Experimental Skills", message: "📘 Diagrams, short notes" },
+      { time: "1:00 PM - 2:30 PM", task: "Lunch + Nap (1.5 hrs)", message: "🍽️ 🛌 Recharge completely" },
+      { time: "2:30 PM - 4:30 PM", task: "Study Session 4: Practice Session – Plant Kingdom + Biotech Principles", message: "✍️ Solve, map, and apply" },
+      { time: "4:30 PM - 5:00 PM", task: "Break 3: Snack + light movement", message: "🌿 🍵 Light refresh" },
+      { time: "5:00 PM - 6:30 PM", task: "Consolidated Review + Flashcard/Diagram Creation for all 4 chapters", message: "📊 Visual & quick-recall prep" },
+      { time: "6:30 PM - 7:00 PM", task: "Light relaxation: music/hobby/movement", message: "🎧 Mental reset" },
+      { time: "7:00 PM - 9:00 PM", task: "Optional: MCQs, concept comparison, note audit", message: "🤔 Low-stress review" },
+      { time: "9:00 PM - 10:00 PM", task: "Dinner", message: "🍽️ 🌅 Wind down gradually" },
+      { time: "10:00 PM - 11:45 PM", task: "Light reading / tomorrow planning", message: "🌙 Relaxation + prep" }
+    ]
+    ,
     "Day 7": [
-      { time: "5:30 AM - 6:30 AM", task: "Wake up & Morning Routine" },
-      { time: "6:30 AM - 9:00 AM", task: "Physics: Semiconductor Devices" },
-      { time: "9:00 AM - 9:15 AM", task: "Break" },
-      { time: "9:15 AM - 11:45 AM", task: "Biology: Plant Kingdom (Revision and MCQs)" },
-      { time: "11:45 AM - 12:30 PM", task: "Break" },
-      { time: "12:30 PM - 1:00 PM", task: "Quick revision of morning topics" },
-      { time: "1:00 PM - 3:00 PM", task: "Lunch + 1.5 hrs Nap" },
-      { time: "3:00 PM - 5:30 PM", task: "Physics: Semiconductor Devices (Practice/Problem Solving)" },
-      { time: "5:30 PM - 5:45 PM", task: "Break" },
-      { time: "5:45 PM - 8:15 PM", task: "Biology: Plant Kingdom (Practice/MCQs)" },
-      { time: "8:15 PM - 9:00 PM", task: "Break/Dinner" },
-      { time: "9:00 PM - 9:45 PM", task: "Biology: Plant Kingdom (Revision)" },
-      { time: "9:45 PM - 11:00 PM", task: "Physics: Semiconductor Devices (Revision)" },
-      { time: "11:00 PM - 11:15 PM", task: "Prepare for sleep" }
-    ],
+      { time: "6:00 AM - 8:00 AM", task: "Study Session 1: Zoology – Biotechnology and Its Applications", message: "🧪 Learn techniques, uses, ethical issues" },
+      { time: "8:00 AM - 8:30 AM", task: "Break 1: Breakfast + walk/stretch", message: "☕ Light reset" },
+      { time: "8:30 AM - 10:30 AM", task: "Study Session 2: Revision – Plant Kingdom", message: "🌺 Flowcharts, examples" },
+      { time: "10:30 AM - 11:00 AM", task: "Break 2: Tea/snack, eyes off screen", message: "🍎 Passive refresh" },
+      { time: "11:00 AM - 1:00 PM", task: "Study Session 3: Revision – Biotech Principles & Processes", message: "📘 Diagrams, processes" },
+      { time: "1:00 PM - 2:30 PM", task: "Lunch + Nap (1.5 hrs)", message: "🍽️ 🛌 Full rest" },
+      { time: "2:30 PM - 4:30 PM", task: "Study Session 4: Mixed Qs & Diagrams – Biotech Apps + Revisions", message: "✍️ Strengthen recall" },
+      { time: "4:30 PM - 5:00 PM", task: "Break 3: Light movement, hydration, snack", message: "🌿 🍵 Decompress" },
+      { time: "5:00 PM - 6:30 PM", task: "Rapid-fire Flashcards + Final Note Cleanup", message: "📊 Final prep sheets" },
+      { time: "6:30 PM - 7:00 PM", task: "Light hobby / creative rest", message: "🎧 Brain cool-off" },
+      { time: "7:00 PM - 9:00 PM", task: "Optional: Solve 20–25 MCQs from entire biotech unit", message: "🤔 Application & self-check" },
+      { time: "9:00 PM - 10:00 PM", task: "Dinner", message: "🍽️ 🌅 Wind down" },
+      { time: "10:00 PM - 11:45 PM", task: "Light read / mock test setup for Day 9", message: "🌙 Prepare mind for revision" }
+    ]
+    ,
 
     "Day 8": [
-      { time: "5:30 AM - 6:30 AM", task: "Wake up & Morning Routine" },
-      { time: "6:30 AM - 9:00 AM", task: "Chemistry: Some Basic Concepts of Chemistry (Revision and MCQs)" },
-      { time: "9:00 AM - 9:15 AM", task: "Break" },
-      { time: "9:15 AM - 11:45 AM", task: "Biology: Biotechnology - Principles and Processes (Revision and MCQs)" },
-      { time: "11:45 AM - 12:30 PM", task: "Break" },
-      { time: "12:30 PM - 1:00 PM", task: "Quick revision of morning topics" },
-      { time: "1:00 PM - 3:00 PM", task: "Lunch + 1.5 hrs Nap" },
-      { time: "3:00 PM - 5:30 PM", task: "Chemistry: Structure of Atom (Revision and MCQs)" },
-      { time: "5:30 PM - 5:45 PM", task: "Break" },
-      { time: "5:45 PM - 8:15 PM", task: "Biology: Biotechnology and Its Applications (Revision and MCQs)" },
-      { time: "8:15 PM - 9:00 PM", task: "Break/Dinner" },
-      { time: "9:00 PM - 9:45 PM", task: "Biology: Biotechnology and Its Applications (Revision)" },
-      { time: "9:45 PM - 11:00 PM", task: "Chemistry: Some Basic Concepts of Chemistry (Revision)" },
-      { time: "11:00 PM - 11:15 PM", task: "Prepare for sleep" }
-    ],
+      { time: "6:00 AM - 8:00 AM", task: "Session 1 – Physics Deep Dive", message: "📘 Dual Nature of Radiation, Atoms, Nuclei" },
+      { time: "8:00 AM - 8:30 AM", task: "Break 1: Breakfast, movement", message: "☕ Refresh & reset" },
+      { time: "8:30 AM - 10:30 AM", task: "Session 2 – Chemistry Full Review", message: "📘 Basic Concepts, Structure of Atom, Periodicity" },
+      { time: "10:30 AM - 11:00 AM", task: "Break 2: Short walk/snack", message: "🍎 Light activity" },
+      { time: "11:00 AM - 1:00 PM", task: "Session 3 – Botany Core Concepts", message: "📘 Living World, Biological Classification, Plant Kingdom" },
+      { time: "1:00 PM - 2:30 PM", task: "Lunch + Nap (1.5 hrs)", message: "🍽️ 🛌 Full mental reset" },
+      { time: "2:30 PM - 4:30 PM", task: "Session 4 – Zoology + Physics End Topics", message: "📘 Biotech (2 chapters), Experimental Skills, Semiconductors" },
+      { time: "4:30 PM - 5:00 PM", task: "Break 3: Snack + unwind", message: "🌿 🍵 Detach mentally" },
+      { time: "5:00 PM - 6:30 PM", task: "Rapid Review – Flashcards + Diagrams + Cheatsheets", message: "🧠 Mixed topics, difficult areas" },
+      { time: "6:30 PM - 7:00 PM", task: "Light hobby, free time", message: "🎧 Let brain settle" },
+      { time: "7:00 PM - 9:00 PM", task: "Final Round – Summary Notes Audit + MCQs", message: "📄 Practice 5–6 MCQs per chapter" },
+      { time: "9:00 PM - 10:00 PM", task: "Dinner", message: "🍽️ Recovery phase" },
+      { time: "10:00 PM - 11:45 PM", task: "Light reading, mental relaxation + test kit setup", message: "🌙 Get in test mode mindset" }
+    ]
+    ,
     "Day 9": [
-      { time: "5:30 AM - 6:30 AM", task: "Wake up & Morning Routine" },
-      { time: "6:30 AM - 8:00 AM", task: "Revision of Key Topics (Physics, Chemistry, Biology)" },
-      { time: "8:00 AM - 8:30 AM", task: "Breakfast" },
-      { time: "8:30 AM - 1:30 PM", task: "Revision of Key Topics" },
-      { time: "1:00 PM - 1:30 PM", task: "Lunch" },
-      { time: "1:30 PM - 2:00 PM", task: "Short Relaxation" },
-      { time: "2:00 PM - 5:00 PM", task: "NEET Mock Test" },
-      { time: "5:00 PM - 5:45 PM", task: "Break" },
-      { time: "5:45 PM - 7:00 PM", task: "Quick Revision" },
-      { time: "7:00 PM - 11:00 PM", task: "Relax, do whatever you want" }
+      { time: "5:30 AM - 6:00 AM", task: "Wake up, hygiene, light morning movement", message: "Activate body & mind" },
+      { time: "6:00 AM - 7:00 AM", task: "Light Review – Flashcards & Visuals (no new material)", message: "🧘 Confidence booster" },
+      { time: "7:00 AM - 7:30 AM", task: "Breakfast", message: "🍳 Balanced meal" },
+      { time: "7:30 AM - 9:00 AM", task: "Skim through key summary notes (2–3 mins per chapter)", message: "📑 Gentle refresh, no overload" },
+      { time: "9:00 AM - 9:30 AM", task: "Break: Short walk/stretch, deep breathing", message: "🍵 Mental reset" },
+      { time: "9:30 AM - 11:00 AM", task: "Light MCQ practice (15–20 mixed Qs, timed blocks)", message: "🧠 Build rhythm" },
+      { time: "11:00 AM - 12:30 PM", task: "Relax: Hobby / music / calm zone", message: "🛋️ Avoid cognitive fatigue" },
+      { time: "12:30 PM - 1:00 PM", task: "Light lunch (easy to digest)", message: "🍽️ Pre-test nutrition" },
+      { time: "1:00 PM - 1:30 PM", task: "Quiet time – meditation / positive affirmations", message: "😌 Mental grounding" },
+      { time: "1:30 PM - 2:00 PM", task: "Test setup: water, test sheets, pens, clock", message: "Final prep" },
+      { time: "2:00 PM - 5:00 PM", task: "Mock Test (Full syllabus)", message: "📝 Give your best effort!" },
+      { time: "5:00 PM - 5:30 PM", task: "Light snack, hydrate", message: "🍉 Recovery" },
+      { time: "5:30 PM - 6:30 PM", task: "Test Reflection – mark paper, identify strengths & gaps", message: "🧾 Learn from performance" },
+      { time: "6:30 PM - 7:30 PM", task: "Chill time – walk, hobby, music", message: "🧘 Mindful recovery" },
+      { time: "7:30 PM - 9:00 PM", task: "Optional: Review 1–2 weak areas or unclear answers", message: "Gentle recap" },
+      { time: "9:00 PM - 10:00 PM", task: "Dinner + wind down", message: "🍽️ No study" },
+      { time: "10:00 PM - 11:45 PM", task: "Rest, track your progress, or sleep early", message: "Closure + reset" }
     ],
     "Day 10": [
-      { time: "5:30 AM - 6:30 AM", task: "Wake up & Morning Routine" },
-      { time: "6:30 AM - 8:30 AM", task: "Do Anything" },
-      { time: "8:30 AM - 9:00 AM", task: "Breakfast" },
-      { time: "9:00 AM - 1:00 PM", task: "Test Analysis" },
-      { time: "1:00 PM - 3:00 PM", task: "Lunch + 1.5 hrs Nap" },
-      { time: "3:00 PM - 5:00 PM", task: "Final Review of Mistakes & Key Points" },
-      { time: "5:00 PM - 7:00 PM", task: "Relax" },
-      { time: "7:00 PM - 9:00 PM", task: "Targeted Review of Problematic Areas" },
-      { time: "9:00 PM - 9:45 PM", task: "Dinner" },
-      { time: "9:45 PM - 11:00 PM", task: "Light Study and Relax" },
-      { time: "11:00 PM - 11:15 PM", task: "Prepare for sleep" }
-    ],
-    "Day 11": [
-      { time: "5:30 AM - 6:00 AM", task: "Wake up" },
-      { time: "6:00 AM - 8:00 AM", task: "Physics: Electromagnetic Waves (Study)" },
-      { time: "8:00 AM - 8:45 AM", task: "Break" },
-      { time: "8:45 AM - 10:45 AM", task: "Chemistry: Thermodynamics (Study)" },
-      { time: "10:45 AM - 11:30 AM", task: "Break" },
-      { time: "11:30 AM - 12:30 PM", task: "Botany: Anatomy of Flowering Plants (Study)" },
-      { time: "12:30 PM - 1:00 PM", task: "Gap for extra study or review" },
-      { time: "1:00 PM - 2:45 PM", task: "Lunch and Nap" },
-      { time: "2:45 PM - 4:15 PM", task: "Zoology: Backlog Zoology (Study)" },
-      { time: "4:15 PM - 5:00 PM", task: "Break" },
-      { time: "5:00 PM - 7:00 PM", task: "Mixed Subject Revision (Study)" },
-      { time: "7:00 PM - 8:15 PM", task: "Formula / Charts Recap" },
-      { time: "8:15 PM - 9:00 PM", task: "Review the concepts learned today and attempt practice questions" },
-      { time: "9:00 PM - 9:45 PM", task: "Dinner" },
-      { time: "9:45 PM - 11:15 PM", task: "Review and practice questions from the day's sessions" },
-      { time: "11:15 PM - 11:30 PM", task: "Prepare for sleep" }
-    ],
-    "Day 12": [
-      { time: "5:30 AM - 6:00 AM", task: "Wake up" },
-      { time: "6:00 AM - 8:00 AM", task: "Physics Practice (Numericals + Concept Qs)" },
-      { time: "8:00 AM - 8:45 AM", task: "Break" },
-      { time: "8:45 AM - 10:45 AM", task: "Chemistry Practice (MCQs + Concept Maps)" },
-      { time: "10:45 AM - 11:30 AM", task: "Break" },
-      { time: "11:30 AM - 12:30 PM", task: "Botany Practice (Labeling + MCQs)" },
-      { time: "12:30 PM - 1:00 PM", task: "Gap for extra study or review" },
-      { time: "1:00 PM - 2:45 PM", task: "Lunch and Nap" },
-      { time: "2:45 PM - 4:15 PM", task: "Zoology Practice (Visual Recall + MCQs)" },
-      { time: "4:15 PM - 5:00 PM", task: "Break" },
-      { time: "5:00 PM - 7:00 PM", task: "Mock Drill: Quick Fire Questions" },
-      { time: "7:00 PM - 8:15 PM", task: "Answer Review + Flash Notes" },
-      { time: "8:15 PM - 9:00 PM", task: "Review and practice topics from the day's learning" },
-      { time: "9:00 PM - 9:45 PM", task: "Dinner" },
-      { time: "9:45 PM - 11:15 PM", task: "Revision of today's topics and practice questions" },
-      { time: "11:15 PM - 11:30 PM", task: "Prepare for sleep" }
-    ],
-    "Day 13": [
-      { time: "5:30 AM - 6:00 AM", task: "Wake up" },
-      { time: "6:00 AM - 8:00 AM", task: "Physics: Ray Optics and Optical Instruments (Study)" },
-      { time: "8:00 AM - 8:45 AM", task: "Break" },
-      { time: "8:45 AM - 10:45 AM", task: "Chemistry: Backlog Chemistry (Study)" },
-      { time: "10:45 AM - 11:30 AM", task: "Break" },
-      { time: "11:30 AM - 12:30 PM", task: "Botany: Backlog Botany (Study)" },
-      { time: "12:30 PM - 1:00 PM", task: "Gap for extra study or review" },
-      { time: "1:00 PM - 2:45 PM", task: "Lunch and Nap" },
-      { time: "2:45 PM - 4:15 PM", task: "Zoology: Backlog Zoology (Study)" },
-      { time: "4:15 PM - 5:00 PM", task: "Break" },
-      { time: "5:00 PM - 7:00 PM", task: "Mixed Subject Revision (Study)" },
-      { time: "7:00 PM - 8:15 PM", task: "Formula / Charts Recap" },
-      { time: "8:15 PM - 9:00 PM", task: "Review of the day's concepts and practice questions" },
-      { time: "9:00 PM - 9:45 PM", task: "Dinner" },
-      { time: "9:45 PM - 11:15 PM", task: "Final review and practice from the day's sessions" },
-      { time: "11:15 PM - 11:30 PM", task: "Prepare for sleep" }
-    ],
-    "Day 14": [
-      { time: "5:30 AM - 6:00 AM", task: "Wake up" },
-      { time: "6:00 AM - 8:00 AM", task: "Physics Practice (Numericals + Concept Qs)" },
-      { time: "8:00 AM - 8:45 AM", task: "Break" },
-      { time: "8:45 AM - 10:45 AM", task: "Chemistry Practice (MCQs + Concept Maps)" },
-      { time: "10:45 AM - 11:30 AM", task: "Break" },
-      { time: "11:30 AM - 12:30 PM", task: "Botany Practice (Labeling + MCQs)" },
-      { time: "12:30 PM - 1:00 PM", task: "Gap for extra study or review" },
-      { time: "1:00 PM - 2:45 PM", task: "Lunch and Nap" },
-      { time: "2:45 PM - 4:15 PM", task: "Zoology Practice (Visual Recall + MCQs)" },
-      { time: "4:15 PM - 5:00 PM", task: "Break" },
-      { time: "5:00 PM - 7:00 PM", task: "Mock Drill: Quick Fire Questions" },
-      { time: "7:00 PM - 8:15 PM", task: "Answer Review + Flash Notes" },
-      { time: "8:15 PM - 9:00 PM", task: "Review and revise weak areas from the day" },
-      { time: "9:00 PM - 9:45 PM", task: "Dinner" },
-      { time: "9:45 PM - 11:15 PM", task: "Review and reinforcement of key points from the day's practice" },
-      { time: "11:15 PM - 11:30 PM", task: "Prepare for sleep" }
-    ],
-    "Day 15": [
-      { time: "5:30 AM - 6:00 AM", task: "Wake up" },
-      { time: "6:00 AM - 8:00 AM", task: "Physics: Wave Optics (Study)" },
-      { time: "8:00 AM - 8:45 AM", task: "Break" },
-      { time: "8:45 AM - 10:45 AM", task: "Chemistry: Backlog Chemistry (Study)" },
-      { time: "10:45 AM - 11:30 AM", task: "Break" },
-      { time: "11:30 AM - 12:30 PM", task: "Botany: Backlog Botany (Study)" },
-      { time: "12:30 PM - 1:00 PM", task: "Gap for extra study or review" },
-      { time: "1:00 PM - 2:45 PM", task: "Lunch and Nap" },
-      { time: "2:45 PM - 4:15 PM", task: "Zoology: Backlog Zoology (Study)" },
-      { time: "4:15 PM - 5:00 PM", task: "Break" },
-      { time: "5:00 PM - 7:00 PM", task: "Mixed Subject Revision (Study)" },
-      { time: "7:00 PM - 8:15 PM", task: "Formula / Charts Recap" },
-      { time: "8:15 PM - 9:00 PM", task: "Final review of the day's study and practice questions" },
-      { time: "9:00 PM - 9:45 PM", task: "Dinner" },
-      { time: "9:45 PM - 11:15 PM", task: "Extra review, reading, or relaxation" },
-      { time: "11:15 PM - 11:30 PM", task: "Prepare for sleep" }
-    ],
-    "Day 16": [
-      { time: "5:30 AM - 6:00 AM", task: "Wake up" },
-      { time: "6:00 AM - 8:00 AM", task: "Formula Recap + Light Notes" },
-      { time: "8:00 AM - 8:45 AM", task: "Break" },
-      { time: "8:45 AM - 10:45 AM", task: "Mixed MCQs Practice" },
-      { time: "10:45 AM - 11:30 AM", task: "Break" },
-      { time: "11:30 AM - 1:00 PM", task: "Visual Summary Review" },
-      { time: "1:00 PM - 2:45 PM", task: "Lunch and Nap" },
-      { time: "2:45 PM - 5:15 PM", task: "Final Full Mock Test: All Subjects" },
-      { time: "5:15 PM - 6:00 PM", task: "Short Break" },
-      { time: "6:00 PM - 9:00 PM", task: "Initial Test Review & Weak Points" },
-      { time: "9:00 PM - 9:45 PM", task: "Dinner" },
-      { time: "9:45 PM - 11:15 PM", task: "Do Anything" },
-      { time: "11:15 PM - 11:30 PM", task: "Prepare for sleep" }
-    ]
-    ,
-    "Day 17":
-            [
-              { time: "5:30 AM - 6:00 AM", task: "Wake up" },
-              { time: "6:00 AM - 8:00 AM", task: "Physics: Current Electricity" },
-              { time: "8:00 AM - 8:45 AM", task: "Break" },
-              { time: "8:45 AM - 10:45 AM", task: "Chemistry: Equilibrium" },
-              { time: "10:45 AM - 11:30 AM", task: "Break" },
-              { time: "11:30 AM - 1:00 PM", task: "Botany: Cell: The Unit of Life" },
-              { time: "1:00 PM - 2:45 PM", task: "Lunch and Nap" },
-              { time: "2:45 PM - 4:15 PM", task: "Zoology: Reproductive Health" },
-              { time: "4:15 PM - 5:15 PM", task: "Physics: Review Problems on Current Electricity" },
-              { time: "5:15 PM - 6:15 PM", task: "Chemistry: Focus on Weak Equilibrium Concepts" },
-              { time: "6:15 PM - 8:00 PM", task: "Physics: Practice Problems on Current Electricity" },
-              { time: "9:00 PM - 9:45 PM", task: "Dinner" },
-              { time: "9:45 PM - 11:15 PM", task: "Botany: Concept Reinforcement" },
-              { time: "11:15 PM - 11:30 PM", task: "Prepare for sleep" }
-            ],
-
-    "Day 18":
-            [
-              { time: "5:30 AM - 6:00 AM", task: "Wake up" },
-              { time: "6:00 AM - 8:00 AM", task: "Physics: Moving Charges and Magnetism" },
-              { time: "8:00 AM - 8:45 AM", task: "Break" },
-              { time: "8:45 AM - 10:45 AM", task: "Chemistry: Redox Reactions" },
-              { time: "10:45 AM - 11:30 AM", task: "Break" },
-              { time: "11:30 AM - 1:00 PM", task: "Botany: Cell Cycle and Cell Division" },
-              { time: "1:00 PM - 2:45 PM", task: "Lunch and Nap" },
-              { time: "2:45 PM - 4:15 PM", task: "Zoology: Evolution" },
-              { time: "4:15 PM - 5:15 PM", task: "Physics: Review and Solve Magnetism Problems" },
-              { time: "5:15 PM - 6:15 PM", task: "Chemistry: Redox Reaction Problem-Solving" },
-              { time: "6:15 PM - 8:00 PM", task: "Zoology: Evolution Practice Questions" },
-              { time: "9:00 PM - 9:45 PM", task: "Dinner" },
-              { time: "9:45 PM - 11:15 PM", task: "Zoology: Focus on Evolution and Practice MCQs" },
-              { time: "11:15 PM - 11:30 PM", task: "Prepare for sleep" }
-            ],
-
-    "Day 19":
-            [
-              { time: "5:30 AM - 6:00 AM", task: "Wake up" },
-              { time: "6:00 AM - 8:00 AM", task: "Physics: Magnetism and Matter" },
-              { time: "8:00 AM - 8:45 AM", task: "Break" },
-              { time: "8:45 AM - 10:45 AM", task: "Chemistry: The p-Block Elements (Group 13 & 14)" },
-              { time: "10:45 AM - 11:30 AM", task: "Break" },
-              { time: "11:30 AM - 1:00 PM", task: "Zoology: Reproductive Health Practice" },
-              { time: "1:00 PM - 2:45 PM", task: "Lunch and Nap" },
-              { time: "2:45 PM - 4:15 PM", task: "Physics Practice: Current Electricity + Magnetism" },
-              { time: "4:15 PM - 5:15 PM", task: "Chemistry: Redox Reactions Practice Problems" },
-              { time: "5:15 PM - 6:15 PM", task: "Zoology: MCQs on Reproductive Health" },
-              { time: "6:15 PM - 8:00 PM", task: "Physics: Magnetism Practice Problems" },
-              { time: "9:00 PM - 9:45 PM", task: "Dinner" },
-              { time: "9:45 PM - 11:15 PM", task: "Physics: Review Magnetism Problems and Common Mistakes" },
-              { time: "11:15 PM - 11:30 PM", task: "Prepare for sleep" }
-            ],
-
-    "Day 20":
-            [
-              { time: "5:30 AM - 6:00 AM", task: "Wake up" },
-              { time: "6:00 AM - 8:00 AM", task: "Chemistry Practice: Redox + Equilibrium" },
-              { time: "8:00 AM - 8:45 AM", task: "Break" },
-              { time: "8:45 AM - 10:45 AM", task: "Botany Practice: Cell Chapter" },
-              { time: "10:45 AM - 11:30 AM", task: "Break" },
-              { time: "11:30 AM - 1:00 PM", task: "Zoology: Evolution MCQs" },
-              { time: "1:00 PM - 2:45 PM", task: "Lunch and Nap" },
-              { time: "2:45 PM - 4:15 PM", task: "Physics: EMI Study" },
-              { time: "4:15 PM - 5:15 PM", task: "Chemistry: Practice MCQs on Redox & Equilibrium" },
-              { time: "5:15 PM - 6:15 PM", task: "Botany: Quick Recap of Cell Chapter" },
-              { time: "6:15 PM - 8:00 PM", task: "Zoology: Evolution Review and Practice" },
-              { time: "9:00 PM - 9:45 PM", task: "Dinner" },
-              { time: "9:45 PM - 11:15 PM", task: "Zoology: Focus on Evolution and Solve MCQs" },
-              { time: "11:15 PM - 11:30 PM", task: "Prepare for sleep" }
-            ],
-
-    "Day 21":
-            [
-              { time: "5:30 AM - 6:00 AM", task: "Wake up" },
-              { time: "6:00 AM - 8:00 AM", task: "Physics: EMI Practice" },
-              { time: "8:00 AM - 8:45 AM", task: "Break" },
-              { time: "8:45 AM - 10:45 AM", task: "Chemistry: p-Block Practice" },
-              { time: "10:45 AM - 11:30 AM", task: "Break" },
-              { time: "11:30 AM - 1:00 PM", task: "Zoology: Mixed Questions" },
-              { time: "1:00 PM - 2:45 PM", task: "Lunch and Nap" },
-              { time: "2:45 PM - 4:15 PM", task: "Botany: Quick Recap and Diagrams" },
-              { time: "4:15 PM - 5:15 PM", task: "Physics: Solve EMI Problems and Address Weak Areas" },
-              { time: "5:15 PM - 6:15 PM", task: "Zoology: Solve MCQs and Work on Evolution Weak Points" },
-              { time: "6:15 PM - 8:00 PM", task: "Botany: Cell Chapter Recap & Key Diagrams" },
-              { time: "9:00 PM - 9:45 PM", task: "Dinner" },
-              { time: "9:45 PM - 11:15 PM", task: "Botany: Revise Cell Chapter" },
-              { time: "11:15 PM - 11:30 PM", task: "Prepare for sleep" }
-            ],
-
-    "Day 22":
-            [
-              { time: "5:30 AM - 6:00 AM", task: "Wake up" },
-              { time: "6:00 AM - 8:00 AM", task: "Physics: Mixed Concepts Recap" },
-              { time: "8:00 AM - 8:45 AM", task: "Break" },
-              { time: "8:45 AM - 10:45 AM", task: "Chemistry: Quick Charts & Summary" },
-              { time: "10:45 AM - 11:30 AM", task: "Break" },
-              { time: "11:30 AM - 1:00 PM", task: "Botany + Zoology Flash Review" },
-              { time: "1:00 PM - 2:45 PM", task: "Lunch and Nap" },
-              { time: "2:45 PM - 4:15 PM", task: "Practice MCQs: All Subjects" },
-              { time: "4:15 PM - 5:15 PM", task: "Physics: Solve Key Problems & Work on Mistakes" },
-              { time: "5:15 PM - 6:15 PM", task: "Chemistry: Important Reactions" },
-              { time: "6:15 PM - 8:00 PM", task: "Practice Problems for Botany and Zoology" },
-              { time: "9:00 PM - 9:45 PM", task: "Dinner" },
-              { time: "9:45 PM - 11:15 PM", task: "Botany & Zoology: Quick Review Key Concepts" },
-              { time: "11:15 PM - 11:30 PM", task: "Prepare for sleep" }
-            ],
-
-    "Day 23":
-            [
-              { time: "5:30 AM - 6:00 AM", task: "Wake up" },
-              { time: "6:00 AM - 8:00 AM", task: "Error Review & Concept Reinforcement" },
-              { time: "8:00 AM - 8:45 AM", task: "Break" },
-              { time: "8:45 AM - 10:45 AM", task: "Quick Recap of Key Diagrams + Charts" },
-              { time: "10:45 AM - 11:30 AM", task: "Break" },
-              { time: "11:30 AM - 1:00 PM", task: "Important NCERT Highlights" },
-              { time: "1:00 PM - 2:45 PM", task: "Lunch and Nap" },
-              { time: "2:45 PM - 5:15 PM", task: "Final Full-Length Test: NEET Pattern" },
-              { time: "5:15 PM - 6:00 PM", task: "Break" },
-              { time: "6:00 PM - 9:00 PM", task: "Test Analysis + Error Logging" },
-              { time: "9:00 PM - 9:45 PM", task: "Dinner" },
-              { time: "9:45 PM - 11:15 PM", task: "Mistake Recap + Light Reading" },
-              { time: "11:15 PM - 11:30 PM", task: "Prepare for sleep" }
-            ],
-    "Day 24": [
-      { time: "5:30 AM - 6:00 AM", task: "Wake up" },
-      { time: "6:00 AM - 8:00 AM", task: "Physics: Electric Charges and Fields" },
-      { time: "8:00 AM - 8:45 AM", task: "Break" },
-      { time: "8:45 AM - 10:45 AM", task: "Chemistry: Organic Chemistry (Basics)" },
-      { time: "10:45 AM - 11:30 AM", task: "Break" },
-      { time: "11:30 AM - 1:00 PM", task: "Botany: Photosynthesis in Plants" },
-      { time: "1:00 PM - 2:45 PM", task: "Lunch and Nap" },
-      { time: "2:45 PM - 4:45 PM", task: "Zoology: Chemical Coordination" },
-      { time: "4:45 PM - 5:45 PM", task: "Physics: Revise Electric Charges & Field Problems" },
-      { time: "5:45 PM - 6:45 PM", task: "Chemistry: Work on Organic Reaction Mechanisms" },
-      { time: "6:45 PM - 8:00 PM", task: "Physics: Practice MCQs on Electric Charges & Fields" },
-      { time: "8:00 PM - 9:00 PM", task: "Quick Revision of Key Topics from the Day" },
-      { time: "9:00 PM - 9:45 PM", task: "Dinner" },
-      { time: "9:45 PM - 11:15 PM", task: "Botany: Review Photosynthesis Concepts" },
-      { time: "11:15 PM - 11:30 PM", task: "Prepare for sleep" }
-    ],
-
-    "Day 25": [
-      { time: "5:30 AM - 6:00 AM", task: "Wake up" },
-      { time: "6:00 AM - 8:00 AM", task: "Physics: Electrostatic Potential and Capacitance" },
-      { time: "8:00 AM - 8:45 AM", task: "Break" },
-      { time: "8:45 AM - 10:45 AM", task: "Chemistry: Hydrocarbons" },
-      { time: "10:45 AM - 11:30 AM", task: "Break" },
-      { time: "11:30 AM - 1:00 PM", task: "Botany: Respiration in Plants" },
-      { time: "1:00 PM - 2:45 PM", task: "Lunch and Nap" },
-      { time: "2:45 PM - 4:45 PM", task: "Zoology: Human Reproduction" },
-      { time: "4:45 PM - 5:45 PM", task: "Physics: Revise Electrostatic Potential & Capacitance Problems" },
-      { time: "5:45 PM - 6:45 PM", task: "Chemistry: Solve Hydrocarbon Reaction Problems" },
-      { time: "6:45 PM - 8:00 PM", task: "Zoology: Review Human Reproduction Concepts" },
-      { time: "8:00 PM - 9:00 PM", task: "Review Key Physics and Chemistry Concepts" },
-      { time: "9:00 PM - 9:45 PM", task: "Dinner" },
-      { time: "9:45 PM - 11:15 PM", task: "Botany: Revise Respiration Process in Plants" },
-      { time: "11:15 PM - 11:30 PM", task: "Prepare for sleep" }
-    ],
-
-    "Day 26": [
-      { time: "5:30 AM - 6:00 AM", task: "Wake up" },
-      { time: "6:00 AM - 8:00 AM", task: "Physics Practice: ECF + Capacitance Numericals" },
-      { time: "8:00 AM - 8:45 AM", task: "Break" },
-      { time: "8:45 AM - 10:45 AM", task: "Chemistry Practice: Organic Reaction Mechanisms" },
-      { time: "10:45 AM - 11:30 AM", task: "Break" },
-      { time: "11:30 AM - 1:00 PM", task: "Zoology: Hormone Regulation Practice" },
-      { time: "1:00 PM - 2:45 PM", task: "Lunch and Nap" },
-      { time: "2:45 PM - 4:45 PM", task: "Botany Practice: Stroma + Mitochondrial Processes" },
-      { time: "4:45 PM - 5:45 PM", task: "Physics: Revise Numericals on Capacitance and Electrostatics" },
-      { time: "5:45 PM - 6:45 PM", task: "Chemistry: Organic Mechanisms Practice" },
-      { time: "6:45 PM - 8:00 PM", task: "Botany: Revise Stroma and Mitochondrial Processes" },
-      { time: "8:00 PM - 9:00 PM", task: "Zoology: Quick MCQs on Hormone Regulation" },
-      { time: "9:00 PM - 9:45 PM", task: "Dinner" },
-      { time: "9:45 PM - 11:15 PM", task: "Zoology: Review Hormone Regulation & Weak Areas" },
-      { time: "11:15 PM - 11:30 PM", task: "Prepare for sleep" }
-    ],
-
-    "Day 27": [
-      { time: "5:30 AM - 6:00 AM", task: "Wake up" },
-      { time: "6:00 AM - 8:00 AM", task: "Mixed MCQs: Organic + Electrostatics" },
-      { time: "8:00 AM - 8:45 AM", task: "Break" },
-      { time: "8:45 AM - 10:45 AM", task: "Botany: Diagrams & Cycle Charts (Photosyn. + Resp.)" },
-      { time: "10:45 AM - 11:30 AM", task: "Break" },
-      { time: "11:30 AM - 1:00 PM", task: "Zoology: Reproduction Diagrams + Facts" },
-      { time: "1:00 PM - 2:45 PM", task: "Lunch and Nap" },
-      { time: "2:45 PM - 4:45 PM", task: "Chemistry: Reaction Chains & Nomenclature" },
-      { time: "4:45 PM - 5:45 PM", task: "Physics: Practice MCQs on Electrostatics and Capacitors" },
-      { time: "5:45 PM - 6:45 PM", task: "Zoology: Solve MCQs and Revise Reproductive Facts" },
-      { time: "6:45 PM - 8:00 PM", task: "Chemistry: Practice Organic Nomenclature & Chains" },
-      { time: "8:00 PM - 9:00 PM", task: "Chemistry: Review Key Reactions and Structures" },
-      { time: "9:00 PM - 9:45 PM", task: "Dinner" },
-      { time: "9:45 PM - 11:15 PM", task: "Chemistry: Practice Organic Nomenclature & Chains" },
-      { time: "11:15 PM - 11:30 PM", task: "Prepare for sleep" }
-    ],
-
-    "Day 28": [
-      { time: "5:30 AM - 6:00 AM", task: "Wake up" },
-      { time: "6:00 AM - 8:00 AM", task: "Physics + Chemistry Combined Quiz" },
-      { time: "8:00 AM - 8:45 AM", task: "Break" },
-      { time: "8:45 AM - 10:45 AM", task: "Zoology Practice MCQs + Revision" },
-      { time: "10:45 AM - 11:30 AM", task: "Break" },
-      { time: "11:30 AM - 1:00 PM", task: "Botany: Labeling + Recap" },
-      { time: "1:00 PM - 2:45 PM", task: "Lunch and Nap" },
-      { time: "2:45 PM - 4:45 PM", task: "Chemistry: Practice + Formulae" },
-      { time: "4:45 PM - 5:45 PM", task: "Physics: Practice MCQs and Quiz Problems" },
-      { time: "5:45 PM - 6:45 PM", task: "Zoology: MCQs Revision on Reproductive Health" },
-      { time: "6:45 PM - 8:00 PM", task: "Botany: Labeling Key Diagrams & Final Recap" },
-      { time: "8:00 PM - 9:00 PM", task: "Review Key Diagrams and Charts for All Subjects" },
-      { time: "9:00 PM - 9:45 PM", task: "Dinner" },
-      { time: "9:45 PM - 11:15 PM", task: "Botany: Labeling Key Diagrams & Final Recap" },
-      { time: "11:15 PM - 11:30 PM", task: "Prepare for sleep" }
-    ],
-
-    "Day 29": [
-      { time: "5:30 AM - 6:00 AM", task: "Wake up" },
-      { time: "6:00 AM - 8:00 AM", task: "Botany: Final Flash Review" },
-      { time: "8:00 AM - 8:45 AM", task: "Break" },
-      { time: "8:45 AM - 10:45 AM", task: "Zoology: Recap + Summary Sheets" },
-      { time: "10:45 AM - 11:30 AM", task: "Break" },
-      { time: "11:30 AM - 1:00 PM", task: "Physics: Electric Field Concepts Recap" },
-      { time: "1:00 PM - 2:45 PM", task: "Lunch and Nap" },
-      { time: "2:45 PM - 4:45 PM", task: "Chemistry: Hydrocarbons Recap + Tests" },
-      { time: "4:45 PM - 5:45 PM", task: "Physics: Final Electric Field Problem Solving" },
-      { time: "5:45 PM - 6:45 PM", task: "Chemistry: Final Recap of Hydrocarbon Reactions" },
-      { time: "6:45 PM - 8:00 PM", task: "Zoology: Reproduction Revision + Final Overview" },
-      { time: "8:00 PM - 9:00 PM", task: "Review Zoology Reproduction Diagrams and Concepts" },
-      { time: "9:00 PM - 9:45 PM", task: "Dinner" },
-      { time: "9:45 PM - 11:15 PM", task: "Zoology: Reproduction Revision + Final Overview" },
-      { time: "11:15 PM - 11:30 PM", task: "Prepare for sleep" }
-    ],
-
-    "Day 30": [
-      { time: "5:30 AM - 6:00 AM", task: "Wake up" },
-      { time: "6:00 AM - 8:00 AM", task: "Final Syllabus Recall: All Subjects" },
-      { time: "8:00 AM - 8:45 AM", task: "Break" },
-      { time: "8:45 AM - 10:45 AM", task: "MCQ Drill: All Topics + Mistake Zones" },
-      { time: "10:45 AM - 11:30 AM", task: "Break" },
-      { time: "11:30 AM - 1:00 PM", task: "Botany + Zoology Quick Round Recap" },
-      { time: "1:00 PM - 2:45 PM", task: "Lunch and Nap" },
-      { time: "2:45 PM - 4:45 PM", task: "Rest or Repeat Critical Charts and Weak Topics" },
-      { time: "4:45 PM - 5:45 PM", task: "Physics: Focus on Electrostatics + Capacitance Weak Areas" },
-      { time: "5:45 PM - 6:45 PM", task: "Chemistry: Focus on Organic Chemistry Mistakes" },
-      { time: "6:45 PM - 8:00 PM", task: "Review Mistakes from MCQ Drill and Focus on Weak Topics" },
-      { time: "8:00 PM - 9:00 PM", task: "Final Review and Mental Preparation for the Test" },
-      { time: "9:00 PM - 9:45 PM", task: "Dinner" },
-      { time: "9:45 PM - 11:15 PM", task: "Review Mistakes from MCQ Drill and Focus on Weak Topics" },
-      { time: "11:15 PM - 11:30 PM", task: "Prepare for sleep" }
-    ],
-
-    "Day 31": [
-      { time: "5:30 AM - 6:00 AM", task: "Wake up" },
-      { time: "6:00 AM - 8:00 AM", task: "Light Formula Recap (All Subjects)" },
-      { time: "8:00 AM - 8:45 AM", task: "Break" },
-      { time: "8:45 AM - 10:45 AM", task: "Quick MCQs & Confidence Sheets (Focus on Weak Areas)" },
-      { time: "10:45 AM - 11:30 AM", task: "Break" },
-      { time: "11:30 AM - 1:00 PM", task: "Botany + Zoology Quick Revision + Recap of Key Concepts" },
-      { time: "1:00 PM - 2:45 PM", task: "Lunch and Nap & Pre-test Calm Prep" },
-      { time: "2:45 PM - 5:20 PM", task: "Full-Length NEET-style Test (All Subjects)" },
-      { time: "5:20 PM - 6:00 PM", task: "Break & Refresh" },
-      { time: "6:00 PM - 8:00 PM", task: "Test Review & Error Spotting: Focus on Mistakes" },
-      { time: "8:00 PM - 9:00 PM", task: "Final Review of Mistakes & Light Revision for Confidence" },
-      { time: "9:00 PM - 9:45 PM", task: "Dinner" },
-      { time: "9:45 PM - 11:15 PM", task: "Final Review of Mistakes & Light Revision for Confidence" },
-      { time: "11:15 PM - 11:30 PM", task: "Prepare for sleep" }
-    ]
-    ,
-
-
-    "Day 32": [
-      { time: "5:30 AM - 6:00 AM", task: "Wake up" },
-      { time: "6:00 AM - 8:00 AM", task: "Physics: Thermodynamics" },
-      { time: "8:00 AM - 8:45 AM", task: "Break" },
-      { time: "8:45 AM - 10:45 AM", task: "Chemistry: Solutions" },
-      { time: "10:45 AM - 11:30 AM", task: "Break" },
-      { time: "11:30 AM - 1:00 PM", task: "Botany: Excretory Products" },
-      { time: "1:00 PM - 2:45 PM", task: "Lunch and Nap" },
-      { time: "2:45 PM - 4:45 PM", task: "Zoology: Human Health and Disease" },
-      { time: "4:45 PM - 5:45 PM", task: "Physics: Thermodynamics MCQs Practice" },
-      { time: "5:45 PM - 6:45 PM", task: "Chemistry: Solve Problems on Solutions" },
-      { time: "6:45 PM - 8:00 PM", task: "Botany: Review Excretory Products" },
-      { time: "8:00 PM - 9:00 PM", task: "Zoology: Quick Review of Human Health" },
-      { time: "9:00 PM - 9:45 PM", task: "Dinner" },
-      { time: "9:45 PM - 11:15 PM", task: "Botany: Review Excretory Products & Weak Points" },
-      { time: "11:15 PM - 11:30 PM", task: "Prepare for sleep" }
-    ],
-
-    "Day 33": [
-      { time: "5:30 AM - 6:00 AM", task: "Wake up" },
-      { time: "6:00 AM - 8:00 AM", task: "Physics: Kinetic Theory" },
-      { time: "8:00 AM - 8:45 AM", task: "Break" },
-      { time: "8:45 AM - 10:45 AM", task: "Chemistry: Electrochemistry" },
-      { time: "10:45 AM - 11:30 AM", task: "Break" },
-      { time: "11:30 AM - 1:00 PM", task: "Botany: Locomotion & Movement" },
-      { time: "1:00 PM - 2:45 PM", task: "Lunch and Nap" },
-      { time: "2:45 PM - 4:45 PM", task: "Zoology: Human Health Practice" },
-      { time: "4:45 PM - 5:45 PM", task: "Physics: Kinetic Theory MCQs Practice" },
-      { time: "5:45 PM - 6:45 PM", task: "Chemistry: Electrochemistry Numericals" },
-      { time: "6:45 PM - 8:00 PM", task: "Botany: Review Locomotion & Movement" },
-      { time: "8:00 PM - 9:00 PM", task: "Zoology: Quick Review on Human Health & Disease" },
-      { time: "9:00 PM - 9:45 PM", task: "Dinner" },
-      { time: "9:45 PM - 11:15 PM", task: "Botany: Review Locomotion & Movement" },
-      { time: "11:15 PM - 11:30 PM", task: "Prepare for sleep" }
-    ],
-
-    "Day 34": [
-      { time: "5:30 AM - 6:00 AM", task: "Wake up" },
-      { time: "6:00 AM - 8:00 AM", task: "Physics: Oscillations (Graphs & Theory)" },
-      { time: "8:00 AM - 8:45 AM", task: "Break" },
-      { time: "8:45 AM - 10:45 AM", task: "Chemistry: Kinetics (Concept Focus)" },
-      { time: "10:45 AM - 11:30 AM", task: "Break" },
-      { time: "11:30 AM - 1:00 PM", task: "Botany: Neural Control (Part 1)" },
-      { time: "1:00 PM - 2:45 PM", task: "Lunch and Nap" },
-      { time: "2:45 PM - 4:45 PM", task: "Zoology: Mixed MCQs (Health & Systems)" },
-      { time: "4:45 PM - 5:45 PM", task: "Physics: Solve Problems on Oscillations" },
-      { time: "5:45 PM - 6:45 PM", task: "Chemistry: Kinetics Practice Problems" },
-      { time: "6:45 PM - 8:00 PM", task: "Botany: Review Neural Control (Part 1)" },
-      { time: "8:00 PM - 9:00 PM", task: "Zoology: Quick Review on Health & Systems" },
-      { time: "9:00 PM - 9:45 PM", task: "Dinner" },
-      { time: "9:45 PM - 11:15 PM", task: "Botany: Review Neural Control and Weak Areas" },
-      { time: "11:15 PM - 11:30 PM", task: "Prepare for sleep" }
-    ],
-
-    "Day 35": [
-      { time: "5:30 AM - 6:00 AM", task: "Wake up" },
-      { time: "6:00 AM - 8:00 AM", task: "Physics: Waves (Concepts + NCERT)" },
-      { time: "8:00 AM - 8:45 AM", task: "Break" },
-      { time: "8:45 AM - 10:45 AM", task: "Chemistry: Electrochemistry Numericals" },
-      { time: "10:45 AM - 11:30 AM", task: "Break" },
-      { time: "11:30 AM - 1:00 PM", task: "Botany: Neural Control (Part 2)" },
-      { time: "1:00 PM - 2:45 PM", task: "Lunch and Nap" },
-      { time: "2:45 PM - 4:45 PM", task: "Zoology: Mixed Diagrams + Assertion/Reason" },
-      { time: "4:45 PM - 5:45 PM", task: "Physics: Revise Waves & Solve Problems" },
-      { time: "5:45 PM - 6:45 PM", task: "Chemistry: Solve Electrochemistry Numericals" },
-      { time: "6:45 PM - 8:00 PM", task: "Botany: Review Neural Control (Part 2)" },
-      { time: "8:00 PM - 9:00 PM", task: "Zoology: Quick Review on Diagrams & Assertion/Reason" },
-      { time: "9:00 PM - 9:45 PM", task: "Dinner" },
-      { time: "9:45 PM - 11:15 PM", task: "Botany: Review Neural Control (Part 2)" },
-      { time: "11:15 PM - 11:30 PM", task: "Prepare for sleep" }
-    ],
-
-    "Day 36": [
-      { time: "5:30 AM - 6:00 AM", task: "Wake up" },
-      { time: "6:00 AM - 8:00 AM", task: "Physics Practice: Oscillations + Thermo" },
-      { time: "8:00 AM - 8:45 AM", task: "Break" },
-      { time: "8:45 AM - 10:45 AM", task: "Chemistry Practice: Kinetics + Electro MCQs" },
-      { time: "10:45 AM - 11:30 AM", task: "Break" },
-      { time: "11:30 AM - 1:00 PM", task: "Botany + Zoology: Flashcards Mix" },
-      { time: "1:00 PM - 2:45 PM", task: "Lunch and Nap" },
-      { time: "2:45 PM - 4:45 PM", task: "Test-oriented Mixed Practice" },
-      { time: "4:45 PM - 5:45 PM", task: "Physics: Focus on Oscillations and Thermodynamics MCQs" },
-      { time: "5:45 PM - 6:45 PM", task: "Chemistry: Solve Kinetics and Electrochemistry MCQs" },
-      { time: "6:45 PM - 8:00 PM", task: "Test Practice: Solve Mixed MCQs (All Subjects)" },
-      { time: "8:00 PM - 9:00 PM", task: "Revise Mistakes from MCQ Drill" },
-      { time: "9:00 PM - 9:45 PM", task: "Dinner" },
-      { time: "9:45 PM - 11:15 PM", task: "Test Practice: Solve Mixed MCQs (All Subjects)" },
-      { time: "11:15 PM - 11:30 PM", task: "Prepare for sleep" }
-    ],
-
-    "Day 37": [
-      { time: "5:30 AM - 6:00 AM", task: "Wake up" },
-      { time: "6:00 AM - 8:00 AM", task: "Physics: Final Summary Sheets" },
-      { time: "8:00 AM - 8:45 AM", task: "Break" },
-      { time: "8:45 AM - 10:45 AM", task: "Chemistry: Formula & Mechanism Flash Recap" },
-      { time: "10:45 AM - 11:30 AM", task: "Break" },
-      { time: "11:30 AM - 1:00 PM", task: "Botany + Zoology: Quick Diagrams & Cheatsheets" },
-      { time: "1:00 PM - 2:45 PM", task: "Lunch and Nap" },
-      { time: "2:45 PM - 4:45 PM", task: "Final Touch MCQs (All Subjects)" },
-      { time: "4:45 PM - 5:45 PM", task: "Physics: Revise Final Key Concepts" },
-      { time: "5:45 PM - 6:45 PM", task: "Chemistry: Practice Mechanisms & Formulae" },
-      { time: "6:45 PM - 8:00 PM", task: "Review Mistakes from All Subjects" },
-      { time: "8:00 PM - 9:00 PM", task: "Revise Mistakes from MCQ Drills" },
-      { time: "9:00 PM - 9:45 PM", task: "Dinner" },
-      { time: "9:45 PM - 11:15 PM", task: "Final Practice MCQs and Review Mistakes" },
-      { time: "11:15 PM - 11:30 PM", task: "Prepare for sleep" }
-    ],
-
-    "Day 38": [
-      { time: "5:30 AM - 6:00 AM", task: "Wake up" },
-      { time: "6:00 AM - 8:00 AM", task: "Light Revision + Strategy Review" },
-      { time: "8:00 AM - 8:45 AM", task: "Break" },
-      { time: "8:45 AM - 10:45 AM", task: "Confidence Topics Flashback" },
-      { time: "10:45 AM - 11:30 AM", task: "Break" },
-      { time: "11:30 AM - 1:00 PM", task: "Mind Maps & Cheat Sheets Final Check" },
-      { time: "1:00 PM - 2:45 PM", task: "Lunch and Nap & Pre-Test Calm Focus" },
-      { time: "2:45 PM - 5:20 PM", task: "Full-Length Test: NEET Simulation" },
-      { time: "5:20 PM - 6:00 PM", task: "Rest" },
-      { time: "6:00 PM - 8:00 PM", task: "Test Review + Mistake Tracking" },
-      { time: "8:00 PM - 9:00 PM", task: "Final Review of Mistakes & Light Revision for Confidence" },
-      { time: "9:00 PM - 9:45 PM", task: "Dinner" },
-      { time: "9:45 PM - 11:15 PM", task: "Rest or Review of Mistakes Again" },
-      { time: "11:15 PM - 11:30 PM", task: "Prepare for sleep" }
-    ]
-
-    ,
-    "Day 39": [
-      { time: "5:30 AM - 6:00 AM", task: "Wake up" },
-      { time: "6:00 AM - 8:00 AM", task: "Physics: Gravitation" },
-      { time: "8:00 AM - 8:45 AM", task: "Break" },
-      { time: "8:45 AM - 10:45 AM", task: "Chemistry: p-Block (15–16)" },
-      { time: "10:45 AM - 11:30 AM", task: "Break" },
-      { time: "11:30 AM - 1:00 PM", task: "Botany: Principles of Inheritance" },
-      { time: "1:00 PM - 2:45 PM", task: "Lunch and Nap" },
-      { time: "2:45 PM - 4:45 PM", task: "Zoology: Breathing & Exchange" },
-      { time: "4:45 PM - 6:00 PM", task: "Physics: Practice Problems on Gravitation" },
-      { time: "6:00 PM - 8:00 PM", task: "Chemistry: Solve p-Block Problems" },
-      { time: "8:00 PM - 9:00 PM", task: "Botany: Review Inheritance Principles" },
-      { time: "9:00 PM - 9:45 PM", task: "Dinner" },
-      { time: "9:45 PM - 11:15 PM", task: "Zoology: Review Breathing & Exchange" },
-      { time: "11:15 PM - 11:30 PM", task: "Prepare for sleep" }
-    ],
-
-    "Day 40": [
-      { time: "5:30 AM - 6:00 AM", task: "Wake up" },
-      { time: "6:00 AM - 8:00 AM", task: "Physics Practice: Gravitation MCQs" },
-      { time: "8:00 AM - 8:45 AM", task: "Break" },
-      { time: "8:45 AM - 10:45 AM", task: "Chemistry Practice: p-Block Mixed Qs" },
-      { time: "10:45 AM - 11:30 AM", task: "Break" },
-      { time: "11:30 AM - 1:00 PM", task: "Botany Practice: Mendelian Laws" },
-      { time: "1:00 PM - 2:45 PM", task: "Lunch and Nap" },
-      { time: "2:45 PM - 4:45 PM", task: "Zoology Practice: Respiratory System Diagrams" },
-      { time: "4:45 PM - 6:00 PM", task: "Physics: Solve Gravitation MCQs" },
-      { time: "6:00 PM - 8:00 PM", task: "Chemistry: Review p-Block (15–16)" },
-      { time: "8:00 PM - 9:00 PM", task: "Botany: Practice Mendelian Laws" },
-      { time: "9:00 PM - 9:45 PM", task: "Dinner" },
-      { time: "9:45 PM - 11:15 PM", task: "Zoology: Review Respiratory System Diagrams" },
-      { time: "11:15 PM - 11:30 PM", task: "Prepare for sleep" }
-    ],
-
-    "Day 41": [
-      { time: "5:30 AM - 6:00 AM", task: "Wake up" },
-      { time: "6:00 AM - 8:00 AM", task: "Physics: Mechanical Properties of Solids" },
-      { time: "8:00 AM - 8:45 AM", task: "Break" },
-      { time: "8:45 AM - 10:45 AM", task: "Chemistry: p-Block (17–18)" },
-      { time: "10:45 AM - 11:30 AM", task: "Break" },
-      { time: "11:30 AM - 1:00 PM", task: "Botany: Molecular Basis (DNA Structure)" },
-      { time: "1:00 PM - 2:45 PM", task: "Lunch and Nap" },
-      { time: "2:45 PM - 4:45 PM", task: "Zoology: Body Fluids and Circulation" },
-      { time: "4:45 PM - 6:00 PM", task: "Physics: Solve Problems on Mechanical Properties" },
-      { time: "6:00 PM - 8:00 PM", task: "Chemistry: Practice p-Block (17–18)" },
-      { time: "8:00 PM - 9:00 PM", task: "Botany: Review DNA Structure" },
-      { time: "9:00 PM - 9:45 PM", task: "Dinner" },
-      { time: "9:45 PM - 11:15 PM", task: "Zoology: Review Body Fluids and Circulation" },
-      { time: "11:15 PM - 11:30 PM", task: "Prepare for sleep" }
-    ],
-
-    "Day 42": [
-      { time: "5:30 AM - 6:00 AM", task: "Wake up" },
-      { time: "6:00 AM - 8:00 AM", task: "Physics Practice: Solids + Concepts" },
-      { time: "8:00 AM - 8:45 AM", task: "Break" },
-      { time: "8:45 AM - 10:45 AM", task: "Chemistry Practice: p-Block Mixed MCQs" },
-      { time: "10:45 AM - 11:30 AM", task: "Break" },
-      { time: "11:30 AM - 1:00 PM", task: "Botany Practice: Genetic Code Qs" },
-      { time: "1:00 PM - 2:45 PM", task: "Lunch and Nap" },
-      { time: "2:45 PM - 4:45 PM", task: "Zoology Practice: Circulation Charts" },
-      { time: "4:45 PM - 6:00 PM", task: "Physics: Revise Solids and Concepts" },
-      { time: "6:00 PM - 8:00 PM", task: "Chemistry: Practice p-Block MCQs" },
-      { time: "8:00 PM - 9:00 PM", task: "Botany: Review Genetic Code" },
-      { time: "9:00 PM - 9:45 PM", task: "Dinner" },
-      { time: "9:45 PM - 11:15 PM", task: "Zoology: Practice Circulation Charts" },
-      { time: "11:15 PM - 11:30 PM", task: "Prepare for sleep" }
-    ],
-
-    "Day 43": [
-      { time: "5:30 AM - 6:00 AM", task: "Wake up" },
-      { time: "6:00 AM - 8:00 AM", task: "Physics: Mechanical Properties of Fluids" },
-      { time: "8:00 AM - 8:45 AM", task: "Break" },
-      { time: "8:45 AM - 10:45 AM", task: "Chemistry: d- and f-Block Elements" },
-      { time: "10:45 AM - 11:30 AM", task: "Break" },
-      { time: "11:30 AM - 1:00 PM", task: "Botany: Molecular Inheritance Wrap-up" },
-      { time: "1:00 PM - 2:45 PM", task: "Lunch and Nap" },
-      { time: "2:45 PM - 4:45 PM", task: "Zoology: Mixed Quick MCQs" },
-      { time: "4:45 PM - 6:00 PM", task: "Physics: Practice Fluids Problems" },
-      { time: "6:00 PM - 8:00 PM", task: "Chemistry: Solve d/f-Block Problems" },
-      { time: "8:00 PM - 9:00 PM", task: "Botany: Review Molecular Inheritance" },
-      { time: "9:00 PM - 9:45 PM", task: "Dinner" },
-      { time: "9:45 PM - 11:15 PM", task: "Zoology: Review Quick MCQs" },
-      { time: "11:15 PM - 11:30 PM", task: "Prepare for sleep" }
-    ],
-
-    "Day 44": [
-      { time: "5:30 AM - 6:00 AM", task: "Wake up" },
-      { time: "6:00 AM - 8:00 AM", task: "Physics Practice: Fluids & Graphs" },
-      { time: "8:00 AM - 8:45 AM", task: "Break" },
-      { time: "8:45 AM - 10:45 AM", task: "Chemistry Practice: d/f-Block Numericals" },
-      { time: "10:45 AM - 11:30 AM", task: "Break" },
-      { time: "11:30 AM - 1:00 PM", task: "Zoology Practice: Circulation + Breathing" },
-      { time: "1:00 PM - 2:45 PM", task: "Lunch and Nap" },
-      { time: "2:45 PM - 4:45 PM", task: "Botany Practice: Mixed Assertion Qs" },
-      { time: "4:45 PM - 6:00 PM", task: "Physics: Revise Fluids & Graphs" },
-      { time: "6:00 PM - 8:00 PM", task: "Chemistry: Practice d/f-Block Numericals" },
-      { time: "8:00 PM - 9:00 PM", task: "Botany: Practice Mixed Assertion Questions" },
-      { time: "9:00 PM - 9:45 PM", task: "Dinner" },
-      { time: "9:45 PM - 11:15 PM", task: "Zoology: Review Circulation + Breathing" },
-      { time: "11:15 PM - 11:30 PM", task: "Prepare for sleep" }
-    ],
-
-    "Day 45": [
-      { time: "5:30 AM - 6:00 AM", task: "Wake up" },
-      { time: "6:00 AM - 8:00 AM", task: "Physics: Thermal Properties of Matter" },
-      { time: "8:00 AM - 8:45 AM", task: "Break" },
-      { time: "8:45 AM - 10:45 AM", task: "Chemistry: Coordination Compounds" },
-      { time: "10:45 AM - 11:30 AM", task: "Break" },
-      { time: "11:30 AM - 1:00 PM", task: "Botany: Final Quick Revision" },
-      { time: "1:00 PM - 2:45 PM", task: "Lunch and Nap" },
-      { time: "2:45 PM - 4:45 PM", task: "Zoology: Final Quick Revision" },
-      { time: "4:45 PM - 6:00 PM", task: "Physics: Review Thermal Properties" },
-      { time: "6:00 PM - 8:00 PM", task: "Chemistry: Final Practice on Coordination Compounds" },
-      { time: "8:00 PM - 9:00 PM", task: "Botany: Final Quick Revision on Key Topics" },
-      { time: "9:00 PM - 9:45 PM", task: "Dinner" },
-      { time: "9:45 PM - 11:15 PM", task: "Zoology: Final Quick Revision on Key Topics" },
-      { time: "11:15 PM - 11:30 PM", task: "Prepare for sleep" }
-    ],
-
-    "Day 46": [
-      { time: "5:30 AM - 6:00 AM", task: "Wake up" },
-      { time: "6:00 AM - 8:00 AM", task: "All Subject Final Concept Map Recap" },
-      { time: "8:00 AM - 8:45 AM", task: "Break" },
-      { time: "8:45 AM - 10:45 AM", task: "Mock Test Review Setups + Warmup" },
-      { time: "10:45 AM - 11:30 AM", task: "Break" },
-      { time: "11:30 AM - 1:00 PM", task: "Final Revisions: Formulas & Exceptions" },
-      { time: "1:00 PM - 2:45 PM", task: "Lunch and Nap" },
-      { time: "2:45 PM - 5:20 PM", task: "Full-Length Test (NEET Pattern)" },
-      { time: "5:20 PM - 6:00 PM", task: "Rest" },
-      { time: "6:00 PM - 9:00 PM", task: "Test Analysis + Error Log" },
-      { time: "9:00 PM - 9:45 PM", task: "Dinner" },
-      { time: "9:45 PM - 11:15 PM", task: "Final Review Mistakes" },
-      { time: "11:15 PM - 11:30 PM", task: "Prepare for sleep" }
-    ]
-    ,
-    "Day 47": [
-      { time: "5:30 AM - 6:00 AM", task: "Wake up" },
-      { time: "6:00 AM - 8:00 AM", task: "Physics: Laws of Motion" },
-      { time: "8:00 AM - 8:45 AM", task: "Break" },
-      { time: "8:45 AM - 10:45 AM", task: "Chemistry: Haloalkanes and Haloarenes" },
-      { time: "10:45 AM - 11:30 AM", task: "Break" },
-      { time: "11:30 AM - 1:00 PM", task: "Botany: Plant Growth and Development" },
-      { time: "1:00 PM - 2:45 PM", task: "Lunch and Nap" },
-      { time: "2:45 PM - 4:45 PM", task: "Zoology: Structural Organization in Animals" },
-      { time: "4:45 PM - 6:00 PM", task: "Physics: Laws of Motion Problems" },
-      { time: "6:00 PM - 8:00 PM", task: "Chemistry: Solve Haloalkanes & Haloarenes Problems" },
-      { time: "8:00 PM - 9:00 PM", task: "Botany: Review Plant Growth and Development" },
-      { time: "9:00 PM - 9:45 PM", task: "Dinner" },
-      { time: "9:45 PM - 11:15 PM", task: "Zoology: Review Structural Organization in Animals" },
-      { time: "11:15 PM - 11:30 PM", task: "Prepare for sleep" }
-    ],
-
-    "Day 48": [
-      { time: "5:30 AM - 6:00 AM", task: "Wake up" },
-      { time: "6:00 AM - 8:00 AM", task: "Physics: Work, Energy, and Power" },
-      { time: "8:00 AM - 8:45 AM", task: "Break" },
-      { time: "8:45 AM - 10:45 AM", task: "Chemistry: Alcohols, Phenols and Ethers" },
-      { time: "10:45 AM - 11:30 AM", task: "Break" },
-      { time: "11:30 AM - 1:00 PM", task: "Botany: Sexual Reproduction in Flowering Plants" },
-      { time: "1:00 PM - 2:45 PM", task: "Lunch and Nap" },
-      { time: "2:45 PM - 4:45 PM", task: "Zoology: Biomolecules" },
-      { time: "4:45 PM - 6:00 PM", task: "Physics: Solve Problems on Work, Energy & Power" },
-      { time: "6:00 PM - 8:00 PM", task: "Chemistry: Solve Alcohols & Ethers Problems" },
-      { time: "8:00 PM - 9:00 PM", task: "Botany: Review Sexual Reproduction in Plants" },
-      { time: "9:00 PM - 9:45 PM", task: "Dinner" },
-      { time: "9:45 PM - 11:15 PM", task: "Zoology: Review Biomolecules" },
-      { time: "11:15 PM - 11:30 PM", task: "Prepare for sleep" }
-    ],
-
-    "Day 49": [
-      { time: "5:30 AM - 6:00 AM", task: "Wake up" },
-      { time: "6:00 AM - 8:00 AM", task: "Physics: Rotational Motion" },
-      { time: "8:00 AM - 8:45 AM", task: "Break" },
-      { time: "8:45 AM - 10:45 AM", task: "Chemistry: Aldehydes, Ketones, Carboxylic Acids" },
-      { time: "10:45 AM - 11:30 AM", task: "Break" },
-      { time: "11:30 AM - 1:00 PM", task: "Zoology Practice: Biomolecules & Animal Tissues" },
-      { time: "1:00 PM - 2:45 PM", task: "Lunch and Nap" },
-      { time: "2:45 PM - 4:45 PM", task: "Botany: Plant Development Practice MCQs" },
-      { time: "4:45 PM - 6:00 PM", task: "Physics: Solve Rotational Motion Problems" },
-      { time: "6:00 PM - 8:00 PM", task: "Chemistry: Solve Aldehydes, Ketones & Acids Problems" },
-      { time: "8:00 PM - 9:00 PM", task: "Botany: Review Plant Development MCQs" },
-      { time: "9:00 PM - 9:45 PM", task: "Dinner" },
-      { time: "9:45 PM - 11:15 PM", task: "Zoology: Review Biomolecules & Animal Tissues" },
-      { time: "11:15 PM - 11:30 PM", task: "Prepare for sleep" }
-    ],
-
-    "Day 50": [
-      { time: "5:30 AM - 6:00 AM", task: "Wake up" },
-      { time: "6:00 AM - 8:00 AM", task: "Chemistry Practice: Aldehydes & Ethers" },
-      { time: "8:00 AM - 8:45 AM", task: "Break" },
-      { time: "8:45 AM - 10:45 AM", task: "Physics Practice: WEP + LOM Problems" },
-      { time: "10:45 AM - 11:30 AM", task: "Break" },
-      { time: "11:30 AM - 1:00 PM", task: "Zoology Practice: MCQs & Assertion Reason" },
-      { time: "1:00 PM - 2:45 PM", task: "Lunch and Nap" },
-      { time: "2:45 PM - 4:45 PM", task: "Botany Practice: Reproduction Diagrams" },
-      { time: "4:45 PM - 6:00 PM", task: "Physics: Revise WEP + LOM" },
-      { time: "6:00 PM - 8:00 PM", task: "Chemistry: Solve Aldehydes, Ethers Problems" },
-      { time: "8:00 PM - 9:00 PM", task: "Botany: Review Reproduction Diagrams" },
-      { time: "9:00 PM - 9:45 PM", task: "Dinner" },
-      { time: "9:45 PM - 11:15 PM", task: "Zoology: Review MCQs & Assertion Reason" },
-      { time: "11:15 PM - 11:30 PM", task: "Prepare for sleep" }
-    ],
-
-    "Day 51": [
-      { time: "5:30 AM - 6:00 AM", task: "Wake up" },
-      { time: "6:00 AM - 8:00 AM", task: "Subjective Recall: Physics + Chemistry" },
-      { time: "8:00 AM - 8:45 AM", task: "Break" },
-      { time: "8:45 AM - 10:45 AM", task: "Botany: Final Revision" },
-      { time: "10:45 AM - 11:30 AM", task: "Break" },
-      { time: "11:30 AM - 1:00 PM", task: "Zoology: Recap Flashcards + Charting" },
-      { time: "1:00 PM - 2:45 PM", task: "Lunch and Nap" },
-      { time: "2:45 PM - 4:45 PM", task: "Chemistry Final Notes + Practice Snips" },
-      { time: "4:45 PM - 6:00 PM", task: "Physics: Revise Key Topics" },
-      { time: "6:00 PM - 8:00 PM", task: "Chemistry: Final Snips Practice" },
-      { time: "8:00 PM - 9:00 PM", task: "Botany: Final Quick Revision" },
-      { time: "9:00 PM - 9:45 PM", task: "Dinner" },
-      { time: "9:45 PM - 11:15 PM", task: "Zoology: Final Recap & Charting" },
-      { time: "11:15 PM - 11:30 PM", task: "Prepare for sleep" }
-    ],
-
-    "Day 52": [
-      { time: "5:30 AM - 6:00 AM", task: "Wake up" },
-      { time: "6:00 AM - 8:00 AM", task: "Final Quick Test Review" },
-      { time: "8:00 AM - 8:45 AM", task: "Break" },
-      { time: "8:45 AM - 10:15 AM", task: "Restorative Practice: Diagrams + Flowcharts" },
-      { time: "10:15 AM - 11:30 AM", task: "Break & mental warmup" },
-      { time: "11:30 AM - 1:00 PM", task: "Final Recall MCQ Round" },
-      { time: "1:00 PM - 2:45 PM", task: "Lunch and Nap" },
-      { time: "2:45 PM - 4:45 PM", task: "Self-Reflection + Calm Confidence Round" },
-      { time: "4:45 PM - 6:00 PM", task: "Test Practice & Review Mistakes" },
-      { time: "6:00 PM - 8:00 PM", task: "Review Key Areas & Topics" },
-      { time: "8:00 PM - 9:00 PM", task: "Test Review + Calm Confidence Building" },
-      { time: "9:00 PM - 9:45 PM", task: "Dinner" },
-      { time: "9:45 PM - 11:15 PM", task: "Final Review of Mistakes" },
-      { time: "11:15 PM - 11:30 PM", task: "Prepare for sleep" }
-    ],
-
-    "Day 53": [
-      { time: "5:30 AM - 6:00 AM", task: "Wake up" },
-      { time: "6:00 AM - 8:00 AM", task: "Light Revision: Formulas & Key Diagrams" },
-      { time: "8:00 AM - 8:45 AM", task: "Break" },
-      { time: "8:45 AM - 10:45 AM", task: "Calm Practice: Flashcards + Breathwork" },
-      { time: "10:45 AM - 11:30 AM", task: "Break / Walk" },
-      { time: "11:30 AM - 1:00 PM", task: "Confidence Building: Topic Reinforcement" },
-      { time: "1:00 PM - 2:00 PM", task: "Lunch and Nap + Light Rest" },
-      { time: "2:00 PM - 5:20 PM", task: "Full-Length NEET Pattern Test (3 hr 20 min)" },
-      { time: "5:20 PM - 6:30 PM", task: "Break & Relax" },
-      { time: "6:30 PM - 9:00 PM", task: "Test Analysis & Mistake Log" },
-      { time: "9:00 PM - 9:45 PM", task: "Dinner" },
-      { time: "9:45 PM - 11:15 PM", task: "Final Review of Mistakes & Light Revision for Confidence" },
-      { time: "11:15 PM - 11:30 PM", task: "Prepare for sleep" }
-    ]
-    ,
-    "Day 54": [
-      { time: "5:30 AM - 6:00 AM", task: "Wake up" },
-      { time: "6:00 AM - 8:00 AM", task: "Physics: Units & Measurements (Study)" },
-      { time: "8:00 AM - 8:45 AM", task: "Break" },
-      { time: "8:45 AM - 10:45 AM", task: "Chemistry: Amines (Study)" },
-      { time: "10:45 AM - 11:30 AM", task: "Break" },
-      { time: "11:30 AM - 1:00 PM", task: "Zoology: Animal Kingdom (Study)" },
-      { time: "1:00 PM - 2:45 PM", task: "Lunch and Nap" },
-      { time: "2:45 PM - 4:45 PM", task: "Botany: Microbes in Human Welfare (Study)" },
-      { time: "4:45 PM - 6:00 PM", task: "Break" },
-      { time: "6:00 PM - 8:00 PM", task: "Revision: Physics Formulas + Short Notes" },
-      { time: "8:00 PM - 9:00 PM", task: "Chemistry: Review Amines + Key Concepts" },
-      { time: "9:00 PM - 9:45 PM", task: "Dinner" },
-      { time: "9:45 PM - 11:15 PM", task: "Botany: Quick Review of Microbes in Welfare" },
-      { time: "11:15 PM - 11:30 PM", task: "Prepare for sleep" }
-    ],
-
-    "Day 55": [
-      { time: "5:30 AM - 6:00 AM", task: "Wake up" },
-      { time: "6:00 AM - 8:00 AM", task: "Physics Practice: Units & Motion Numericals" },
-      { time: "8:00 AM - 8:45 AM", task: "Break" },
-      { time: "8:45 AM - 10:45 AM", task: "Chemistry Practice: Amines & MCQs" },
-      { time: "10:45 AM - 11:30 AM", task: "Break" },
-      { time: "11:30 AM - 1:00 PM", task: "Zoology Practice: Animal Kingdom Classification" },
-      { time: "1:00 PM - 2:45 PM", task: "Lunch and Nap" },
-      { time: "2:45 PM - 4:45 PM", task: "Botany Practice: MCQs + Diagram Labeling" },
-      { time: "4:45 PM - 6:00 PM", task: "Break" },
-      { time: "6:00 PM - 8:00 PM", task: "Short Quiz: Mixed Topics" },
-      { time: "8:00 PM - 9:00 PM", task: "Physics: Quick Recap on Motion & Units" },
-      { time: "9:00 PM - 9:45 PM", task: "Dinner" },
-      { time: "9:45 PM - 11:15 PM", task: "Zoology: Review Animal Kingdom Classification" },
-      { time: "11:15 PM - 11:30 PM", task: "Prepare for sleep" }
-    ],
-
-    "Day 56": [
-      { time: "5:30 AM - 6:00 AM", task: "Wake up" },
-      { time: "6:00 AM - 8:00 AM", task: "Physics: Motion in a Straight Line (Study)" },
-      { time: "8:00 AM - 8:45 AM", task: "Break" },
-      { time: "8:45 AM - 10:45 AM", task: "Chemistry: Biomolecules (Study)" },
-      { time: "10:45 AM - 11:30 AM", task: "Break" },
-      { time: "11:30 AM - 1:00 PM", task: "Zoology: Animal Kingdom (Phyla Focus)" },
-      { time: "1:00 PM - 2:45 PM", task: "Lunch and Nap" },
-      { time: "2:45 PM - 4:45 PM", task: "Botany: Organisms and Populations (Study)" },
-      { time: "4:45 PM - 6:00 PM", task: "Break" },
-      { time: "6:00 PM - 8:00 PM", task: "Revision: Biomolecules + Concept Recap" },
-      { time: "8:00 PM - 9:00 PM", task: "Zoology: Review Animal Kingdom Phyla" },
-      { time: "9:00 PM - 9:45 PM", task: "Dinner" },
-      { time: "9:45 PM - 11:15 PM", task: "Botany: Review Organisms and Populations" },
-      { time: "11:15 PM - 11:30 PM", task: "Prepare for sleep" }
-    ],
-
-    "Day 57": [
-      { time: "5:30 AM - 6:00 AM", task: "Wake up" },
-      { time: "6:00 AM - 8:00 AM", task: "Physics Practice: Graphs + Motion Problems" },
-      { time: "8:00 AM - 8:45 AM", task: "Break" },
-      { time: "8:45 AM - 10:45 AM", task: "Chemistry Practice: Biomolecules NCERT-based MCQs" },
-      { time: "10:45 AM - 11:30 AM", task: "Break" },
-      { time: "11:30 AM - 1:00 PM", task: "Botany Practice: Assertion-Reason Qs" },
-      { time: "1:00 PM - 2:45 PM", task: "Lunch and Nap" },
-      { time: "2:45 PM - 4:45 PM", task: "Zoology Practice: NCERT Line-by-Line Questions" },
-      { time: "4:45 PM - 6:00 PM", task: "Break" },
-      { time: "6:00 PM - 8:00 PM", task: "Quick Mock: 30 Qs from All Subjects" },
-      { time: "8:00 PM - 9:00 PM", task: "Zoology: Review NCERT Line-by-Line Qs" },
-      { time: "9:00 PM - 9:45 PM", task: "Dinner" },
-      { time: "9:45 PM - 11:15 PM", task: "Botany: Review Assertion-Reason Qs" },
-      { time: "11:15 PM - 11:30 PM", task: "Prepare for sleep" }
-    ],
-
-    "Day 58": [
-      { time: "5:30 AM - 6:00 AM", task: "Wake up" },
-      { time: "6:00 AM - 8:00 AM", task: "Physics: Motion in a Plane (Study)" },
-      { time: "8:00 AM - 8:45 AM", task: "Break" },
-      { time: "8:45 AM - 10:45 AM", task: "Chemistry: Practical Principles + Tips" },
-      { time: "10:45 AM - 11:30 AM", task: "Break" },
-      { time: "11:30 AM - 1:00 PM", task: "Botany: Summary Notes for Organisms + Microbes" },
-      { time: "1:00 PM - 2:45 PM", task: "Lunch and Nap" },
-      { time: "2:45 PM - 4:45 PM", task: "Zoology: Charting Animal Kingdom with Diagrams" },
-      { time: "4:45 PM - 6:00 PM", task: "Break" },
-      { time: "6:00 PM - 8:00 PM", task: "Quick Flash Review: All Subjects" },
-      { time: "8:00 PM - 9:00 PM", task: "Physics: Review Motion in a Plane" },
-      { time: "9:00 PM - 9:45 PM", task: "Dinner" },
-      { time: "9:45 PM - 11:15 PM", task: "Zoology: Review Animal Kingdom with Diagrams" },
-      { time: "11:15 PM - 11:30 PM", task: "Prepare for sleep" }
-    ],
-
-    "Day 59": [
-      { time: "5:30 AM - 6:00 AM", task: "Wake up" },
-      { time: "6:00 AM - 8:00 AM", task: "Physics Practice: Vectors + Kinematics" },
-      { time: "8:00 AM - 8:45 AM", task: "Break" },
-      { time: "8:45 AM - 10:45 AM", task: "Chemistry Practice: Practical Qs + Table Recall" },
-      { time: "10:45 AM - 11:30 AM", task: "Break" },
-      { time: "11:30 AM - 1:00 PM", task: "Zoology: MCQs + Assertion Reason Practice" },
-      { time: "1:00 PM - 2:45 PM", task: "Lunch and Nap" },
-      { time: "2:45 PM - 4:45 PM", task: "Botany: Mixed Qs from Previous Year Papers" },
-      { time: "4:45 PM - 6:00 PM", task: "Break" },
-      { time: "6:00 PM - 8:00 PM", task: "Final Quick Test: 20 Qs Each Subject" },
-      { time: "8:00 PM - 9:00 PM", task: "Zoology: Review MCQs + Assertion Reason" },
-      { time: "9:00 PM - 9:45 PM", task: "Dinner" },
-      { time: "9:45 PM - 11:15 PM", task: "Botany: Review Year-wise MCQs" },
-      { time: "11:15 PM - 11:30 PM", task: "Prepare for sleep" }
-    ],
-
-    "Day 60": [
-      { time: "5:30 AM - 6:00 AM", task: "Wake up" },
-      { time: "6:00 AM - 8:00 AM", task: "Final Round Revision: Physics + Chemistry" },
-      { time: "8:00 AM - 8:45 AM", task: "Break" },
-      { time: "8:45 AM - 10:45 AM", task: "Final Round Revision: Botany + Zoology" },
-      { time: "10:45 AM - 11:30 AM", task: "Break" },
-      { time: "11:30 AM - 1:00 PM", task: "Mind Map Practice & Cheat Sheets" },
-      { time: "1:00 PM - 2:45 PM", task: "Lunch and Nap" },
-      { time: "2:45 PM - 4:45 PM", task: "Mentally walk through all key concepts" },
-      { time: "4:45 PM - 6:00 PM", task: "Break" },
-      { time: "6:00 PM - 8:00 PM", task: "Confidence Reinforcement Session" },
-      { time: "8:00 PM - 9:00 PM", task: "Botany: Final Review of Key Topics" },
-      { time: "9:00 PM - 9:45 PM", task: "Dinner" },
-      { time: "9:45 PM - 11:15 PM", task: "Zoology: Final Overview of Key Concepts" },
-      { time: "11:15 PM - 11:30 PM", task: "Prepare for sleep" }
-    ],
-
-    "Day 61": [
-      { time: "5:30 AM - 6:00 AM", task: "Wake up" },
-      { time: "6:00 AM - 8:00 AM", task: "Formula & Concept Glance: All Subjects" },
-      { time: "8:00 AM - 8:45 AM", task: "Break" },
-      { time: "8:45 AM - 10:45 AM", task: "Warmup: Practice Sheet 1 - 15 Qs per Subject" },
-      { time: "10:45 AM - 11:30 AM", task: "Break" },
-      { time: "11:30 AM - 1:00 PM", task: "Rest & Mindfulness before test" },
-      { time: "1:00 PM - 2:00 PM", task: "Lunch and Nap" },
-      { time: "2:00 PM - 5:20 PM", task: "Full-Length NEET Pattern Test" },
-      { time: "5:20 PM - 6:30 PM", task: "Break" },
-      { time: "6:30 PM - 9:00 PM", task: "Test Analysis + Mistake Log" },
-      { time: "9:00 PM - 9:45 PM", task: "Dinner" },
-      { time: "9:45 PM - 11:15 PM", task: "Final Review of Mistakes & Light Revision for Confidence" },
-      { time: "11:15 PM - 11:30 PM", task: "Prepare for sleep" }
-    ],
-
-    "Day 62": [
-      { time: "5:30 AM - 6:00 AM", task: "Wake up" },
-      { time: "6:00 AM - 8:00 AM", task: "Physics: Quick Recap of Units & Measurements" },
-      { time: "8:00 AM - 8:45 AM", task: "Breakfast & Break" },
-      { time: "8:45 AM - 10:45 AM", task: "Chemistry: Amines Revision" },
-      { time: "10:45 AM - 11:30 AM", task: "Break" },
-      { time: "11:30 AM - 1:00 PM", task: "Rest & Mindfulness before test" },
-      { time: "1:00 PM - 2:00 PM", task: "Lunch & Nap" },
-      { time: "2:00 PM - 5:20 PM", task: "Full-Length NEET Pattern Test" },
-      { time: "5:20 PM - 6:30 PM", task: "Break" },
-      { time: "6:30 PM - 9:00 PM", task: "Test Analysis + Mistake Log" },
-      { time: "9:00 PM - 9:45 PM", task: "Dinner" },
-      { time: "9:45 PM - 11:15 PM", task: "Final Review of Mistakes & Light Revision for Confidence" },
-      { time: "11:15 PM - 11:30 PM", task: "Prepare for sleep" }
-    ],
-
-    "Day 63": [
-      { time: "5:30 AM - 6:00 AM", task: "Wake up" },
-      { time: "6:00 AM - 8:00 AM", task: "Chemistry: Coordination Compounds Quick Recap" },
-      { time: "8:00 AM - 8:45 AM", task: "Breakfast & Break" },
-      { time: "8:45 AM - 10:45 AM", task: "Botany: Inheritance & Molecular Basis Revision" },
-      { time: "10:45 AM - 11:30 AM", task: "Break" },
-      { time: "11:30 AM - 1:00 PM", task: "Rest & Mindfulness before test" },
-      { time: "1:00 PM - 2:00 PM", task: "Lunch & Nap" },
-      { time: "2:00 PM - 5:20 PM", task: "Full-Length NEET Pattern Test" },
-      { time: "5:20 PM - 6:30 PM", task: "Break" },
-      { time: "6:30 PM - 9:00 PM", task: "Test Analysis + Mistake Log" },
-      { time: "9:00 PM - 9:45 PM", task: "Dinner" },
-      { time: "9:45 PM - 11:15 PM", task: "Final Review of Mistakes & Light Revision for Confidence" },
-      { time: "11:15 PM - 11:30 PM", task: "Prepare for sleep" }
-    ],
-
-    "Day 64": [
-      { time: "5:30 AM - 6:00 AM", task: "Wake up" },
-      { time: "6:00 AM - 8:00 AM", task: "Botany: Photosynthesis + Respiration Revision" },
-      { time: "8:00 AM - 8:45 AM", task: "Breakfast & Break" },
-      { time: "8:45 AM - 10:45 AM", task: "Zoology: Evolution and Classification Recap" },
-      { time: "10:45 AM - 11:30 AM", task: "Break" },
-      { time: "11:30 AM - 1:00 PM", task: "Rest & Mindfulness before test" },
-      { time: "1:00 PM - 2:00 PM", task: "Lunch & Nap" },
-      { time: "2:00 PM - 5:20 PM", task: "Full-Length NEET Pattern Test" },
-      { time: "5:20 PM - 6:30 PM", task: "Break" },
-      { time: "6:30 PM - 9:00 PM", task: "Test Analysis + Mistake Log" },
-      { time: "9:00 PM - 9:45 PM", task: "Dinner" },
-      { time: "9:45 PM - 11:15 PM", task: "Final Review of Mistakes & Light Revision for Confidence" },
-      { time: "11:15 PM - 11:30 PM", task: "Prepare for sleep" }
-    ],
-
-    "Day 65": [
-      { time: "5:30 AM - 6:00 AM", task: "Wake up" },
-      { time: "6:00 AM - 8:00 AM", task: "Physics: Laws of Motion Quick Recap" },
-      { time: "8:00 AM - 8:45 AM", task: "Breakfast & Break" },
-      { time: "8:45 AM - 10:45 AM", task: "Chemistry: Haloalkanes & Haloarenes Revision" },
-      { time: "10:45 AM - 11:30 AM", task: "Break" },
-      { time: "11:30 AM - 1:00 PM", task: "Rest & Mindfulness before test" },
-      { time: "1:00 PM - 2:00 PM", task: "Lunch & Nap" },
-      { time: "2:00 PM - 5:20 PM", task: "Full-Length NEET Pattern Test" },
-      { time: "5:20 PM - 6:30 PM", task: "Break" },
-      { time: "6:30 PM - 9:00 PM", task: "Test Analysis + Mistake Log" },
-      { time: "9:00 PM - 9:45 PM", task: "Dinner" },
-      { time: "9:45 PM - 11:15 PM", task: "Final Review of Mistakes & Light Revision for Confidence" },
-      { time: "11:15 PM - 11:30 PM", task: "Prepare for sleep" }
-    ],
-
-    "Day 66": [
-      { time: "5:30 AM - 6:00 AM", task: "Wake up" },
-      { time: "6:00 AM - 8:00 AM", task: "Physics: Thermodynamics Review" },
-      { time: "8:00 AM - 8:45 AM", task: "Breakfast & Break" },
-      { time: "8:45 AM - 10:45 AM", task: "Chemistry: Alcohols, Phenols, Ethers Recap" },
-      { time: "10:45 AM - 11:30 AM", task: "Break" },
-      { time: "11:30 AM - 1:00 PM", task: "Rest & Mindfulness before test" },
-      { time: "1:00 PM - 2:00 PM", task: "Lunch & Nap" },
-      { time: "2:00 PM - 5:20 PM", task: "Full-Length NEET Pattern Test" },
-      { time: "5:20 PM - 6:30 PM", task: "Break" },
-      { time: "6:30 PM - 9:00 PM", task: "Test Analysis + Mistake Log" },
-      { time: "9:00 PM - 9:45 PM", task: "Dinner" },
-      { time: "9:45 PM - 11:15 PM", task: "Final Review of Mistakes & Light Revision for Confidence" },
-      { time: "11:15 PM - 11:30 PM", task: "Prepare for sleep" }
-    ],
-
-    "Day 67": [
-      { time: "5:30 AM - 6:00 AM", task: "Wake up" },
-      { time: "6:00 AM - 8:00 AM", task: "Physics: Electric Charges and Fields" },
-      { time: "8:00 AM - 8:45 AM", task: "Breakfast & Break" },
-      { time: "8:45 AM - 10:45 AM", task: "Chemistry: Coordination Compounds Quick Recap" },
-      { time: "10:45 AM - 11:30 AM", task: "Break" },
-      { time: "11:30 AM - 1:00 PM", task: "Rest & Mindfulness before test" },
-      { time: "1:00 PM - 2:00 PM", task: "Lunch & Nap" },
-      { time: "2:00 PM - 5:20 PM", task: "Full-Length NEET Pattern Test" },
-      { time: "5:20 PM - 6:30 PM", task: "Break" },
-      { time: "6:30 PM - 9:00 PM", task: "Test Analysis + Mistake Log" },
-      { time: "9:00 PM - 9:45 PM", task: "Dinner" },
-      { time: "9:45 PM - 11:15 PM", task: "Final Review of Mistakes & Light Revision for Confidence" },
-      { time: "11:15 PM - 11:30 PM", task: "Prepare for sleep" }
-    ],
-
-    "Day 68": [
-      { time: "5:30 AM - 6:00 AM", task: "Wake up" },
-      { time: "6:00 AM - 8:00 AM", task: "Chemistry: Organic Chemistry (Reactions)" },
-      { time: "8:00 AM - 8:45 AM", task: "Breakfast & Break" },
-      { time: "8:45 AM - 10:45 AM", task: "Physics: Work, Energy, and Power Practice" },
-      { time: "10:45 AM - 11:30 AM", task: "Break" },
-      { time: "11:30 AM - 1:00 PM", task: "Rest & Mindfulness before test" },
-      { time: "1:00 PM - 2:00 PM", task: "Lunch & Nap" },
-      { time: "2:00 PM - 5:20 PM", task: "Full-Length NEET Pattern Test" },
-      { time: "5:20 PM - 6:30 PM", task: "Break" },
-      { time: "6:30 PM - 9:00 PM", task: "Test Analysis + Mistake Log" },
-      { time: "9:00 PM - 9:45 PM", task: "Dinner" },
-      { time: "9:45 PM - 11:15 PM", task: "Final Review of Mistakes & Light Revision for Confidence" },
-      { time: "11:15 PM - 11:30 PM", task: "Prepare for sleep" }
-    ]
-    ,
-
-    "Day 69": [
-      { time: "5:30 AM - 6:00 AM", task: "Wake up" },
-      { time: "6:00 AM - 8:00 AM", task: "Physics: Electricity and Magnetism Revision" },
-      { time: "8:00 AM - 8:45 AM", task: "Breakfast & Break" },
-      { time: "8:45 AM - 10:45 AM", task: "Chemistry: p-Block Elements Review" },
-      { time: "10:45 AM - 11:30 AM", task: "Break" },
-      { time: "11:30 AM - 1:00 PM", task: "Rest & Mindfulness before test" },
-      { time: "1:00 PM - 2:00 PM", task: "Lunch & Nap" },
-      { time: "2:00 PM - 5:20 PM", task: "Full-Length NEET Pattern Test" },
-      { time: "5:20 PM - 6:30 PM", task: "Break" },
-      { time: "6:30 PM - 9:00 PM", task: "Test Analysis + Mistake Log" },
-      { time: "9:00 PM - 9:45 PM", task: "Dinner" },
-      { time: "9:45 PM - 11:15 PM", task: "Final Review of Mistakes & Light Revision for Confidence" },
-      { time: "11:15 PM - 11:30 PM", task: "Prepare for sleep" }
-    ],
-
-    "Day 70": [
-      { time: "5:30 AM - 6:00 AM", task: "Wake up" },
-      { time: "6:00 AM - 8:00 AM", task: "Chemistry: Aldehydes, Ketones, Carboxylic Acids Recap" },
-      { time: "8:00 AM - 8:45 AM", task: "Breakfast & Break" },
-      { time: "8:45 AM - 10:45 AM", task: "Physics: Kinematics and Motion Problems" },
-      { time: "10:45 AM - 11:30 AM", task: "Break" },
-      { time: "11:30 AM - 1:00 PM", task: "Rest & Mindfulness before test" },
-      { time: "1:00 PM - 2:00 PM", task: "Lunch & Nap" },
-      { time: "2:00 PM - 5:20 PM", task: "Full-Length NEET Pattern Test" },
-      { time: "5:20 PM - 6:30 PM", task: "Break" },
-      { time: "6:30 PM - 9:00 PM", task: "Test Analysis + Mistake Log" },
-      { time: "9:00 PM - 9:45 PM", task: "Dinner" },
-      { time: "9:45 PM - 11:15 PM", task: "Final Review of Mistakes & Light Revision for Confidence" },
-      { time: "11:15 PM - 11:30 PM", task: "Prepare for sleep" }
-    ],
-
-    "Day 71": [
-      { time: "5:30 AM - 6:00 AM", task: "Wake up" },
-      { time: "6:00 AM - 8:00 AM", task: "Physics: Electrostatics and Current Electricity Revision" },
-      { time: "8:00 AM - 8:45 AM", task: "Breakfast & Break" },
-      { time: "8:45 AM - 10:45 AM", task: "Chemistry: Electrochemistry Quick Recap" },
-      { time: "10:45 AM - 11:30 AM", task: "Break" },
-      { time: "11:30 AM - 1:00 PM", task: "Rest & Mindfulness before test" },
-      { time: "1:00 PM - 2:00 PM", task: "Lunch & Nap" },
-      { time: "2:00 PM - 5:20 PM", task: "Full-Length NEET Pattern Test" },
-      { time: "5:20 PM - 6:30 PM", task: "Break" },
-      { time: "6:30 PM - 9:00 PM", task: "Test Analysis + Mistake Log" },
-      { time: "9:00 PM - 9:45 PM", task: "Dinner" },
-      { time: "9:45 PM - 11:15 PM", task: "Final Review of Mistakes & Light Revision for Confidence" },
-      { time: "11:15 PM - 11:30 PM", task: "Prepare for sleep" }
-    ],
-
-    "Day 72": [
-      { time: "5:30 AM - 6:00 AM", task: "Wake up" },
-      { time: "6:00 AM - 8:00 AM", task: "Physics: Practice Problems on Thermodynamics" },
-      { time: "8:00 AM - 8:45 AM", task: "Breakfast & Break" },
-      { time: "8:45 AM - 10:45 AM", task: "Chemistry: Redox Reactions Revision" },
-      { time: "10:45 AM - 11:30 AM", task: "Break" },
-      { time: "11:30 AM - 1:00 PM", task: "Rest & Mindfulness before test" },
-      { time: "1:00 PM - 2:00 PM", task: "Lunch & Nap" },
-      { time: "2:00 PM - 5:20 PM", task: "Full-Length NEET Pattern Test" },
-      { time: "5:20 PM - 6:30 PM", task: "Break" },
-      { time: "6:30 PM - 9:00 PM", task: "Test Analysis + Mistake Log" },
-      { time: "9:00 PM - 9:45 PM", task: "Dinner" },
-      { time: "9:45 PM - 11:15 PM", task: "Final Review of Mistakes & Light Revision for Confidence" },
-      { time: "11:15 PM - 11:30 PM", task: "Prepare for sleep" }
-    ],
-
-    "Day 73": [
-      { time: "5:30 AM - 6:00 AM", task: "Wake up" },
-      { time: "6:00 AM - 8:00 AM", task: "Physics: Practice Problems on Waves" },
-      { time: "8:00 AM - 8:45 AM", task: "Breakfast & Break" },
-      { time: "8:45 AM - 10:45 AM", task: "Chemistry: Hydrocarbons Quick Recap" },
-      { time: "10:45 AM - 11:30 AM", task: "Break" },
-      { time: "11:30 AM - 1:00 PM", task: "Rest & Mindfulness before test" },
-      { time: "1:00 PM - 2:00 PM", task: "Lunch & Nap" },
-      { time: "2:00 PM - 5:20 PM", task: "Full-Length NEET Pattern Test" },
-      { time: "5:20 PM - 6:30 PM", task: "Break" },
-      { time: "6:30 PM - 9:00 PM", task: "Test Analysis + Mistake Log" },
-      { time: "9:00 PM - 9:45 PM", task: "Dinner" },
-      { time: "9:45 PM - 11:15 PM", task: "Final Review of Mistakes & Light Revision for Confidence" },
-      { time: "11:15 PM - 11:30 PM", task: "Prepare for sleep" }
-    ],
-
-    "Day 74": [
-      { time: "5:30 AM - 6:00 AM", task: "Wake up" },
-      { time: "6:00 AM - 8:00 AM", task: "Physics: Practice Problems on Alternating Current" },
-      { time: "8:00 AM - 8:45 AM", task: "Breakfast & Break" },
-      { time: "8:45 AM - 10:45 AM", task: "Chemistry: Redox Reactions + Problem Solving" },
-      { time: "10:45 AM - 11:30 AM", task: "Break" },
-      { time: "11:30 AM - 1:00 PM", task: "Rest & Mindfulness before test" },
-      { time: "1:00 PM - 2:00 PM", task: "Lunch & Nap" },
-      { time: "2:00 PM - 5:20 PM", task: "Full-Length NEET Pattern Test" },
-      { time: "5:20 PM - 6:30 PM", task: "Break" },
-      { time: "6:30 PM - 9:00 PM", task: "Test Analysis + Mistake Log" },
-      { time: "9:00 PM - 9:45 PM", task: "Dinner" },
-      { time: "9:45 PM - 11:15 PM", task: "Final Review of Mistakes & Light Revision for Confidence" },
-      { time: "11:15 PM - 11:30 PM", task: "Prepare for sleep" }
-    ],
-
-    "Day 75": [
-      { time: "5:30 AM - 6:00 AM", task: "Wake up" },
-      { time: "6:00 AM - 8:00 AM", task: "Physics: Kinetic Theory + Thermodynamics Review" },
-      { time: "8:00 AM - 8:45 AM", task: "Breakfast & Break" },
-      { time: "8:45 AM - 10:45 AM", task: "Chemistry: Organic Reactions Practice" },
-      { time: "10:45 AM - 11:30 AM", task: "Break" },
-      { time: "11:30 AM - 1:00 PM", task: "Rest & Mindfulness before test" },
-      { time: "1:00 PM - 2:00 PM", task: "Lunch & Nap" },
-      { time: "2:00 PM - 5:20 PM", task: "Full-Length NEET Pattern Test" },
-      { time: "5:20 PM - 6:30 PM", task: "Break" },
-      { time: "6:30 PM - 9:00 PM", task: "Test Analysis + Mistake Log" },
-      { time: "9:00 PM - 9:45 PM", task: "Dinner" },
-      { time: "9:45 PM - 11:15 PM", task: "Final Review of Mistakes & Light Revision for Confidence" },
-      { time: "11:15 PM - 11:30 PM", task: "Prepare for sleep" }
-    ],
-
-    "Day 76": [
-      { time: "5:30 AM - 6:00 AM", task: "Wake up" },
-      { time: "6:00 AM - 8:00 AM", task: "Physics: Current Electricity Practice" },
-      { time: "8:00 AM - 8:45 AM", task: "Breakfast & Break" },
-      { time: "8:45 AM - 10:45 AM", task: "Chemistry: Organic Reactions and Mechanisms" },
-      { time: "10:45 AM - 11:30 AM", task: "Break" },
-      { time: "11:30 AM - 1:00 PM", task: "Rest & Mindfulness before test" },
-      { time: "1:00 PM - 2:00 PM", task: "Lunch & Nap" },
-      { time: "2:00 PM - 5:20 PM", task: "Full-Length NEET Pattern Test" },
-      { time: "5:20 PM - 6:30 PM", task: "Break" },
-      { time: "6:30 PM - 9:00 PM", task: "Test Analysis + Mistake Log" },
-      { time: "9:00 PM - 9:45 PM", task: "Dinner" },
-      { time: "9:45 PM - 11:15 PM", task: "Final Review of Mistakes & Light Revision for Confidence" },
-      { time: "11:15 PM - 11:30 PM", task: "Prepare for sleep" }
-    ],
-
-    "Day 77": [
-      { time: "5:30 AM - 6:00 AM", task: "Wake up" },
-      { time: "6:00 AM - 8:00 AM", task: "Physics: Review Electric Charges and Fields" },
-      { time: "8:00 AM - 8:45 AM", task: "Breakfast & Break" },
-      { time: "8:45 AM - 10:45 AM", task: "Chemistry: Solve Hydrocarbon Problems" },
-      { time: "10:45 AM - 11:30 AM", task: "Break" },
-      { time: "11:30 AM - 1:00 PM", task: "Rest & Mindfulness before test" },
-      { time: "1:00 PM - 2:00 PM", task: "Lunch & Nap" },
-      { time: "2:00 PM - 5:20 PM", task: "Full-Length NEET Pattern Test" },
-      { time: "5:20 PM - 6:30 PM", task: "Break" },
-      { time: "6:30 PM - 9:00 PM", task: "Test Analysis + Mistake Log" },
-      { time: "9:00 PM - 9:45 PM", task: "Dinner" },
-      { time: "9:45 PM - 11:15 PM", task: "Final Review of Mistakes & Light Revision for Confidence" },
-      { time: "11:15 PM - 11:30 PM", task: "Prepare for sleep" }
-    ],
-
-    "Day 78": [
-      { time: "5:30 AM - 6:00 AM", task: "Wake up" },
-      { time: "6:00 AM - 8:00 AM", task: "Physics: Thermodynamics and Waves Recap" },
-      { time: "8:00 AM - 8:45 AM", task: "Breakfast & Break" },
-      { time: "8:45 AM - 10:45 AM", task: "Chemistry: Solve Organic Reaction Problems" },
-      { time: "10:45 AM - 11:30 AM", task: "Break" },
-      { time: "11:30 AM - 1:00 PM", task: "Rest & Mindfulness before test" },
-      { time: "1:00 PM - 2:00 PM", task: "Lunch & Nap" },
-      { time: "2:00 PM - 5:20 PM", task: "Full-Length NEET Pattern Test" },
-      { time: "5:20 PM - 6:30 PM", task: "Break" },
-      { time: "6:30 PM - 9:00 PM", task: "Test Analysis + Mistake Log" },
-      { time: "9:00 PM - 9:45 PM", task: "Dinner" },
-      { time: "9:45 PM - 11:15 PM", task: "Final Review of Mistakes & Light Revision for Confidence" },
-      { time: "11:15 PM - 11:30 PM", task: "Prepare for sleep" }
-    ],
-
-    "Day 79": [
-      { time: "5:30 AM - 6:00 AM", task: "Wake up" },
-      { time: "6:00 AM - 8:00 AM", task: "Physics: Review Waves and Oscillations" },
-      { time: "8:00 AM - 8:45 AM", task: "Breakfast & Break" },
-      { time: "8:45 AM - 10:45 AM", task: "Chemistry: Solve Reactions and Mechanisms" },
-      { time: "10:45 AM - 11:30 AM", task: "Break" },
-      { time: "11:30 AM - 1:00 PM", task: "Rest & Mindfulness before test" },
-      { time: "1:00 PM - 2:00 PM", task: "Lunch & Nap" },
-      { time: "2:00 PM - 5:20 PM", task: "Full-Length NEET Pattern Test" },
-      { time: "5:20 PM - 6:30 PM", task: "Break" },
-      { time: "6:30 PM - 9:00 PM", task: "Test Analysis + Mistake Log" },
-      { time: "9:00 PM - 9:45 PM", task: "Dinner" },
-      { time: "9:45 PM - 11:15 PM", task: "Final Review of Mistakes & Light Revision for Confidence" },
-      { time: "11:15 PM - 11:30 PM", task: "Prepare for sleep" }
-    ],
-
-    "Day 80": [
-      { time: "5:30 AM - 6:00 AM", task: "Wake up" },
-      { time: "6:00 AM - 8:00 AM", task: "Physics: Solve Problems on Oscillations" },
-      { time: "8:00 AM - 8:45 AM", task: "Breakfast & Break" },
-      { time: "8:45 AM - 10:45 AM", task: "Chemistry: Redox Reactions and Problem Solving" },
-      { time: "10:45 AM - 11:30 AM", task: "Break" },
-      { time: "11:30 AM - 1:00 PM", task: "Rest & Mindfulness before test" },
-      { time: "1:00 PM - 2:00 PM", task: "Lunch & Nap" },
-      { time: "2:00 PM - 5:20 PM", task: "Full-Length NEET Pattern Test" },
-      { time: "5:20 PM - 6:30 PM", task: "Break" },
-      { time: "6:30 PM - 9:00 PM", task: "Test Analysis + Mistake Log" },
-      { time: "9:00 PM - 9:45 PM", task: "Dinner" },
-      { time: "9:45 PM - 11:15 PM", task: "Final Review of Mistakes & Light Revision for Confidence" },
-      { time: "11:15 PM - 11:30 PM", task: "Prepare for sleep" }
+      { time: "5:30 AM - 6:00 AM", task: "Wake up + light physical movement, hydrate", message: "🌄 Prime brain" },
+      { time: "6:00 AM - 7:00 AM", task: "Review performance – Check score, mark distribution by subject", message: "📊 Visualize performance" },
+      { time: "7:00 AM - 7:30 AM", task: "Breakfast + short walk", message: "🍳 Refresh" },
+      { time: "7:30 AM - 8:30 AM", task: "Review Chemistry – Go over wrong/right MCQs & concepts", message: "🧪 Mark knowledge vs mistake-based" },
+      { time: "8:30 AM - 9:30 AM", task: "Review Physics – Identify calculation, concept, or logic errors", message: "🔬 Break down time spent per Q" },
+      { time: "9:30 AM - 10:30 AM", task: "Review Biology (Botany & Zoology) – Reasoning, examples, process-based gaps", message: "🌿 Spot superficial vs deep gaps" },
+      { time: "10:30 AM - 11:30 AM", task: "Identify error types: Conceptual, Calculation", message: "❗ Identify main error types" },
+      { time: "11:30 AM - 1:00 PM", task: "Organize your work – Separate resolved errors, things to revisit, final practice", message: "📂 Organize learning materials" },
+      { time: "1:00 PM - 3:30 PM", task: "Re-solve all incorrect questions without looking at answers", message: "🗂️ Active recovery" },
+      { time: "3:30 PM - 4:30 PM", task: "Create a strategy sheet for better recall", message: "🧠 Summarize key learning strategies" },
+      { time: "5:00 PM - 6:00 PM", task: "Write a reflection on the test performance", message: "📋 Reflect on performance and improvements" },
+      { time: "6:00 PM - 9:00 PM", task: "Optional: Soft review of marked questions, relax, revisit errors", message: "Free review space" },
+      { time: "9:00 PM - 11:45 PM", task: "Dinner + full rest", message: "🍽️ Wind down" }
     ]
 
   };
@@ -2007,7 +977,8 @@
     return hours * 60 + minutes;
   }
 
-  const startDate = new Date("2025-06-17");
+
+  const startDate = new Date("2025-06-19");
 
   function getCurrentDayIndex() {
     const currentDate = new Date();
@@ -2041,6 +1012,7 @@
         document.getElementById('current-task').innerHTML = `
           <div class=time>${currentTask.time}</div>
           <div class="task-box">${currentTask.task}</div>
+          ${currentTask.message ? `<div class="message-container" style="display:block"><div class="message-text">${currentTask.message}</div></div>` : ''}
         `;
       } else {
         document.getElementById('current-task').innerHTML = "No ongoing task.";
@@ -2052,7 +1024,13 @@
       nextTasks.forEach(task => {
         nextTasksHTML += `<div class=task>${task.time} - ${task.task}</div>`;
       });
-      document.getElementById('next-tasks').innerHTML = nextTasksHTML;
+      const nextTasksElement = document.getElementById('next-tasks');
+      if (nextTasks.length === 0) {
+        nextTasksElement.style.display = 'none';
+      } else {
+        nextTasksElement.style.display = 'block';
+        nextTasksElement.innerHTML = nextTasksHTML;
+      }
 
       let fullDayHTML = '';
       dayRoutine.forEach(task => {
@@ -2105,7 +1083,7 @@
     const selector = document.getElementById("daySelector");
     selector.innerHTML = "";
 
-    for (let i = 0; i < 80; i++) {
+    for (let i = 0; i < 10; i++) {
       const day = `Day ${i + 1}`;
       const date = new Date(startDate);
       date.setDate(startDate.getDate() + i);
@@ -2139,7 +1117,7 @@
     if (routines[selectedDay]) {
       routines[selectedDay].forEach(item => {
         const li = document.createElement("li");
-        li.textContent = `${item.time} → ${item.task}`;
+        li.innerHTML = `${item.time} → ${item.task}`;
         list.appendChild(li);
       });
     } else {
@@ -2153,6 +1131,26 @@
   function closeDaySchedule() {
     document.getElementById("dayScheduleModal").style.display = "none";
   }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    const messageContainer = document.querySelector('#current-task .message-container');
+    const messageText = document.querySelector('#current-task .message-text');
+
+    if (messageContainer && messageText) {
+      messageContainer.style.display = 'block';
+      const containerWidth = messageContainer.offsetWidth;
+      const textWidth = messageText.offsetWidth;
+
+      if (textWidth > containerWidth) {
+        const duration = Math.max((textWidth / 50), 5);
+        messageText.style.animationDuration = `${duration}s`;
+      } else {
+        messageText.style.animation = 'none';
+        messageText.style.left = '50%';
+        messageText.style.transform = 'translate(-50%, -50%)';
+      }
+    }
+  });
 </script>
 </body>
 </html>
