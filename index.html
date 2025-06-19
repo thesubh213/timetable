@@ -371,7 +371,6 @@
     #current-task .message-text {
       position: absolute;
       white-space: nowrap;
-      animation: scrollMessage linear infinite;
       color: #000000;
       font-weight: 500;
       letter-spacing: 0.5px;
@@ -382,21 +381,7 @@
       display: flex;
       align-items: center;
     }
-
-
-
-
-    @keyframes scrollMessage {
-      0% {
-        transform: translateX(100%);
-      }
-      100% {
-        transform: translateX(-100%);
-      }
-    }
-
-
-
+    
 
 
     #next-tasks {
@@ -805,6 +790,7 @@
 
   const routines = {
     "Day 1": [
+      { time: "5:00 AM - 6:00 AM", task : "Wake Uppp!", message: "Good Morning❤️"},
       { time: "6:00 AM - 8:00 AM", task: "Study Session 1: Physics – Dual Nature of Radiation", message: "📚 Deep focus on the topic!" },
       { time: "8:00 AM - 8:30 AM", task: "Break 1: Walk/stretch, breakfast, light refresh", message: "🧘 Rest your mind and recharge!" },
       { time: "8:30 AM - 10:30 AM", task: "Study Session 2: Chemistry – Basic Concepts", message: "🧪 Deep focus on mastering the basics!" },
@@ -820,6 +806,7 @@
       { time: "10:00 PM - 11:45 PM", task: "Light reading / prep for tomorrow / sleep", message: "🌙 Rest mode – reflect and relax before bed!" }
     ],
     "Day 2": [
+      { time: "5:00 AM - 6:00 AM", task : "Wake Uppp!", message: "Good Morning❤️"},
       { time: "6:00 AM - 8:00 AM", task: "Study Session 1: New Chapter – Chemistry: Structure of Atom", message: "🧪 Conceptual learning" },
       { time: "8:00 AM - 8:30 AM", task: "Break 1: Breakfast, short walk/stretch", message: "🧘 Refresh" },
       { time: "8:30 AM - 10:30 AM", task: "Study Session 2: New Chapter – Physics: Atoms", message: "🔬 Deep focus" },
@@ -836,6 +823,7 @@
     ]
     ,
     "Day 3": [
+      { time: "5:00 AM - 6:00 AM", task : "Wake Uppp!", message: "Good Morning❤️"},
       { time: "6:00 AM - 8:00 AM", task: "Study Session 1: New Chapter – Chemistry: Periodicity in Properties", message: "📊 Learn trends & logic" },
       { time: "8:00 AM - 8:30 AM", task: "Break 1: Breakfast, move around, brain reset", message: "☕ Light movement" },
       { time: "8:30 AM - 10:30 AM", task: "Study Session 2: New Chapter – Physics: Nuclei", message: "🔬 Deep understanding" },
@@ -852,6 +840,7 @@
     ]
     ,
     "Day 4": [
+      { time: "5:00 AM - 6:00 AM", task : "Wake Uppp!", message: "Good Morning❤️"},
       { time: "6:00 AM - 8:00 AM", task: "Study Session 1: Botany – The Living World", message: "🌱 Biological terms & concepts" },
       { time: "8:00 AM - 8:30 AM", task: "Break 1: Breakfast, light stretch or walk", message: "☕ Recharge brain" },
       { time: "8:30 AM - 10:30 AM", task: "Study Session 2: Physics – Semiconductor Devices", message: "🌟 Diagrams, logic, formulas" },
@@ -868,6 +857,7 @@
     ]
     ,
     "Day 5": [
+      { time: "5:00 AM - 6:00 AM", task : "Wake Uppp!", message: "Good Morning❤️"},
       { time: "6:00 AM - 8:00 AM", task: "Study Session 1: Botany – Biological Classification", message: "🌿 Concepts + flowcharts" },
       { time: "8:00 AM - 8:30 AM", task: "Break 1: Breakfast + stretch or walk", message: "☕ Light recovery" },
       { time: "8:30 AM - 10:30 AM", task: "Study Session 2: Physics – Experimental Skills", message: "📊 Graphs, error analysis" },
@@ -884,6 +874,7 @@
     ]
     ,
     "Day 6": [
+      { time: "5:00 AM - 6:00 AM", task : "Wake Uppp!", message: "Good Morning❤️"},
       { time: "6:00 AM - 8:00 AM", task: "Study Session 1: Botany – Plant Kingdom", message: "🌳 Learn classifications, examples, flowcharts" },
       { time: "8:00 AM - 8:30 AM", task: "Break 1: Breakfast, short movement", message: "☕ ⚡ Refresh body & mind" },
       { time: "8:30 AM - 10:30 AM", task: "Study Session 2: Zoology – Biotechnology: Principles & Processes", message: "🧪 Process diagrams, steps, techniques" },
@@ -900,6 +891,7 @@
     ]
     ,
     "Day 7": [
+      { time: "5:00 AM - 6:00 AM", task : "Wake Uppp!", message: "Good Morning❤️"},
       { time: "6:00 AM - 8:00 AM", task: "Study Session 1: Zoology – Biotechnology and Its Applications", message: "🧪 Learn techniques, uses, ethical issues" },
       { time: "8:00 AM - 8:30 AM", task: "Break 1: Breakfast + walk/stretch", message: "☕ Light reset" },
       { time: "8:30 AM - 10:30 AM", task: "Study Session 2: Revision – Plant Kingdom", message: "🌺 Flowcharts, examples" },
@@ -917,6 +909,7 @@
     ,
 
     "Day 8": [
+      { time: "5:00 AM - 6:00 AM", task : "Wake Uppp!", message: "Good Morning❤️"},
       { time: "6:00 AM - 8:00 AM", task: "Session 1 – Physics Deep Dive", message: "📘 Dual Nature of Radiation, Atoms, Nuclei" },
       { time: "8:00 AM - 8:30 AM", task: "Break 1: Breakfast, movement", message: "☕ Refresh & reset" },
       { time: "8:30 AM - 10:30 AM", task: "Session 2 – Chemistry Full Review", message: "📘 Basic Concepts, Structure of Atom, Periodicity" },
@@ -933,7 +926,7 @@
     ]
     ,
     "Day 9": [
-      { time: "5:30 AM - 6:00 AM", task: "Wake up, hygiene, light morning movement", message: "Activate body & mind" },
+      { time: "5:00 AM - 6:00 AM", task : "Wake Uppp!", message: "Good Morning❤️"},
       { time: "6:00 AM - 7:00 AM", task: "Light Review – Flashcards & Visuals (no new material)", message: "🧘 Confidence booster" },
       { time: "7:00 AM - 7:30 AM", task: "Breakfast", message: "🍳 Balanced meal" },
       { time: "7:30 AM - 9:00 AM", task: "Skim through key summary notes (2–3 mins per chapter)", message: "📑 Gentle refresh, no overload" },
@@ -952,7 +945,7 @@
       { time: "10:00 PM - 11:45 PM", task: "Rest, track your progress, or sleep early", message: "Closure + reset" }
     ],
     "Day 10": [
-      { time: "5:30 AM - 6:00 AM", task: "Wake up + light physical movement, hydrate", message: "🌄 Prime brain" },
+      { time: "5:00 AM - 6:00 AM", task : "Wake Uppp!", message: "Good Morning❤️"},
       { time: "6:00 AM - 7:00 AM", task: "Review performance – Check score, mark distribution by subject", message: "📊 Visualize performance" },
       { time: "7:00 AM - 7:30 AM", task: "Breakfast + short walk", message: "🍳 Refresh" },
       { time: "7:30 AM - 8:30 AM", task: "Review Chemistry – Go over wrong/right MCQs & concepts", message: "🧪 Mark knowledge vs mistake-based" },
@@ -1010,10 +1003,11 @@
 
       if (currentTask) {
         document.getElementById('current-task').innerHTML = `
-          <div class=time>${currentTask.time}</div>
-          <div class="task-box">${currentTask.task}</div>
-          ${currentTask.message ? `<div class="message-container" style="display:block"><div class="message-text">${currentTask.message}</div></div>` : ''}
-        `;
+    <div class="time">${currentTask.time}</div>
+    <div class="task-box">${currentTask.task}</div>
+    ${currentTask.message ? `<div class="message-container"><div class="message-text">${currentTask.message}</div></div>` : ''}
+  `;
+        if (currentTask.message) setScrollingMessage();
       } else {
         document.getElementById('current-task').innerHTML = "No ongoing task.";
       }
@@ -1076,7 +1070,7 @@
     }
   };
 
-  updateSchedule();
+
 
   function openScheduleSelector() {
     const modal = document.getElementById("scheduleModal");
@@ -1151,6 +1145,41 @@
       }
     }
   });
+
+  function setScrollingMessage() {
+    setTimeout(() => {
+      const messageContainer = document.querySelector('#current-task .message-container');
+      const messageText = document.querySelector('#current-task .message-text');
+      if (!messageContainer || !messageText) return;
+
+      messageText.style.animation = 'none';
+      messageText.style.left = '0';
+      messageText.style.transform = 'none';
+
+      const containerWidth = messageContainer.offsetWidth;
+      const textWidth = messageText.scrollWidth;
+
+      const totalDistance = containerWidth + textWidth;
+      const duration = Math.max(totalDistance / 50, 7) * 1000; // ms
+
+      messageText.style.transform = `translateX(${containerWidth}px)`;
+
+      if (messageText._ticker) {
+        messageText._ticker.cancel();
+        messageText._ticker = null;
+      }
+
+      messageText._ticker = messageText.animate([
+        { transform: `translateX(${containerWidth}px)` },
+        { transform: `translateX(-${textWidth}px)` }
+      ], {
+        duration: duration,
+        iterations: Infinity,
+        easing: 'linear'
+      });
+    }, 60);
+  }
+  updateSchedule();
 </script>
 </body>
 </html>
