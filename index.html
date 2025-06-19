@@ -1,631 +1,623 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Interactive study timetable with daily schedules and tasks">
-  <link rel="icon" type="image/png"
-        href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==">
-  <title>Study Timetable</title>
-
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&family=Dancing+Script:wght@400;700&display=swap"
-        rel="stylesheet">
-  <style>
-    body {
-      font-family: 'Poppins', sans-serif;
-      margin: 0;
-      padding: 20px;
-      scroll-behavior: smooth;
-      background: linear-gradient(145deg, #f8faff 0%, #eef2f7 100%);
-      color: #2d3748;
-      min-height: 100vh;
-      overflow-x: hidden;
-      overflow-y: auto;
-    }
-    body.modal-open { overflow: hidden; }
-
-    #sidebar-overlay {
-      display: none;
-      position: fixed;
-      inset: 0;
-      background: rgba(0, 0, 0, 0.5);
-      z-index: 999;
-      opacity: 0;
-      transition: opacity 0.3s ease;
-      will-change: opacity;
-    }
-
-    #sidebar-overlay.visible {
-      opacity: 1;
-      display: block;
-    }
-
-    body.modal-open #sidebar-overlay {
-      display: block;
-    }
-
-
-
-
-    #desktop-overlay {
-      display: none;
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,254);
-      color: white;
-      font-size: 1.6rem;
-      text-align: center;
-      padding-top: 40vh;
-      z-index: 9999;
-    }
-
-
-    #hamburger {
-      position: fixed;
-      right: 20px;
-      z-index: 999;
-      animation: pulse 2s ease-in-out infinite;
-      font-size: 2rem;
-      cursor: pointer;
-      color: rgba(108, 92, 231, 0.9);
-      opacity: 0.9;
-      transition: all 0.3s ease;
-      border: none;
-      background: rgba(255, 255, 255, 0.95);
-      padding: 15px 20px;
-      border-radius: 25px;
-      backdrop-filter: blur(15px);
-      box-shadow: 0 10px 25px rgba(108, 92, 231, 0.2),
-      0 5px 15px rgba(0, 0, 0, 0.1),
-      inset 0 -2px 5px rgba(108, 92, 231, 0.1);
-      transform: scale(1);
-      bottom: 30px;
-    }
-
-
-
-
-    #sidebar {
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      width: 100vw;
-      max-width: 100vw;
-      height: min(65vh, 450px);
-      background: linear-gradient(180deg, #ffffff, #f8faff);
-      box-shadow: 0 -5px 25px rgba(0, 0, 0, 0.15),
-      0 -2px 15px rgba(108, 92, 231, 0.1);
-      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-      z-index: 1000;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 25px;
-      overflow-y: auto;
-      border-radius: 32px 32px 0 0;
-      transform: translateY(100%);
-      transform-origin: bottom;
-      will-change: transform;
-      backface-visibility: hidden;
-      -webkit-backface-visibility: hidden;
-      box-sizing: border-box;
-      backdrop-filter: blur(20px);
-      border-top: 1px solid rgba(255, 255, 255, 0.8);
-    }
-
-
-
-    #sidebar.open {
-      transform: translateY(0%);
-    }
-
-    #sidebar .close-btn {
-      font-size: 2rem;
-      cursor: pointer;
-      position: absolute;
-      top: 10px;
-      right: 10px;
-      color: #2d3748;
-      padding: 10px;
-      transition: transform 0.3s ease;
-      z-index: 2;
-    }
-
-
-    #sidebar .content {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      color: #2d3748;
-      width: 100%;
-      padding-top: 40px;
-      text-align: center;
-    }
-    #sidebar button {
-      color: rgba(108, 92, 231, 0.9);
-      border: 2px solid rgba(108, 92, 231, 0.35);
-      padding: 22px;
-      margin: 15px auto;
-      border-radius: 28px;
-      font-size: 1.2rem;
-      font-weight: 500;
-      cursor: pointer;
-      background: linear-gradient(165deg, #ffffff, #f8faff);
-      box-shadow: 0 35px 70px rgba(108, 92, 231, 0.25),
-      0 25px 45px rgba(0, 0, 0, 0.12),
-      0 15px 30px rgba(108, 92, 231, 0.12),
-      inset 0 -2px 10px rgba(108, 92, 231, 0.1),
-      inset 0 2px 10px rgba(255, 255, 255, 0.8);
-      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-      transform: translateY(0);
-      will-change: transform, box-shadow;
-      backdrop-filter: blur(10px);
-      display: block;
-      width: 85%;
-      position: relative;
-      overflow: hidden;
-      letter-spacing: 0.5px;
-    }
-
-    #sidebar button:hover {
-      background-position: 100% 100%;
-      transform: translateY(-2px);
-      box-shadow: 0 25px 45px rgba(108, 92, 231, 0.4),
-      0 12px 25px rgba(0, 0, 0, 0.2),
-      inset 0 -2px 10px rgba(108, 92, 231, 0.15);
-    }
-
-
-    #sidebar button:active {
-      transform: translateY(1px);
-    }
-    #sidebar .love {
-      text-align: center;
-      font-size: 0.9rem;
-      color: #aaa;
-      margin-top: auto;
-      opacity: 0.2;
-    }
-
-
-    .modal {
-      display: none;
-      position: fixed;
-      z-index: 999;
-      inset: 0;
-      background-color: rgba(255, 255, 255, 0.1);
-      backdrop-filter: blur(5px);
-      -webkit-backdrop-filter: blur(10px);
-      padding-top: 60px;
-    }
-
-    .modal-content {
-      background: linear-gradient(145deg, #ffffff, #f8faff);
-      margin: auto;
-      padding: 35px;
-      border-radius: 35px;
-      width: 85%;
-      max-width: 400px;
-      box-shadow: 0 35px 70px rgba(108, 92, 231, 0.25),
-      0 25px 45px rgba(0, 0, 0, 0.1),
-      inset 0 2px 15px rgba(255, 255, 255, 0.6);
-      overflow-y: auto;
-      max-height: 85vh;
-      animation: modalFadeIn 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-      backdrop-filter: blur(25px);
-      -webkit-backdrop-filter: blur(25px);
-      border: 1px solid rgba(255, 255, 255, 0.8);
-      transform: translateZ(0);
-      transform: translateZ(0);
-      will-change: transform;
-      position: relative;
-    }
-    @keyframes modalFadeIn {
-      from { opacity: 0; transform: translateY(-30px) scale(0.95); }
-      to { opacity: 1; transform: translateY(0) scale(1); }
-    }
-    .modal-content h3 { margin-top: 0; font-size: 1.5rem; color: #2d3748; }
-    .modal-content button {
-      margin: 10px 5px;
-      padding: 12px 24px;
-      font-size: 1rem;
-      border: none;
-      border-radius: 12px;
-      cursor: pointer;
-      background: #6c5ce7;
-      color: white;
-      box-shadow: 0 6px 15px rgba(108,92,231,0.2);
-    }
-
-    @keyframes gradientHeader {
-      0% {
-        background-position: 0% 50%;
-      }
-      50% {
-        background-position: 100% 50%;
-      }
-      100% {
-        background-position: 0% 50%;
-      }
-    }
-
-
-    header {
-      background: linear-gradient(165deg, #4834d4 0%, #686de0 25%, #7a6eea 50%, #686de0 75%, #4834d4 100%);
-      background-size: 400% 400%;
-      animation: gradientHeader 15s ease-in-out infinite;
-      color: white;
-      text-align: center;
-      padding: 45px 40px 65px 40px;
-      margin: -20px -20px 35px -20px;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.4);
-      border-radius: 0 0 35px 35px;
-      box-shadow: 0 25px 60px rgba(108, 92, 231, 0.4),
-      0 15px 35px rgba(0, 0, 0, 0.2),
-      0 10px 20px rgba(108, 92, 231, 0.2),
-      inset 0 -15px 30px rgba(255, 255, 255, 0.2),
-      inset 0 5px 15px rgba(255, 255, 255, 0.1);
-      transform: translateZ(0);
-      backface-visibility: hidden;
-      position: relative;
-      z-index: 1;
-      backdrop-filter: blur(15px);
-      will-change: transform;
-      transition: all 0.3s ease-out;
-    }
-    h1 { font-size: 2.8rem; margin:0; font-weight:600 }
-    #day-title {
-      font-size: 2.4rem;
-      font-weight: bold;
-      text-align: center;
-      margin: 30px 0;
-      color: #6c5ce7;
-      text-shadow: 2px 2px 4px rgba(108, 92, 231, 0.1);
-      letter-spacing: 1px;
-      position: relative;
-    }
-
-    @keyframes gradientTask {
-      0% {
-        background-position: 0% 50%;
-        opacity: 0.95;
-      }
-      50% {
-        background-position: 100% 50%;
-        opacity: 1;
-      }
-      100% {
-        background-position: 0% 50%;
-        opacity: 0.95;
-      }
-    }
-
-
-    #current-task {
-      font-size: 1.8rem;
-      font-weight: 500;
-      color: #2d3748;
-      background: linear-gradient(165deg, #ffffff, #f8faff, #ffffff);
-      background-size: 300% 300%;
-      animation: gradientTask 15s ease infinite;
-      padding: 40px 30px;
-      border-radius: 30px;
-      backdrop-filter: blur(15px);
-      -webkit-backdrop-filter: blur(15px);
-      margin: 0 auto 30px auto;
-      box-shadow: 0 35px 70px rgba(108, 92, 231, 0.15),
-      0 25px 45px rgba(0, 0, 0, 0.1),
-      0 15px 30px rgba(108, 92, 231, 0.1),
-      inset 0 -2px 10px rgba(255, 255, 255, 0.9),
-      inset 0 2px 10px rgba(108, 92, 231, 0.12);
-      border: 1px solid rgba(255, 255, 255, 0.9);
-      transform: translateY(0);
-      transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-      text-align: center;
-      max-width: 650px;
-      will-change: transform, box-shadow;
-      overflow: hidden;
-    }
-
-    #current-task {
-      box-shadow: 0 35px 70px rgba(108, 92, 231, 0.2),
-      0 25px 45px rgba(0, 0, 0, 0.15),
-      inset 0 -3px 15px rgba(255, 255, 255, 0.9);
-    }
-
-    #current-task .time {
-      font-size: 2.2rem;
-      font-weight: 600;
-      text-decoration: underline;
-      color: #6c5ce7;
-    }
-
-    #current-task .task-box {
-      background-color: #e8eaf6;
-      border-radius: 20px;
-      padding: 20px;
-      margin-top: 15px;
-      box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
-    }
-
-    #current-task .message-container {
-      display: none;
-      position: relative;
-      overflow: hidden;
-      background-color: #e8eaf6;
-      border-radius: 16px;
-      margin-top: 20px;
-      padding: 15px;
-      box-shadow: 0 8px 25px rgba(108, 92, 231, 0.15);
-      border: 1px solid rgba(255, 255, 255, 0.8);
-      backdrop-filter: blur(10px);
-      transition: all 0.3s ease;
-      width: calc(100% - 30px);
-      height: 40px;
-      line-height: 40px;
-    }
-
-
-    #current-task .message-text {
-      position: absolute;
-      white-space: nowrap;
-      color: #000000;
-      font-weight: 500;
-      letter-spacing: 0.5px;
-      text-shadow: 0 1px 2px rgba(108, 92, 231, 0.1);
-      will-change: transform;
-      top: 0;
-      height: 100%;
-      display: flex;
-      align-items: center;
-    }
-    
-
-
-    #next-tasks {
-      font-size: 1.5rem;
-      color: #4a5568;
-      margin: 30px auto;
-      padding: 25px;
-      background: linear-gradient(145deg, #ffffff, #f8faff);
-      border-radius: 20px;
-      box-shadow: 0 15px 35px rgba(108, 92, 231, 0.15);
-      max-width: 700px;
-    }
-
-    .task {
-      margin: 20px 0;
-      padding: 25px;
-      background: linear-gradient(165deg, #f0f2f8, #e8eaf6);
-      transition: all 0.3s ease;
-      cursor: pointer;
-      border-radius: 25px;
-      box-shadow: 0 25px 50px rgba(108, 92, 231, 0.15),
-      0 15px 30px rgba(0, 0, 0, 0.08),
-      0 10px 20px rgba(108, 92, 231, 0.08),
-      inset 0 -2px 5px rgba(255, 255, 255, 0.7),
-      inset 0 2px 5px rgba(108, 92, 231, 0.05);
-      font-size: 1.1rem;
-      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-      transform: translateX(0) scale(1);
-      will-change: transform, box-shadow;
-      border: 1px solid rgba(255, 255, 255, 0.8);
-      backdrop-filter: blur(10px);
-    }
-
-    .show-full, .show-next {
-      display: inline-block;
-      text-align: center;
-      background: linear-gradient(165deg, #4834d4 0%, #686de0 25%, #7a6eea 50%, #686de0 75%, #4834d4 100%);
-      background-size: 400% 400%;
-      animation: gradientHeader 15s ease-in-out infinite;
-      color: white;
-      font-size: 1.2rem;
-      padding: 18px 35px;
-      border-radius: 20px;
-      cursor: pointer;
-      text-decoration: none;
-      box-shadow: 0 25px 60px rgba(108, 92, 231, 0.4),
-      0 15px 35px rgba(0, 0, 0, 0.2),
-      0 10px 20px rgba(108, 92, 231, 0.2),
-      inset 0 -15px 30px rgba(255, 255, 255, 0.2),
-      inset 0 5px 15px rgba(255, 255, 255, 0.1);
-
-
-      flex: 1;
-      min-width: 160px;
-      max-width: 200px;
-      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-      transform: translateY(0);
-      will-change: transform;
-    }
-
-
-
-    .show-full:focus, .show-next:focus {
-      outline: none;
-      transform: translateY(-3px);
-      box-shadow: 0 15px 30px rgba(108, 92, 231, 0.4);
-    }
-
-
-    .show-full:active, .show-next:active {
-      transform: translateY(1px);
-    }
-
-
-    .modal {
-      display: none;
-      position: fixed;
-      z-index: 9999;
-      left: 0;
-      top: 0;
-      width: 100%;
-      height: 100%;
-      background-color: rgba(0, 0, 0, 0.5);
-      padding-top: 60px;
-      overflow: hidden;
-    }
-
-
-    .modal-content {
-      background: linear-gradient(165deg, #ffffff, #f8faff);
-      margin: auto;
-      padding: 35px;
-      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      border-radius: 35px;
-      width: 85%;
-      max-width: 700px;
-      box-shadow: 0 40px 80px rgba(108, 92, 231, 0.15),
-      0 30px 60px rgba(0, 0, 0, 0.1),
-      0 15px 30px rgba(108, 92, 231, 0.1),
-      inset 0 2px 12px rgba(255, 255, 255, 0.5);
-      overflow-y: auto;
-      max-height: 85vh;
-      border: 1px solid rgba(255, 255, 255, 0.8);
-      animation: modalFadeIn 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-      position: relative;
-
-    }
-
-    @keyframes modalFadeIn {
-      0% {
-        opacity: 0;
-        transform: translateY(-30px) scale(0.95);
-      }
-      100% {
-        opacity: 1;
-        transform: translateY(0) scale(1);
-      }
-    }
-
-    .close {
-      color: #aaa;
-      float: right;
-      font-size: 30px;
-      font-weight: bold;
-      cursor: pointer;
-    }
-
-    .close:hover,
-    .close:focus {
-      color: black;
-      text-decoration: none;
-      cursor: pointer;
-    }
-
-    #full-schedule, #next-day-schedule, #scheduleDetails {
-      list-style-type: none;
-      padding-left: 0;
-    }
-
-    #full-schedule li, #next-day-schedule li, #scheduleDetails li {
-      padding: 18px;
-      font-size: 1.1rem;
-      background-color: #f4f6f9;
-      border-radius: 15px;
-      margin: 20px auto;
-      border: 2px solid rgba(255, 255, 255, 0.8);
-      box-shadow: 6px 6px 12px rgba(0, 0, 0, 0.1);
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      color: #333;
-      line-height: 1.6;
-      transition: all 0.3s ease-in-out;
-      text-align: center;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      width: calc(100% - 40px);
-      max-width: 600px;
-    }
-
-    #full-schedule li .time, #next-day-schedule li .time, #scheduleDetails li .time {
-      font-size: 1.2rem;
-      font-weight: bold;
-      margin-bottom: 12px;
-      color: #4a90e2;
-    }
-
-    #full-schedule li .task, #next-day-schedule li .task,#scheduleDetails li .task {
-      font-size: 1rem;
-      color: #333;
-    }
-
-    #full-schedule li:last-child, #next-day-schedule li:last-child, #scheduleDetails li:last-child {
-      margin-bottom: 0;
-    }
-
-    #full-schedule li, #next-day-schedule li, #scheduleDetails li{
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-    }
-
-
-    @media (max-width: 600px) {
-      header {
-        padding: 20px;
-      }
-
-      #current-task {
-        font-size: 1.6rem;
-        padding: 15px;
-      }
-
-      #next-tasks {
-        font-size: 1.1rem;
-        padding: 12px;
-      }
-
-      .task {
-        font-size: 0.9rem;
-        padding: 8px;
-      }
-
-      .show-full, .show-next {
-        font-size: 0.9rem;
-        padding: 10px 16px;
-        min-width: 140px;
-      }
-    }
-
-
-    .modal-content.top-modal {
-      margin: 5vh auto;
-      animation: slideDownModal 0.5s ease-out forwards;
-    }
-
-    @keyframes slideDownModal {
-      from {
-        transform: translateY(-200px);
-        opacity: 0;
-      }
-      to {
-        transform: translateY(0);
-        opacity: 1;
-      }
-    }
-
-
-
-
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Interactive study timetable with daily schedules and tasks">
+    <link rel="icon" type="image/png"
+          href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==">
+    <title>Study Timetable</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&family=Dancing+Script:wght@400;700&display=swap"
+          rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 20px;
+            scroll-behavior: smooth;
+            background: linear-gradient(145deg, #f8faff 0%, #eef2f7 100%);
+            color: #2d3748;
+            min-height: 100vh;
+            overflow-x: hidden;
+            overflow-y: auto;
+        }
+        body.modal-open { overflow: hidden; }
+
+        #sidebar-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            will-change: opacity;
+        }
+
+        #sidebar-overlay.visible {
+            opacity: 1;
+            display: block;
+        }
+
+        body.modal-open #sidebar-overlay {
+            display: block;
+        }
+
+
+
+
+        #desktop-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,254);
+            color: white;
+            font-size: 1.6rem;
+            text-align: center;
+            padding-top: 40vh;
+            z-index: 9999;
+        }
+
+
+        #hamburger {
+            position: fixed;
+            right: 20px;
+            z-index: 999;
+            animation: pulse 2s ease-in-out infinite;
+            font-size: 2rem;
+            cursor: pointer;
+            color: rgba(108, 92, 231, 0.9);
+            opacity: 0.9;
+            transition: all 0.3s ease;
+            border: none;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 15px 20px;
+            border-radius: 25px;
+            box-shadow: 0 10px 25px rgba(108, 92, 231, 0.2),
+            0 5px 15px rgba(0, 0, 0, 0.1),
+            inset 0 -2px 5px rgba(108, 92, 231, 0.1);
+            transform: scale(1);
+            bottom: 30px;
+        }
+
+
+
+
+        #sidebar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            width: 100vw;
+            max-width: 100vw;
+            height: min(65vh, 450px);
+            background: linear-gradient(180deg, #ffffff, #f8faff);
+            box-shadow: 0 -5px 25px rgba(0, 0, 0, 0.15),
+            0 -2px 15px rgba(108, 92, 231, 0.1);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 25px;
+            overflow-y: auto;
+            border-radius: 32px 32px 0 0;
+            transform: translateY(100%);
+            transform-origin: bottom;
+            will-change: transform;
+            backface-visibility: hidden;
+            -webkit-backface-visibility: hidden;
+            box-sizing: border-box;
+            border-top: 1px solid rgba(255, 255, 255, 0.8);
+        }
+
+
+
+        #sidebar.open {
+            transform: translateY(0%);
+        }
+
+        #sidebar .close-btn {
+            font-size: 2rem;
+            cursor: pointer;
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            color: #2d3748;
+            padding: 10px;
+            transition: transform 0.3s ease;
+            z-index: 2;
+        }
+
+
+        #sidebar .content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            color: #2d3748;
+            width: 100%;
+            padding-top: 40px;
+            text-align: center;
+        }
+        #sidebar button {
+            color: rgba(108, 92, 231, 0.9);
+            border: 2px solid rgba(108, 92, 231, 0.35);
+            padding: 22px;
+            margin: 15px auto;
+            border-radius: 28px;
+            font-size: 1.2rem;
+            font-weight: 500;
+            cursor: pointer;
+            background: linear-gradient(165deg, #ffffff, #f8faff);
+            box-shadow: 0 35px 70px rgba(108, 92, 231, 0.25),
+            0 25px 45px rgba(0, 0, 0, 0.12),
+            0 15px 30px rgba(108, 92, 231, 0.12),
+            inset 0 -2px 10px rgba(108, 92, 231, 0.1),
+            inset 0 2px 10px rgba(255, 255, 255, 0.8);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            transform: translateY(0);
+            will-change: transform, box-shadow;
+            backdrop-filter: blur(10px);
+            display: block;
+            width: 85%;
+            position: relative;
+            overflow: hidden;
+            letter-spacing: 0.5px;
+        }
+
+        #sidebar button:hover {
+            background-position: 100% 100%;
+            transform: translateY(-2px);
+            box-shadow: 0 25px 45px rgba(108, 92, 231, 0.4),
+            0 12px 25px rgba(0, 0, 0, 0.2),
+            inset 0 -2px 10px rgba(108, 92, 231, 0.15);
+        }
+
+
+        #sidebar button:active {
+            transform: translateY(1px);
+        }
+        #sidebar .love {
+            text-align: center;
+            font-size: 0.9rem;
+            color: #aaa;
+            margin-top: auto;
+            opacity: 0.2;
+        }
+
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 999;
+            inset: 0;
+            background-color: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(10px);
+            padding-top: 60px;
+        }
+
+        .modal-content {
+            background: linear-gradient(145deg, #ffffff, #f8faff);
+            margin: auto;
+            padding: 35px;
+            border-radius: 35px;
+            width: 85%;
+            max-width: 400px;
+            box-shadow: 0 35px 70px rgba(108, 92, 231, 0.25),
+            0 25px 45px rgba(0, 0, 0, 0.1),
+            inset 0 2px 15px rgba(255, 255, 255, 0.6);
+            overflow-y: auto;
+            max-height: 85vh;
+            animation: modalFadeIn 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            transform: translateZ(0);
+            transform: translateZ(0);
+            will-change: transform;
+            position: relative;
+        }
+        @keyframes modalFadeIn {
+            from { opacity: 0; transform: translateY(-30px) scale(0.95); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+        .modal-content h3 { margin-top: 0; font-size: 1.5rem; color: #2d3748; }
+        .modal-content button {
+            margin: 10px 5px;
+            padding: 12px 24px;
+            font-size: 1rem;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            background: #6c5ce7;
+            color: white;
+            box-shadow: 0 6px 15px rgba(108,92,231,0.2);
+        }
+
+        @keyframes gradientHeader {
+            0% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+
+        header {
+            background: linear-gradient(165deg, #4834d4 0%, #686de0 25%, #7a6eea 50%, #686de0 75%, #4834d4 100%);
+            background-size: 400% 400%;
+            animation: gradientHeader 15s ease-in-out infinite;
+            color: white;
+            text-align: center;
+            padding: 45px 40px 65px 40px;
+            margin: -20px -20px 35px -20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.4);
+            border-radius: 0 0 35px 35px;
+            box-shadow: 0 25px 60px rgba(108, 92, 231, 0.4),
+            0 15px 35px rgba(0, 0, 0, 0.2),
+            0 10px 20px rgba(108, 92, 231, 0.2),
+            inset 0 -15px 30px rgba(255, 255, 255, 0.2),
+            inset 0 5px 15px rgba(255, 255, 255, 0.1);
+            transform: translateZ(0);
+            backface-visibility: hidden;
+            position: relative;
+            z-index: 1;
+            backdrop-filter: blur(15px);
+            will-change: transform;
+            transition: all 0.3s ease-out;
+        }
+        h1 { font-size: 2.8rem; margin:0; font-weight:600 }
+        #day-title {
+            font-size: 2.4rem;
+            font-weight: bold;
+            text-align: center;
+            margin: 30px 0;
+            color: #6c5ce7;
+            text-shadow: 2px 2px 4px rgba(108, 92, 231, 0.1);
+            letter-spacing: 1px;
+            position: relative;
+        }
+
+        @keyframes gradientTask {
+            0% {
+                background-position: 0% 50%;
+                opacity: 0.95;
+            }
+            50% {
+                background-position: 100% 50%;
+                opacity: 1;
+            }
+            100% {
+                background-position: 0% 50%;
+                opacity: 0.95;
+            }
+        }
+
+
+        #current-task {
+            font-size: 1.8rem;
+            font-weight: 500;
+            color: #2d3748;
+            background: linear-gradient(165deg, #ffffff, #f8faff, #ffffff);
+            background-size: 300% 300%;
+            animation: gradientTask 15s ease infinite;
+            padding: 40px 30px;
+            border-radius: 30px;
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            margin: 0 auto 30px auto;
+            box-shadow: 0 35px 70px rgba(108, 92, 231, 0.15),
+            0 25px 45px rgba(0, 0, 0, 0.1),
+            0 15px 30px rgba(108, 92, 231, 0.1),
+            inset 0 -2px 10px rgba(255, 255, 255, 0.9),
+            inset 0 2px 10px rgba(108, 92, 231, 0.12);
+            border: 1px solid rgba(255, 255, 255, 0.9);
+            transform: translateY(0);
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            text-align: center;
+            max-width: 650px;
+            will-change: transform, box-shadow;
+            overflow: hidden;
+        }
+
+        #current-task {
+            box-shadow: 0 35px 70px rgba(108, 92, 231, 0.2),
+            0 25px 45px rgba(0, 0, 0, 0.15),
+            inset 0 -3px 15px rgba(255, 255, 255, 0.9);
+        }
+
+        #current-task .time {
+            font-size: 2.2rem;
+            font-weight: 600;
+            text-decoration: underline;
+            color: #6c5ce7;
+        }
+
+        #current-task .task-box {
+            background-color: #e8eaf6;
+            border-radius: 20px;
+            padding: 20px;
+            margin-top: 15px;
+            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        #current-task .message-container {
+            display: none;
+            position: relative;
+            overflow: hidden;
+            background-color: #e8eaf6;
+            border-radius: 16px;
+            margin-top: 20px;
+            padding: 15px;
+            box-shadow: 0 8px 25px rgba(108, 92, 231, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+            width: calc(100% - 30px);
+            height: 40px;
+            line-height: 40px;
+        }
+
+
+        #current-task .message-text {
+            position: absolute;
+            white-space: nowrap;
+            color: #000000;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+            text-shadow: 0 1px 2px rgba(108, 92, 231, 0.1);
+            will-change: transform;
+            top: 0;
+            height: 100%;
+            display: flex;
+            align-items: center;
+        }
+
+
+
+        #next-tasks {
+            font-size: 1.5rem;
+            color: #4a5568;
+            margin: 30px auto;
+            padding: 25px;
+            background: linear-gradient(145deg, #ffffff, #f8faff);
+            border-radius: 25px;
+            box-shadow: 0 15px 35px rgba(108, 92, 231, 0.15);
+            max-width: 700px;
+        }
+
+        .task {
+            margin: 20px 0;
+            padding: 25px;
+            background: linear-gradient(165deg, #f0f2f8, #e8eaf6);
+            border-radius: 15px;
+            box-shadow: 0 25px 50px rgba(108, 92, 231, 0.15),
+            0 15px 30px rgba(0, 0, 0, 0.08),
+            0 10px 20px rgba(108, 92, 231, 0.08),
+            inset 0 -2px 5px rgba(255, 255, 255, 0.7),
+            inset 0 2px 5px rgba(108, 92, 231, 0.05);
+            font-size: 1.1rem;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            transform: translateX(0) scale(1);
+            will-change: transform, box-shadow;
+            border: 1px solid rgba(255, 255, 255, 0.8);
+
+        }
+
+        .show-full, .show-next {
+            display: inline-block;
+            text-align: center;
+            background: linear-gradient(165deg, #4834d4 0%, #686de0 25%, #7a6eea 50%, #686de0 75%, #4834d4 100%);
+            background-size: 400% 400%;
+            animation: gradientHeader 15s ease-in-out infinite;
+            color: white;
+            font-size: 1.2rem;
+            padding: 18px 35px;
+            border-radius: 20px;
+            cursor: pointer;
+            text-decoration: none;
+            box-shadow: 0 25px 60px rgba(108, 92, 231, 0.4),
+            0 15px 35px rgba(0, 0, 0, 0.2),
+            0 10px 20px rgba(108, 92, 231, 0.2),
+            inset 0 -15px 30px rgba(255, 255, 255, 0.2),
+            inset 0 5px 15px rgba(255, 255, 255, 0.1);
+            flex: 1;
+            min-width: 160px;
+            max-width: 200px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            transform: translateY(0);
+            will-change: transform;
+        }
+
+        .show-full:focus, .show-next:focus {
+            outline: none;
+            transform: translateY(-3px);
+            box-shadow: 0 15px 30px rgba(108, 92, 231, 0.4);
+        }
+
+
+        .show-full:active, .show-next:active {
+            transform: translateY(1px);
+        }
+
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 9999;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            padding-top: 60px;
+            overflow: hidden;
+        }
+
+
+        .modal-content {
+            background: linear-gradient(165deg, #ffffff, #f8faff);
+            margin: auto;
+            padding: 35px;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-radius: 35px;
+            width: 85%;
+            max-width: 700px;
+            box-shadow: 0 40px 80px rgba(108, 92, 231, 0.15),
+            0 30px 60px rgba(0, 0, 0, 0.1),
+            0 15px 30px rgba(108, 92, 231, 0.1),
+            inset 0 2px 12px rgba(255, 255, 255, 0.5);
+            overflow-y: auto;
+            max-height: 85vh;
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            animation: modalFadeIn 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+
+        }
+
+        @keyframes modalFadeIn {
+            0% {
+                opacity: 0;
+                transform: translateY(-30px) scale(0.95);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 30px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        #full-schedule, #next-day-schedule, #scheduleDetails {
+            list-style-type: none;
+            padding-left: 0;
+        }
+
+        #full-schedule li, #next-day-schedule li, #scheduleDetails li {
+            padding: 18px;
+            font-size: 1.1rem;
+            background-color: #f4f6f9;
+            border-radius: 15px;
+            margin: 20px auto;
+            border: 2px solid rgba(255, 255, 255, 0.8);
+            box-shadow: 6px 6px 12px rgba(0, 0, 0, 0.1);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #333;
+            line-height: 1.6;
+            transition: all 0.3s ease-in-out;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            width: calc(100% - 40px);
+            max-width: 600px;
+        }
+
+        #full-schedule li .time, #next-day-schedule li .time, #scheduleDetails li .time {
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-bottom: 12px;
+            color: #4a90e2;
+        }
+
+        #full-schedule li .task, #next-day-schedule li .task,#scheduleDetails li .task {
+            font-size: 1rem;
+            color: #333;
+        }
+
+        #full-schedule li:last-child, #next-day-schedule li:last-child, #scheduleDetails li:last-child {
+            margin-bottom: 0;
+        }
+
+        #full-schedule li, #next-day-schedule li, #scheduleDetails li{
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+
+        @media (max-width: 600px) {
+            header {
+                padding: 20px;
+            }
+
+            #current-task {
+                font-size: 1.6rem;
+                padding: 15px;
+            }
+
+            #next-tasks {
+                font-size: 1.1rem;
+                padding: 12px;
+            }
+
+            .task {
+                font-size: 0.9rem;
+                padding: 8px;
+            }
+
+            .show-full, .show-next {
+                font-size: 0.9rem;
+                padding: 10px 16px;
+                min-width: 140px;
+            }
+        }
+
+
+        .modal-content.top-modal {
+            margin: 5vh auto;
+            animation: slideDownModal 0.5s ease-out forwards;
+        }
+
+        @keyframes slideDownModal {
+            from {
+                transform: translateY(-200px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+
+
+
+    </style>
 </head>
 <body>
 <div id="desktop-overlay">This website is not designed for desktop viewing. Switch to mobile.</div>
 <button id="hamburger" aria-label="Open menu">&#9776;</button>
 
 <header role="banner">
-  <h1>Study Timetable</h1>
-  <div style="font-family: 'Dancing Script', cursive; font-size: 1.2rem; margin-top: -5px; opacity: 0.9;">for
-    adyasha
-  </div>
+    <h1>Study Timetable</h1>
+    <div style="font-family: 'Dancing Script', cursive; font-size: 1.2rem; margin-top: -5px; opacity: 0.9;">for
+        adyasha
+    </div>
 </header>
 
 <div id="day-title">
@@ -634,552 +626,552 @@
 <div id="next-tasks"></div>
 
 <div style="display:flex;justify-content:center;gap:15px;margin:20px auto;max-width:600px;">
-  <a class="show-full" onclick="showFullSchedule()">Show Full Day's Schedule</a>
-  <a class="show-next" onclick="showNextDaySchedule()">Show Next Day's Schedule</a>
+    <a class="show-full" onclick="showFullSchedule()">Show Full Day's Schedule</a>
+    <a class="show-next" onclick="showNextDaySchedule()">Show Next Day's Schedule</a>
 </div>
 
 <div id="full-day-modal" class="modal">
-  <div class="modal-content">
-    <span class="close" onclick="closeModal('full-day-modal')">&times;</span>
-    <h2>Full Day's Schedule</h2>
-    <ul id="full-schedule"></ul>
-  </div>
+    <div class="modal-content">
+        <span class="close" onclick="closeModal('full-day-modal')">&times;</span>
+        <h2>Full Day's Schedule</h2>
+        <ul id="full-schedule"></ul>
+    </div>
 </div>
 
 
 <div id="next-day-modal" class="modal">
-  <div class="modal-content">
-    <span class="close" onclick="closeModal('next-day-modal')">&times;</span>
-    <h2>Next Day's Schedule</h2>
-    <ul id="next-day-schedule"></ul>
-  </div>
+    <div class="modal-content">
+        <span class="close" onclick="closeModal('next-day-modal')">&times;</span>
+        <h2>Next Day's Schedule</h2>
+        <ul id="next-day-schedule"></ul>
+    </div>
 </div>
 
 
 <div id="sidebar">
-  <div class="close-btn">&times;</div>
-  <div class="content">
-    <div>
-      <button id="surprise-open-btn">Click Here for Surprise</button>
-      <button onclick="openScheduleSelector()">Show Complete Schedule</button>
+    <div class="close-btn">&times;</div>
+    <div class="content">
+        <div>
+            <button id="surprise-open-btn">Click Here for Surprise</button>
+            <button onclick="openScheduleSelector()">Show Complete Schedule</button>
+        </div>
+        <div class="love">made with ❤️ by Subha for Adyaaaaa:)</div>
     </div>
-    <div class="love">made with ❤️ by Subha for Adyaaaaa:)</div>
-  </div>
 </div>
 <div id="sidebar-overlay"></div>
 
 <div id="surprise-modal" class="modal">
-  <div class="modal-content">
-    <h3 id="surprise-question">Do you like me?</h3>
-    <div id="surprise-buttons">
-      <button class="yes-btn">Yes</button>
-      <button class="no-btn">No</button>
+    <div class="modal-content">
+        <h3 id="surprise-question">Do you like me?</h3>
+        <div id="surprise-buttons">
+            <button class="yes-btn">Yes</button>
+            <button class="no-btn">No</button>
+        </div>
     </div>
-  </div>
 </div>
 
 <div id="scheduleModal" class="modal">
-  <div class="modal-content top-modal">
-    <span class="close" onclick="closeScheduleSelector()">&times;</span>
-    <h3>Select Day to View Schedule</h3>
-    <select id="daySelector" style="width:100%; padding:12px; font-size:1rem; border-radius:12px; margin-bottom: 1rem;">
-    </select>
-    <button onclick="submitDaySelection()">Submit</button>
-  </div>
+    <div class="modal-content top-modal">
+        <span class="close" onclick="closeScheduleSelector()">&times;</span>
+        <h3>Select Day to View Schedule</h3>
+        <select id="daySelector" style="width:100%; padding:12px; font-size:1rem; border-radius:12px; margin-bottom: 1rem;">
+        </select>
+        <button onclick="submitDaySelection()">Submit</button>
+    </div>
 </div>
 
 <div id="dayScheduleModal" class="modal">
-  <div class="modal-content top-modal">
-    <span class="close" onclick="closeDaySchedule()">&times;</span>
-    <h3 id="scheduleTitle">Schedule for Day</h3>
-    <ul id="scheduleDetails" style="padding-left: 20px;"></ul>
-  </div>
+    <div class="modal-content top-modal">
+        <span class="close" onclick="closeDaySchedule()">&times;</span>
+        <h3 id="scheduleTitle">Schedule for Day</h3>
+        <ul id="scheduleDetails" style="padding-left: 20px;"></ul>
+    </div>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
 <script>
-  function checkDesktop() {
-    if (window.innerWidth > 600) {
-      document.body.style.overflow='hidden';
-      document.getElementById('desktop-overlay').style.display='block';
+    function checkDesktop() {
+        if (window.innerWidth > 600) {
+            document.body.style.overflow='hidden';
+            document.getElementById('desktop-overlay').style.display='block';
+        }
     }
-  }
-  window.addEventListener('load', checkDesktop);
-  window.addEventListener('resize', checkDesktop);
+    window.addEventListener('load', checkDesktop);
+    window.addEventListener('resize', checkDesktop);
 
-  document.getElementById('hamburger').onclick = () => {
-    const sidebar = document.getElementById('sidebar');
-    const overlay = document.getElementById('sidebar-overlay');
-    sidebar.classList.add('open');
-    overlay.classList.add('visible');
-    document.body.classList.add('modal-open');
-  };
-  document.querySelector('#sidebar .close-btn').onclick = () => {
-    const sidebar = document.getElementById('sidebar');
-    const overlay = document.getElementById('sidebar-overlay');
-    sidebar.classList.remove('open');
-    overlay.classList.remove('visible');
-    document.body.classList.remove('modal-open');
-  };
-
-  const questions = [
-    'Kya tum mujhe pasand karte ho?',
-    'pls maan jao',
-    'I will cry!!!','pls say yes!',
-    'kya aap itne pathhar dil ho madam',
-    'itni nautanki mat karo madam,say yes','Please',
-    'pleaseee','pleaseeeeee','last chance','very last chance',
-    'very very very last chance','final chance','mujhse acha nhi milega, soch lo',
-    'phirse soch lo','ye akhri mauka hai','aapne to had hi kardi','aap bahut gande ho',
-    'aap bure insaan ho','ye question nhi rukenge haha!!, yes bol do'
-  ];
-  let currentQuestionIndex = 0;
-  const qElem = document.getElementById('surprise-question');
-  const btns = document.getElementById('surprise-buttons');
-  const surpriseModal = document.getElementById('surprise-modal');
-
-  function popConfetti() {
-    confetti({
-      particleCount: 80,
-      spread: 60,
-      origin: {y: 0.6},
-      disableForReducedMotion: true,
-      useWorker: true
-    });
-  }
-
-  document.getElementById('surprise-open-btn').onclick = () => {
-    currentQuestionIndex = 0;
-    qElem.textContent = questions[currentQuestionIndex];
-    btns.innerHTML = `<button class="yes-btn">Yes</button><button class="no-btn">No</button>`;
-    surpriseModal.style.display = 'block';
-    document.body.classList.add('modal-open');
-    setupHandlers();
-  };
-
-  function setupHandlers() {
-    const yes = btns.querySelector('.yes-btn');
-    const no = btns.querySelector('.no-btn');
-    yes.onclick = (e) => {
-      e.stopPropagation();
-      popConfetti();
-      surpriseModal.style.display = 'none';
-      document.body.classList.remove('modal-open');
-      document.getElementById('sidebar').classList.remove('open');
-      document.getElementById('sidebar-overlay').classList.remove('visible');
+    document.getElementById('hamburger').onclick = () => {
+        const sidebar = document.getElementById('sidebar');
+        const overlay = document.getElementById('sidebar-overlay');
+        sidebar.classList.add('open');
+        overlay.classList.add('visible');
+        document.body.classList.add('modal-open');
     };
-    no.onclick = (e) => {
-      e.stopPropagation();
-      currentQuestionIndex = (currentQuestionIndex + 1) % questions.length;
-      qElem.textContent = questions[currentQuestionIndex];
-      btns.innerHTML = `<button class="yes-btn">Yes</button><button class="no-btn">No</button>`;
-      setupHandlers();
-    };
-  }
-
-  window.onclick = e => {
-    if (e.target.classList.contains('modal')) {
-      if (!e.target.id.includes('surprise')) {
-        e.target.style.display = 'none';
+    document.querySelector('#sidebar .close-btn').onclick = () => {
+        const sidebar = document.getElementById('sidebar');
+        const overlay = document.getElementById('sidebar-overlay');
+        sidebar.classList.remove('open');
+        overlay.classList.remove('visible');
         document.body.classList.remove('modal-open');
-      }
+    };
+
+    const questions = [
+        'Kya tum mujhe pasand karte ho?',
+        'pls maan jao',
+        'I will cry!!!','pls say yes!',
+        'kya aap itne pathhar dil ho madam',
+        'itni nautanki mat karo madam,say yes','Please',
+        'pleaseee','pleaseeeeee','last chance','very last chance',
+        'very very very last chance','final chance','mujhse acha nhi milega, soch lo',
+        'phirse soch lo','ye akhri mauka hai','aapne to had hi kardi','aap bahut gande ho',
+        'aap bure insaan ho','ye question nhi rukenge haha!!, yes bol do'
+    ];
+    let currentQuestionIndex = 0;
+    const qElem = document.getElementById('surprise-question');
+    const btns = document.getElementById('surprise-buttons');
+    const surpriseModal = document.getElementById('surprise-modal');
+
+    function popConfetti() {
+        confetti({
+            particleCount: 80,
+            spread: 60,
+            origin: {y: 0.6},
+            disableForReducedMotion: true,
+            useWorker: true
+        });
     }
-  };
+
+    document.getElementById('surprise-open-btn').onclick = () => {
+        currentQuestionIndex = 0;
+        qElem.textContent = questions[currentQuestionIndex];
+        btns.innerHTML = `<button class="yes-btn">Yes</button><button class="no-btn">No</button>`;
+        surpriseModal.style.display = 'block';
+        document.body.classList.add('modal-open');
+        setupHandlers();
+    };
+
+    function setupHandlers() {
+        const yes = btns.querySelector('.yes-btn');
+        const no = btns.querySelector('.no-btn');
+        yes.onclick = (e) => {
+            e.stopPropagation();
+            popConfetti();
+            surpriseModal.style.display = 'none';
+            document.body.classList.remove('modal-open');
+            document.getElementById('sidebar').classList.remove('open');
+            document.getElementById('sidebar-overlay').classList.remove('visible');
+        };
+        no.onclick = (e) => {
+            e.stopPropagation();
+            currentQuestionIndex = (currentQuestionIndex + 1) % questions.length;
+            qElem.textContent = questions[currentQuestionIndex];
+            btns.innerHTML = `<button class="yes-btn">Yes</button><button class="no-btn">No</button>`;
+            setupHandlers();
+        };
+    }
+
+    window.onclick = e => {
+        if (e.target.classList.contains('modal')) {
+            if (!e.target.id.includes('surprise')) {
+                e.target.style.display = 'none';
+                document.body.classList.remove('modal-open');
+            }
+        }
+    };
 
 
 
-  const routines = {
-    "Day 1": [
-      { time: "5:00 AM - 6:00 AM", task : "Wake Uppp!", message: "Good Morning❤️"},
-      { time: "6:00 AM - 8:00 AM", task: "Study Session 1: Physics – Dual Nature of Radiation", message: "📚 Deep focus on the topic!" },
-      { time: "8:00 AM - 8:30 AM", task: "Break 1: Walk/stretch, breakfast, light refresh", message: "🧘 Rest your mind and recharge!" },
-      { time: "8:30 AM - 10:30 AM", task: "Study Session 2: Chemistry – Basic Concepts", message: "🧪 Deep focus on mastering the basics!" },
-      { time: "10:30 AM - 11:00 AM", task: "Break 2: Relax, snack, do something light", message: "☕ Take a short break to recharge!" },
-      { time: "11:00 AM - 1:00 PM", task: "Study Session 3: Numericals & Concepts for both chapters", message: "🧠 Engage in active learning with problem-solving!" },
-      { time: "1:00 PM - 2:30 PM", task: "Lunch + Nap (1.5 hrs)", message: "🍽️ Strict rest to re-energize for the afternoon!" },
-      { time: "2:30 PM - 4:30 PM", task: "Study Session 4: Problem Solving / Practice Questions", message: "✍️ Application-focused study to test your knowledge!" },
-      { time: "4:30 PM - 5:00 PM", task: "Break 3: Light movement, quick snack", message: "🌳 Step away from screens and refresh!" },
-      { time: "5:00 PM - 6:00 PM", task: "Summary + Flashcard Review + Create Quick Revision Notes", message: "📝 Prepare for Day 2 with efficient review!" },
-      { time: "6:00 PM - 7:00 PM", task: "Free Hour: Hobbies, music, rest", message: "🎨 Mental reset with your favorite hobbies!" },
-      { time: "7:00 PM - 9:00 PM", task: "Optional: Concept videos or light revision", message: "🔍 Flexible study to reinforce your learning!" },
-      { time: "9:00 PM - 10:00 PM", task: "Dinner + Wind-down", message: "🍽️ No heavy work, just unwind!" },
-      { time: "10:00 PM - 11:45 PM", task: "Light reading / prep for tomorrow / sleep", message: "🌙 Rest mode – reflect and relax before bed!" }
-    ],
-    "Day 2": [
-      { time: "5:00 AM - 6:00 AM", task : "Wake Uppp!", message: "Good Morning❤️"},
-      { time: "6:00 AM - 8:00 AM", task: "Study Session 1: New Chapter – Chemistry: Structure of Atom", message: "🧪 Conceptual learning" },
-      { time: "8:00 AM - 8:30 AM", task: "Break 1: Breakfast, short walk/stretch", message: "🧘 Refresh" },
-      { time: "8:30 AM - 10:30 AM", task: "Study Session 2: New Chapter – Physics: Atoms", message: "🔬 Deep focus" },
-      { time: "10:30 AM - 11:00 AM", task: "Break 2: Relax, snack, light reset", message: "☕ Mental recovery" },
-      { time: "11:00 AM - 1:00 PM", task: "Study Session 3: Revision – Dual Nature + Basic Concepts", message: "📘 Notes + flashcards" },
-      { time: "1:00 PM - 2:30 PM", task: "Lunch + Nap (1.5 hrs)", message: "🍽️ Physical & mental rest" },
-      { time: "2:30 PM - 4:30 PM", task: "Study Session 4: Numericals & Concept Drills for new chapters", message: "✍️ Strengthen application" },
-      { time: "4:30 PM - 5:00 PM", task: "Break 3: Tea/snack, gentle movement", message: "🌿 Unwind" },
-      { time: "5:00 PM - 6:00 PM", task: "Quick Revision Recap for all 4 chapters", message: "📝 Summary sheets" },
-      { time: "6:00 PM - 7:00 PM", task: "Free Hour: Personal time / light walk / music", message: "🎧 Reset for evening" },
-      { time: "7:00 PM - 9:00 PM", task: "Optional: MCQs / concept mapping for today’s chapters", message: "🤔 Low-pressure recall" },
-      { time: "9:00 PM - 10:00 PM", task: "Dinner + Wind-down", message: "🍽️ End of core work" },
-      { time: "10:00 PM - 11:45 PM", task: "Light reading / tomorrow prep / Sleep", message: "🌙 Rest mode" }
-    ]
-    ,
-    "Day 3": [
-      { time: "5:00 AM - 6:00 AM", task : "Wake Uppp!", message: "Good Morning❤️"},
-      { time: "6:00 AM - 8:00 AM", task: "Study Session 1: New Chapter – Chemistry: Periodicity in Properties", message: "📊 Learn trends & logic" },
-      { time: "8:00 AM - 8:30 AM", task: "Break 1: Breakfast, move around, brain reset", message: "☕ Light movement" },
-      { time: "8:30 AM - 10:30 AM", task: "Study Session 2: New Chapter – Physics: Nuclei", message: "🔬 Deep understanding" },
-      { time: "10:30 AM - 11:00 AM", task: "Break 2: Tea/snack, breathing, rest", message: "🍎 Detach from screens" },
-      { time: "11:00 AM - 1:00 PM", task: "Study Session 3: Revision – Structure of Atom + Atoms", message: "📘 Notes, summaries, recall" },
-      { time: "1:00 PM - 2:30 PM", task: "Lunch + Nap (1.5 hrs)", message: "🍽️ Full physical reset" },
-      { time: "2:30 PM - 4:30 PM", task: "Study Session 4: Numericals + Graphs/Diagrams Practice", message: "📈 Practice & solve" },
-      { time: "4:30 PM - 5:00 PM", task: "Break 3: Stretch, snack, light walk", message: "🌿 Decompress" },
-      { time: "5:00 PM - 6:00 PM", task: "Quick Review Notes for all 4 chapters (2 new + 2 revised)", message: "📝 Final revision" },
-      { time: "6:00 PM - 7:00 PM", task: "Free Hour: Creative rest, music, low-effort hobby", message: "🎨 Reset for the night" },
-      { time: "7:00 PM - 9:00 PM", task: "Optional: Practice MCQs / concept mapping", message: "🤔 Consolidation (optional)" },
-      { time: "9:00 PM - 10:00 PM", task: "Dinner", message: "🍽️ Digest + light recap if needed" },
-      { time: "10:00 PM - 11:45 PM", task: "Wind down + light reading / sleep", message: "🌙 Full rest mode" }
-    ]
-    ,
-    "Day 4": [
-      { time: "5:00 AM - 6:00 AM", task : "Wake Uppp!", message: "Good Morning❤️"},
-      { time: "6:00 AM - 8:00 AM", task: "Study Session 1: Botany – The Living World", message: "🌱 Biological terms & concepts" },
-      { time: "8:00 AM - 8:30 AM", task: "Break 1: Breakfast, light stretch or walk", message: "☕ Recharge brain" },
-      { time: "8:30 AM - 10:30 AM", task: "Study Session 2: Physics – Semiconductor Devices", message: "🌟 Diagrams, logic, formulas" },
-      { time: "10:30 AM - 11:00 AM", task: "Break 2: Short rest, light snack", message: "🍎 Refresh and reset" },
-      { time: "11:00 AM - 1:00 PM", task: "Study Session 3: Revision – Periodicity & Nuclei", message: "📘 Notes + formula review" },
-      { time: "1:00 PM - 2:30 PM", task: "Lunch + Nap (1.5 hrs)", message: "🍽️ Mental + physical rest" },
-      { time: "2:30 PM - 4:30 PM", task: "Study Session 4: Practice: NCERT Qs, diagrams, short answers", message: "✍️ Recall & apply" },
-      { time: "4:30 PM - 5:00 PM", task: "Break 3: Tea/snack, unwind", message: "🌳 Light refresh" },
-      { time: "5:00 PM - 6:00 PM", task: "Summary writing + flashcards for today’s chapters", message: "📝 Prepare for Day 5 revision" },
-      { time: "6:00 PM - 7:00 PM", task: "Free Hour: Hobby, walk, unwind", message: "🎨 Mental reset" },
-      { time: "7:00 PM - 9:00 PM", task: "Optional: MCQ solving, concept maps, light recall", message: "🤔 Flexible learning" },
-      { time: "9:00 PM - 10:00 PM", task: "Dinner", message: "🍽️ Final relax of the day" },
-      { time: "10:00 PM - 11:45 PM", task: "Light reading or tomorrow prep + sleep", message: "🌙 Cooldown phase" }
-    ]
-    ,
-    "Day 5": [
-      { time: "5:00 AM - 6:00 AM", task : "Wake Uppp!", message: "Good Morning❤️"},
-      { time: "6:00 AM - 8:00 AM", task: "Study Session 1: Botany – Biological Classification", message: "🌿 Concepts + flowcharts" },
-      { time: "8:00 AM - 8:30 AM", task: "Break 1: Breakfast + stretch or walk", message: "☕ Light recovery" },
-      { time: "8:30 AM - 10:30 AM", task: "Study Session 2: Physics – Experimental Skills", message: "📊 Graphs, error analysis" },
-      { time: "10:30 AM - 11:00 AM", task: "Break 2: Tea/snack, short rest", message: "🍎 Refresh and reset" },
-      { time: "11:00 AM - 1:00 PM", task: "Study Session 3: Revision – Living World + Semiconductors", message: "📝 Flashcards, summaries" },
-      { time: "1:00 PM - 2:30 PM", task: "Lunch + Nap (1.5 hrs)", message: "🍽️ Mental reset" },
-      { time: "2:30 PM - 4:30 PM", task: "Study Session 4: Application – Solving Qs, concept-based diagrams", message: "✍️ Practice-based learning" },
-      { time: "4:30 PM - 5:00 PM", task: "Break 3: Snack, light stretch", message: "🌿 Relaxation" },
-      { time: "5:00 PM - 6:30 PM", task: "Deep Review + Summary Sheet Prep for Day 6", message: "📘 Final consolidation" },
-      { time: "6:30 PM - 7:00 PM", task: "Light break / relax / optional stretch", message: "🧘 Buffer for next phase" },
-      { time: "7:00 PM - 9:00 PM", task: "Optional: MCQs, cross-topic linking, practice worksheet", message: "🧠 Active revision (optional)" },
-      { time: "9:00 PM - 10:00 PM", task: "Dinner", message: "🍽️ End of study" },
-      { time: "10:00 PM - 11:45 PM", task: "Wind-down: Light reading, prep for tomorrow, sleep", message: "🌙 Rest mode" }
-    ]
-    ,
-    "Day 6": [
-      { time: "5:00 AM - 6:00 AM", task : "Wake Uppp!", message: "Good Morning❤️"},
-      { time: "6:00 AM - 8:00 AM", task: "Study Session 1: Botany – Plant Kingdom", message: "🌳 Learn classifications, examples, flowcharts" },
-      { time: "8:00 AM - 8:30 AM", task: "Break 1: Breakfast, short movement", message: "☕ ⚡ Refresh body & mind" },
-      { time: "8:30 AM - 10:30 AM", task: "Study Session 2: Zoology – Biotechnology: Principles & Processes", message: "🧪 Process diagrams, steps, techniques" },
-      { time: "10:30 AM - 11:00 AM", task: "Break 2: Tea/snack, walk/stretch", message: "🍎 🧘 Recovery time" },
-      { time: "11:00 AM - 1:00 PM", task: "Study Session 3: Revision – Biological Classification + Experimental Skills", message: "📘 Diagrams, short notes" },
-      { time: "1:00 PM - 2:30 PM", task: "Lunch + Nap (1.5 hrs)", message: "🍽️ 🛌 Recharge completely" },
-      { time: "2:30 PM - 4:30 PM", task: "Study Session 4: Practice Session – Plant Kingdom + Biotech Principles", message: "✍️ Solve, map, and apply" },
-      { time: "4:30 PM - 5:00 PM", task: "Break 3: Snack + light movement", message: "🌿 🍵 Light refresh" },
-      { time: "5:00 PM - 6:30 PM", task: "Consolidated Review + Flashcard/Diagram Creation for all 4 chapters", message: "📊 Visual & quick-recall prep" },
-      { time: "6:30 PM - 7:00 PM", task: "Light relaxation: music/hobby/movement", message: "🎧 Mental reset" },
-      { time: "7:00 PM - 9:00 PM", task: "Optional: MCQs, concept comparison, note audit", message: "🤔 Low-stress review" },
-      { time: "9:00 PM - 10:00 PM", task: "Dinner", message: "🍽️ 🌅 Wind down gradually" },
-      { time: "10:00 PM - 11:45 PM", task: "Light reading / tomorrow planning", message: "🌙 Relaxation + prep" }
-    ]
-    ,
-    "Day 7": [
-      { time: "5:00 AM - 6:00 AM", task : "Wake Uppp!", message: "Good Morning❤️"},
-      { time: "6:00 AM - 8:00 AM", task: "Study Session 1: Zoology – Biotechnology and Its Applications", message: "🧪 Learn techniques, uses, ethical issues" },
-      { time: "8:00 AM - 8:30 AM", task: "Break 1: Breakfast + walk/stretch", message: "☕ Light reset" },
-      { time: "8:30 AM - 10:30 AM", task: "Study Session 2: Revision – Plant Kingdom", message: "🌺 Flowcharts, examples" },
-      { time: "10:30 AM - 11:00 AM", task: "Break 2: Tea/snack, eyes off screen", message: "🍎 Passive refresh" },
-      { time: "11:00 AM - 1:00 PM", task: "Study Session 3: Revision – Biotech Principles & Processes", message: "📘 Diagrams, processes" },
-      { time: "1:00 PM - 2:30 PM", task: "Lunch + Nap (1.5 hrs)", message: "🍽️ 🛌 Full rest" },
-      { time: "2:30 PM - 4:30 PM", task: "Study Session 4: Mixed Qs & Diagrams – Biotech Apps + Revisions", message: "✍️ Strengthen recall" },
-      { time: "4:30 PM - 5:00 PM", task: "Break 3: Light movement, hydration, snack", message: "🌿 🍵 Decompress" },
-      { time: "5:00 PM - 6:30 PM", task: "Rapid-fire Flashcards + Final Note Cleanup", message: "📊 Final prep sheets" },
-      { time: "6:30 PM - 7:00 PM", task: "Light hobby / creative rest", message: "🎧 Brain cool-off" },
-      { time: "7:00 PM - 9:00 PM", task: "Optional: Solve 20–25 MCQs from entire biotech unit", message: "🤔 Application & self-check" },
-      { time: "9:00 PM - 10:00 PM", task: "Dinner", message: "🍽️ 🌅 Wind down" },
-      { time: "10:00 PM - 11:45 PM", task: "Light read / mock test setup for Day 9", message: "🌙 Prepare mind for revision" }
-    ]
-    ,
+    const routines = {
+        "Day 1": [
+            { time: "5:00 AM - 6:00 AM", task : "Wake Uppp!", message: "Good Morning❤️"},
+            { time: "6:00 AM - 8:00 AM", task: "Study Session 1: Physics – Dual Nature of Radiation", message: "📚 Deep focus on the topic!" },
+            { time: "8:00 AM - 8:30 AM", task: "Break 1: Walk/stretch, breakfast, light refresh", message: "🧘 Rest your mind and recharge!" },
+            { time: "8:30 AM - 10:30 AM", task: "Study Session 2: Chemistry – Basic Concepts", message: "🧪 Deep focus on mastering the basics!" },
+            { time: "10:30 AM - 11:00 AM", task: "Break 2: Relax, snack, do something light", message: "☕ Take a short break to recharge!" },
+            { time: "11:00 AM - 1:00 PM", task: "Study Session 3: Numericals & Concepts for both chapters", message: "🧠 Engage in active learning with problem-solving!" },
+            { time: "1:00 PM - 2:30 PM", task: "Lunch + Nap (1.5 hrs)", message: "🍽️ Strict rest to re-energize for the afternoon!" },
+            { time: "2:30 PM - 4:30 PM", task: "Study Session 4: Problem Solving / Practice Questions", message: "✍️ Application-focused study to test your knowledge!" },
+            { time: "4:30 PM - 5:00 PM", task: "Break 3: Light movement, quick snack", message: "🌳 Step away from screens and refresh!" },
+            { time: "5:00 PM - 6:00 PM", task: "Summary + Flashcard Review + Create Quick Revision Notes", message: "📝 Prepare for Day 2 with efficient review!" },
+            { time: "6:00 PM - 7:00 PM", task: "Free Hour: Hobbies, music, rest", message: "🎨 Mental reset with your favorite hobbies!" },
+            { time: "7:00 PM - 9:00 PM", task: "Optional: Concept videos or light revision", message: "🔍 Flexible study to reinforce your learning!" },
+            { time: "9:00 PM - 10:00 PM", task: "Dinner + Wind-down", message: "🍽️ No heavy work, just unwind!" },
+            { time: "10:00 PM - 11:45 PM", task: "Light reading / prep for tomorrow / sleep", message: "🌙 Rest mode – reflect and relax before bed!" }
+        ],
+        "Day 2": [
+            { time: "5:00 AM - 6:00 AM", task : "Wake Uppp!", message: "Good Morning❤️"},
+            { time: "6:00 AM - 8:00 AM", task: "Study Session 1: New Chapter – Chemistry: Structure of Atom", message: "🧪 Conceptual learning" },
+            { time: "8:00 AM - 8:30 AM", task: "Break 1: Breakfast, short walk/stretch", message: "🧘 Refresh" },
+            { time: "8:30 AM - 10:30 AM", task: "Study Session 2: New Chapter – Physics: Atoms", message: "🔬 Deep focus" },
+            { time: "10:30 AM - 11:00 AM", task: "Break 2: Relax, snack, light reset", message: "☕ Mental recovery" },
+            { time: "11:00 AM - 1:00 PM", task: "Study Session 3: Revision – Dual Nature + Basic Concepts", message: "📘 Notes + flashcards" },
+            { time: "1:00 PM - 2:30 PM", task: "Lunch + Nap (1.5 hrs)", message: "🍽️ Physical & mental rest" },
+            { time: "2:30 PM - 4:30 PM", task: "Study Session 4: Numericals & Concept Drills for new chapters", message: "✍️ Strengthen application" },
+            { time: "4:30 PM - 5:00 PM", task: "Break 3: Tea/snack, gentle movement", message: "🌿 Unwind" },
+            { time: "5:00 PM - 6:00 PM", task: "Quick Revision Recap for all 4 chapters", message: "📝 Summary sheets" },
+            { time: "6:00 PM - 7:00 PM", task: "Free Hour: Personal time / light walk / music", message: "🎧 Reset for evening" },
+            { time: "7:00 PM - 9:00 PM", task: "Optional: MCQs / concept mapping for today’s chapters", message: "🤔 Low-pressure recall" },
+            { time: "9:00 PM - 10:00 PM", task: "Dinner + Wind-down", message: "🍽️ End of core work" },
+            { time: "10:00 PM - 11:45 PM", task: "Light reading / tomorrow prep / Sleep", message: "🌙 Rest mode" }
+        ]
+        ,
+        "Day 3": [
+            { time: "5:00 AM - 6:00 AM", task : "Wake Uppp!", message: "Good Morning❤️"},
+            { time: "6:00 AM - 8:00 AM", task: "Study Session 1: New Chapter – Chemistry: Periodicity in Properties", message: "📊 Learn trends & logic" },
+            { time: "8:00 AM - 8:30 AM", task: "Break 1: Breakfast, move around, brain reset", message: "☕ Light movement" },
+            { time: "8:30 AM - 10:30 AM", task: "Study Session 2: New Chapter – Physics: Nuclei", message: "🔬 Deep understanding" },
+            { time: "10:30 AM - 11:00 AM", task: "Break 2: Tea/snack, breathing, rest", message: "🍎 Detach from screens" },
+            { time: "11:00 AM - 1:00 PM", task: "Study Session 3: Revision – Structure of Atom + Atoms", message: "📘 Notes, summaries, recall" },
+            { time: "1:00 PM - 2:30 PM", task: "Lunch + Nap (1.5 hrs)", message: "🍽️ Full physical reset" },
+            { time: "2:30 PM - 4:30 PM", task: "Study Session 4: Numericals + Graphs/Diagrams Practice", message: "📈 Practice & solve" },
+            { time: "4:30 PM - 5:00 PM", task: "Break 3: Stretch, snack, light walk", message: "🌿 Decompress" },
+            { time: "5:00 PM - 6:00 PM", task: "Quick Review Notes for all 4 chapters (2 new + 2 revised)", message: "📝 Final revision" },
+            { time: "6:00 PM - 7:00 PM", task: "Free Hour: Creative rest, music, low-effort hobby", message: "🎨 Reset for the night" },
+            { time: "7:00 PM - 9:00 PM", task: "Optional: Practice MCQs / concept mapping", message: "🤔 Consolidation (optional)" },
+            { time: "9:00 PM - 10:00 PM", task: "Dinner", message: "🍽️ Digest + light recap if needed" },
+            { time: "10:00 PM - 11:45 PM", task: "Wind down + light reading / sleep", message: "🌙 Full rest mode" }
+        ]
+        ,
+        "Day 4": [
+            { time: "5:00 AM - 6:00 AM", task : "Wake Uppp!", message: "Good Morning❤️"},
+            { time: "6:00 AM - 8:00 AM", task: "Study Session 1: Botany – The Living World", message: "🌱 Biological terms & concepts" },
+            { time: "8:00 AM - 8:30 AM", task: "Break 1: Breakfast, light stretch or walk", message: "☕ Recharge brain" },
+            { time: "8:30 AM - 10:30 AM", task: "Study Session 2: Physics – Semiconductor Devices", message: "🌟 Diagrams, logic, formulas" },
+            { time: "10:30 AM - 11:00 AM", task: "Break 2: Short rest, light snack", message: "🍎 Refresh and reset" },
+            { time: "11:00 AM - 1:00 PM", task: "Study Session 3: Revision – Periodicity & Nuclei", message: "📘 Notes + formula review" },
+            { time: "1:00 PM - 2:30 PM", task: "Lunch + Nap (1.5 hrs)", message: "🍽️ Mental + physical rest" },
+            { time: "2:30 PM - 4:30 PM", task: "Study Session 4: Practice: NCERT Qs, diagrams, short answers", message: "✍️ Recall & apply" },
+            { time: "4:30 PM - 5:00 PM", task: "Break 3: Tea/snack, unwind", message: "🌳 Light refresh" },
+            { time: "5:00 PM - 6:00 PM", task: "Summary writing + flashcards for today’s chapters", message: "📝 Prepare for Day 5 revision" },
+            { time: "6:00 PM - 7:00 PM", task: "Free Hour: Hobby, walk, unwind", message: "🎨 Mental reset" },
+            { time: "7:00 PM - 9:00 PM", task: "Optional: MCQ solving, concept maps, light recall", message: "🤔 Flexible learning" },
+            { time: "9:00 PM - 10:00 PM", task: "Dinner", message: "🍽️ Final relax of the day" },
+            { time: "10:00 PM - 11:45 PM", task: "Light reading or tomorrow prep + sleep", message: "🌙 Cooldown phase" }
+        ]
+        ,
+        "Day 5": [
+            { time: "5:00 AM - 6:00 AM", task : "Wake Uppp!", message: "Good Morning❤️"},
+            { time: "6:00 AM - 8:00 AM", task: "Study Session 1: Botany – Biological Classification", message: "🌿 Concepts + flowcharts" },
+            { time: "8:00 AM - 8:30 AM", task: "Break 1: Breakfast + stretch or walk", message: "☕ Light recovery" },
+            { time: "8:30 AM - 10:30 AM", task: "Study Session 2: Physics – Experimental Skills", message: "📊 Graphs, error analysis" },
+            { time: "10:30 AM - 11:00 AM", task: "Break 2: Tea/snack, short rest", message: "🍎 Refresh and reset" },
+            { time: "11:00 AM - 1:00 PM", task: "Study Session 3: Revision – Living World + Semiconductors", message: "📝 Flashcards, summaries" },
+            { time: "1:00 PM - 2:30 PM", task: "Lunch + Nap (1.5 hrs)", message: "🍽️ Mental reset" },
+            { time: "2:30 PM - 4:30 PM", task: "Study Session 4: Application – Solving Qs, concept-based diagrams", message: "✍️ Practice-based learning" },
+            { time: "4:30 PM - 5:00 PM", task: "Break 3: Snack, light stretch", message: "🌿 Relaxation" },
+            { time: "5:00 PM - 6:30 PM", task: "Deep Review + Summary Sheet Prep for Day 6", message: "📘 Final consolidation" },
+            { time: "6:30 PM - 7:00 PM", task: "Light break / relax / optional stretch", message: "🧘 Buffer for next phase" },
+            { time: "7:00 PM - 9:00 PM", task: "Optional: MCQs, cross-topic linking, practice worksheet", message: "🧠 Active revision (optional)" },
+            { time: "9:00 PM - 10:00 PM", task: "Dinner", message: "🍽️ End of study" },
+            { time: "10:00 PM - 11:45 PM", task: "Wind-down: Light reading, prep for tomorrow, sleep", message: "🌙 Rest mode" }
+        ]
+        ,
+        "Day 6": [
+            { time: "5:00 AM - 6:00 AM", task : "Wake Uppp!", message: "Good Morning❤️"},
+            { time: "6:00 AM - 8:00 AM", task: "Study Session 1: Botany – Plant Kingdom", message: "🌳 Learn classifications, examples, flowcharts" },
+            { time: "8:00 AM - 8:30 AM", task: "Break 1: Breakfast, short movement", message: "☕ ⚡ Refresh body & mind" },
+            { time: "8:30 AM - 10:30 AM", task: "Study Session 2: Zoology – Biotechnology: Principles & Processes", message: "🧪 Process diagrams, steps, techniques" },
+            { time: "10:30 AM - 11:00 AM", task: "Break 2: Tea/snack, walk/stretch", message: "🍎 🧘 Recovery time" },
+            { time: "11:00 AM - 1:00 PM", task: "Study Session 3: Revision – Biological Classification + Experimental Skills", message: "📘 Diagrams, short notes" },
+            { time: "1:00 PM - 2:30 PM", task: "Lunch + Nap (1.5 hrs)", message: "🍽️ 🛌 Recharge completely" },
+            { time: "2:30 PM - 4:30 PM", task: "Study Session 4: Practice Session – Plant Kingdom + Biotech Principles", message: "✍️ Solve, map, and apply" },
+            { time: "4:30 PM - 5:00 PM", task: "Break 3: Snack + light movement", message: "🌿 🍵 Light refresh" },
+            { time: "5:00 PM - 6:30 PM", task: "Consolidated Review + Flashcard/Diagram Creation for all 4 chapters", message: "📊 Visual & quick-recall prep" },
+            { time: "6:30 PM - 7:00 PM", task: "Light relaxation: music/hobby/movement", message: "🎧 Mental reset" },
+            { time: "7:00 PM - 9:00 PM", task: "Optional: MCQs, concept comparison, note audit", message: "🤔 Low-stress review" },
+            { time: "9:00 PM - 10:00 PM", task: "Dinner", message: "🍽️ 🌅 Wind down gradually" },
+            { time: "10:00 PM - 11:45 PM", task: "Light reading / tomorrow planning", message: "🌙 Relaxation + prep" }
+        ]
+        ,
+        "Day 7": [
+            { time: "5:00 AM - 6:00 AM", task : "Wake Uppp!", message: "Good Morning❤️"},
+            { time: "6:00 AM - 8:00 AM", task: "Study Session 1: Zoology – Biotechnology and Its Applications", message: "🧪 Learn techniques, uses, ethical issues" },
+            { time: "8:00 AM - 8:30 AM", task: "Break 1: Breakfast + walk/stretch", message: "☕ Light reset" },
+            { time: "8:30 AM - 10:30 AM", task: "Study Session 2: Revision – Plant Kingdom", message: "🌺 Flowcharts, examples" },
+            { time: "10:30 AM - 11:00 AM", task: "Break 2: Tea/snack, eyes off screen", message: "🍎 Passive refresh" },
+            { time: "11:00 AM - 1:00 PM", task: "Study Session 3: Revision – Biotech Principles & Processes", message: "📘 Diagrams, processes" },
+            { time: "1:00 PM - 2:30 PM", task: "Lunch + Nap (1.5 hrs)", message: "🍽️ 🛌 Full rest" },
+            { time: "2:30 PM - 4:30 PM", task: "Study Session 4: Mixed Qs & Diagrams – Biotech Apps + Revisions", message: "✍️ Strengthen recall" },
+            { time: "4:30 PM - 5:00 PM", task: "Break 3: Light movement, hydration, snack", message: "🌿 🍵 Decompress" },
+            { time: "5:00 PM - 6:30 PM", task: "Rapid-fire Flashcards + Final Note Cleanup", message: "📊 Final prep sheets" },
+            { time: "6:30 PM - 7:00 PM", task: "Light hobby / creative rest", message: "🎧 Brain cool-off" },
+            { time: "7:00 PM - 9:00 PM", task: "Optional: Solve 20–25 MCQs from entire biotech unit", message: "🤔 Application & self-check" },
+            { time: "9:00 PM - 10:00 PM", task: "Dinner", message: "🍽️ 🌅 Wind down" },
+            { time: "10:00 PM - 11:45 PM", task: "Light read / mock test setup for Day 9", message: "🌙 Prepare mind for revision" }
+        ]
+        ,
 
-    "Day 8": [
-      { time: "5:00 AM - 6:00 AM", task : "Wake Uppp!", message: "Good Morning❤️"},
-      { time: "6:00 AM - 8:00 AM", task: "Session 1 – Physics Deep Dive", message: "📘 Dual Nature of Radiation, Atoms, Nuclei" },
-      { time: "8:00 AM - 8:30 AM", task: "Break 1: Breakfast, movement", message: "☕ Refresh & reset" },
-      { time: "8:30 AM - 10:30 AM", task: "Session 2 – Chemistry Full Review", message: "📘 Basic Concepts, Structure of Atom, Periodicity" },
-      { time: "10:30 AM - 11:00 AM", task: "Break 2: Short walk/snack", message: "🍎 Light activity" },
-      { time: "11:00 AM - 1:00 PM", task: "Session 3 – Botany Core Concepts", message: "📘 Living World, Biological Classification, Plant Kingdom" },
-      { time: "1:00 PM - 2:30 PM", task: "Lunch + Nap (1.5 hrs)", message: "🍽️ 🛌 Full mental reset" },
-      { time: "2:30 PM - 4:30 PM", task: "Session 4 – Zoology + Physics End Topics", message: "📘 Biotech (2 chapters), Experimental Skills, Semiconductors" },
-      { time: "4:30 PM - 5:00 PM", task: "Break 3: Snack + unwind", message: "🌿 🍵 Detach mentally" },
-      { time: "5:00 PM - 6:30 PM", task: "Rapid Review – Flashcards + Diagrams + Cheatsheets", message: "🧠 Mixed topics, difficult areas" },
-      { time: "6:30 PM - 7:00 PM", task: "Light hobby, free time", message: "🎧 Let brain settle" },
-      { time: "7:00 PM - 9:00 PM", task: "Final Round – Summary Notes Audit + MCQs", message: "📄 Practice 5–6 MCQs per chapter" },
-      { time: "9:00 PM - 10:00 PM", task: "Dinner", message: "🍽️ Recovery phase" },
-      { time: "10:00 PM - 11:45 PM", task: "Light reading, mental relaxation + test kit setup", message: "🌙 Get in test mode mindset" }
-    ]
-    ,
-    "Day 9": [
-      { time: "5:00 AM - 6:00 AM", task : "Wake Uppp!", message: "Good Morning❤️"},
-      { time: "6:00 AM - 7:00 AM", task: "Light Review – Flashcards & Visuals (no new material)", message: "🧘 Confidence booster" },
-      { time: "7:00 AM - 7:30 AM", task: "Breakfast", message: "🍳 Balanced meal" },
-      { time: "7:30 AM - 9:00 AM", task: "Skim through key summary notes (2–3 mins per chapter)", message: "📑 Gentle refresh, no overload" },
-      { time: "9:00 AM - 9:30 AM", task: "Break: Short walk/stretch, deep breathing", message: "🍵 Mental reset" },
-      { time: "9:30 AM - 11:00 AM", task: "Light MCQ practice (15–20 mixed Qs, timed blocks)", message: "🧠 Build rhythm" },
-      { time: "11:00 AM - 12:30 PM", task: "Relax: Hobby / music / calm zone", message: "🛋️ Avoid cognitive fatigue" },
-      { time: "12:30 PM - 1:00 PM", task: "Light lunch (easy to digest)", message: "🍽️ Pre-test nutrition" },
-      { time: "1:00 PM - 1:30 PM", task: "Quiet time – meditation / positive affirmations", message: "😌 Mental grounding" },
-      { time: "1:30 PM - 2:00 PM", task: "Test setup: water, test sheets, pens, clock", message: "Final prep" },
-      { time: "2:00 PM - 5:00 PM", task: "Mock Test (Full syllabus)", message: "📝 Give your best effort!" },
-      { time: "5:00 PM - 5:30 PM", task: "Light snack, hydrate", message: "🍉 Recovery" },
-      { time: "5:30 PM - 6:30 PM", task: "Test Reflection – mark paper, identify strengths & gaps", message: "🧾 Learn from performance" },
-      { time: "6:30 PM - 7:30 PM", task: "Chill time – walk, hobby, music", message: "🧘 Mindful recovery" },
-      { time: "7:30 PM - 9:00 PM", task: "Optional: Review 1–2 weak areas or unclear answers", message: "Gentle recap" },
-      { time: "9:00 PM - 10:00 PM", task: "Dinner + wind down", message: "🍽️ No study" },
-      { time: "10:00 PM - 11:45 PM", task: "Rest, track your progress, or sleep early", message: "Closure + reset" }
-    ],
-    "Day 10": [
-      { time: "5:00 AM - 6:00 AM", task : "Wake Uppp!", message: "Good Morning❤️"},
-      { time: "6:00 AM - 7:00 AM", task: "Review performance – Check score, mark distribution by subject", message: "📊 Visualize performance" },
-      { time: "7:00 AM - 7:30 AM", task: "Breakfast + short walk", message: "🍳 Refresh" },
-      { time: "7:30 AM - 8:30 AM", task: "Review Chemistry – Go over wrong/right MCQs & concepts", message: "🧪 Mark knowledge vs mistake-based" },
-      { time: "8:30 AM - 9:30 AM", task: "Review Physics – Identify calculation, concept, or logic errors", message: "🔬 Break down time spent per Q" },
-      { time: "9:30 AM - 10:30 AM", task: "Review Biology (Botany & Zoology) – Reasoning, examples, process-based gaps", message: "🌿 Spot superficial vs deep gaps" },
-      { time: "10:30 AM - 11:30 AM", task: "Identify error types: Conceptual, Calculation", message: "❗ Identify main error types" },
-      { time: "11:30 AM - 1:00 PM", task: "Organize your work – Separate resolved errors, things to revisit, final practice", message: "📂 Organize learning materials" },
-      { time: "1:00 PM - 3:30 PM", task: "Re-solve all incorrect questions without looking at answers", message: "🗂️ Active recovery" },
-      { time: "3:30 PM - 4:30 PM", task: "Create a strategy sheet for better recall", message: "🧠 Summarize key learning strategies" },
-      { time: "5:00 PM - 6:00 PM", task: "Write a reflection on the test performance", message: "📋 Reflect on performance and improvements" },
-      { time: "6:00 PM - 9:00 PM", task: "Optional: Soft review of marked questions, relax, revisit errors", message: "Free review space" },
-      { time: "9:00 PM - 11:45 PM", task: "Dinner + full rest", message: "🍽️ Wind down" }
-    ]
+        "Day 8": [
+            { time: "5:00 AM - 6:00 AM", task : "Wake Uppp!", message: "Good Morning❤️"},
+            { time: "6:00 AM - 8:00 AM", task: "Session 1 – Physics Deep Dive", message: "📘 Dual Nature of Radiation, Atoms, Nuclei" },
+            { time: "8:00 AM - 8:30 AM", task: "Break 1: Breakfast, movement", message: "☕ Refresh & reset" },
+            { time: "8:30 AM - 10:30 AM", task: "Session 2 – Chemistry Full Review", message: "📘 Basic Concepts, Structure of Atom, Periodicity" },
+            { time: "10:30 AM - 11:00 AM", task: "Break 2: Short walk/snack", message: "🍎 Light activity" },
+            { time: "11:00 AM - 1:00 PM", task: "Session 3 – Botany Core Concepts", message: "📘 Living World, Biological Classification, Plant Kingdom" },
+            { time: "1:00 PM - 2:30 PM", task: "Lunch + Nap (1.5 hrs)", message: "🍽️ 🛌 Full mental reset" },
+            { time: "2:30 PM - 4:30 PM", task: "Session 4 – Zoology + Physics End Topics", message: "📘 Biotech (2 chapters), Experimental Skills, Semiconductors" },
+            { time: "4:30 PM - 5:00 PM", task: "Break 3: Snack + unwind", message: "🌿 🍵 Detach mentally" },
+            { time: "5:00 PM - 6:30 PM", task: "Rapid Review – Flashcards + Diagrams + Cheatsheets", message: "🧠 Mixed topics, difficult areas" },
+            { time: "6:30 PM - 7:00 PM", task: "Light hobby, free time", message: "🎧 Let brain settle" },
+            { time: "7:00 PM - 9:00 PM", task: "Final Round – Summary Notes Audit + MCQs", message: "📄 Practice 5–6 MCQs per chapter" },
+            { time: "9:00 PM - 10:00 PM", task: "Dinner", message: "🍽️ Recovery phase" },
+            { time: "10:00 PM - 11:45 PM", task: "Light reading, mental relaxation + test kit setup", message: "🌙 Get in test mode mindset" }
+        ]
+        ,
+        "Day 9": [
+            { time: "5:00 AM - 6:00 AM", task : "Wake Uppp!", message: "Good Morning❤️"},
+            { time: "6:00 AM - 7:00 AM", task: "Light Review – Flashcards & Visuals (no new material)", message: "🧘 Confidence booster" },
+            { time: "7:00 AM - 7:30 AM", task: "Breakfast", message: "🍳 Balanced meal" },
+            { time: "7:30 AM - 9:00 AM", task: "Skim through key summary notes (2–3 mins per chapter)", message: "📑 Gentle refresh, no overload" },
+            { time: "9:00 AM - 9:30 AM", task: "Break: Short walk/stretch, deep breathing", message: "🍵 Mental reset" },
+            { time: "9:30 AM - 11:00 AM", task: "Light MCQ practice (15–20 mixed Qs, timed blocks)", message: "🧠 Build rhythm" },
+            { time: "11:00 AM - 12:30 PM", task: "Relax: Hobby / music / calm zone", message: "🛋️ Avoid cognitive fatigue" },
+            { time: "12:30 PM - 1:00 PM", task: "Light lunch (easy to digest)", message: "🍽️ Pre-test nutrition" },
+            { time: "1:00 PM - 1:30 PM", task: "Quiet time – meditation / positive affirmations", message: "😌 Mental grounding" },
+            { time: "1:30 PM - 2:00 PM", task: "Test setup: water, test sheets, pens, clock", message: "Final prep" },
+            { time: "2:00 PM - 5:00 PM", task: "Mock Test (Full syllabus)", message: "📝 Give your best effort!" },
+            { time: "5:00 PM - 5:30 PM", task: "Light snack, hydrate", message: "🍉 Recovery" },
+            { time: "5:30 PM - 6:30 PM", task: "Test Reflection – mark paper, identify strengths & gaps", message: "🧾 Learn from performance" },
+            { time: "6:30 PM - 7:30 PM", task: "Chill time – walk, hobby, music", message: "🧘 Mindful recovery" },
+            { time: "7:30 PM - 9:00 PM", task: "Optional: Review 1–2 weak areas or unclear answers", message: "Gentle recap" },
+            { time: "9:00 PM - 10:00 PM", task: "Dinner + wind down", message: "🍽️ No study" },
+            { time: "10:00 PM - 11:45 PM", task: "Rest, track your progress, or sleep early", message: "Closure + reset" }
+        ],
+        "Day 10": [
+            { time: "5:00 AM - 6:00 AM", task : "Wake Uppp!", message: "Good Morning❤️"},
+            { time: "6:00 AM - 7:00 AM", task: "Review performance – Check score, mark distribution by subject", message: "📊 Visualize performance" },
+            { time: "7:00 AM - 7:30 AM", task: "Breakfast + short walk", message: "🍳 Refresh" },
+            { time: "7:30 AM - 8:30 AM", task: "Review Chemistry – Go over wrong/right MCQs & concepts", message: "🧪 Mark knowledge vs mistake-based" },
+            { time: "8:30 AM - 9:30 AM", task: "Review Physics – Identify calculation, concept, or logic errors", message: "🔬 Break down time spent per Q" },
+            { time: "9:30 AM - 10:30 AM", task: "Review Biology (Botany & Zoology) – Reasoning, examples, process-based gaps", message: "🌿 Spot superficial vs deep gaps" },
+            { time: "10:30 AM - 11:30 AM", task: "Identify error types: Conceptual, Calculation", message: "❗ Identify main error types" },
+            { time: "11:30 AM - 1:00 PM", task: "Organize your work – Separate resolved errors, things to revisit, final practice", message: "📂 Organize learning materials" },
+            { time: "1:00 PM - 3:30 PM", task: "Re-solve all incorrect questions without looking at answers", message: "🗂️ Active recovery" },
+            { time: "3:30 PM - 4:30 PM", task: "Create a strategy sheet for better recall", message: "🧠 Summarize key learning strategies" },
+            { time: "5:00 PM - 6:00 PM", task: "Write a reflection on the test performance", message: "📋 Reflect on performance and improvements" },
+            { time: "6:00 PM - 9:00 PM", task: "Optional: Soft review of marked questions, relax, revisit errors", message: "Free review space" },
+            { time: "9:00 PM - 11:45 PM", task: "Dinner + full rest", message: "🍽️ Wind down" }
+        ]
 
-  };
+    };
 
-  function convertTo24Hour(time) {
-    const [timePart, period] = time.split(' ');
-    let [hours, minutes] = timePart.split(':').map(Number);
-    if (period === 'AM' && hours === 12) { hours = 0; }
-    else if (period === 'PM' && hours !== 12) { hours += 12; }
-    return hours * 60 + minutes;
-  }
+    function convertTo24Hour(time) {
+        const [timePart, period] = time.split(' ');
+        let [hours, minutes] = timePart.split(':').map(Number);
+        if (period === 'AM' && hours === 12) { hours = 0; }
+        else if (period === 'PM' && hours !== 12) { hours += 12; }
+        return hours * 60 + minutes;
+    }
 
 
-  const startDate = new Date("2025-06-19");
+    const startDate = new Date("2025-06-19");
 
-  function getCurrentDayIndex() {
-    const currentDate = new Date();
-    const diffTime = currentDate - startDate;
-    const dayIndex = Math.floor(diffTime / (1000 * 60 * 60 * 24)) + 1;
-    return dayIndex;
-  }
+    function getCurrentDayIndex() {
+        const currentDate = new Date();
+        const diffTime = currentDate - startDate;
+        const dayIndex = Math.floor(diffTime / (1000 * 60 * 60 * 24)) + 1;
+        return dayIndex;
+    }
 
-  function updateSchedule() {
-    const currentDayIndex = getCurrentDayIndex();
-    const currentDay = `Day ${currentDayIndex}`;
-    const dayRoutine = routines[currentDay];
+    function updateSchedule() {
+        const currentDayIndex = getCurrentDayIndex();
+        const currentDay = `Day ${currentDayIndex}`;
+        const dayRoutine = routines[currentDay];
 
-    const currentTime = new Date();
-    const currentHour = currentTime.getHours();
-    const currentMinute = currentTime.getMinutes();
-    const currentTimeInMinutes = currentHour * 60 + currentMinute;
+        const currentTime = new Date();
+        const currentHour = currentTime.getHours();
+        const currentMinute = currentTime.getMinutes();
+        const currentTimeInMinutes = currentHour * 60 + currentMinute;
 
-    if (dayRoutine) {
-      document.getElementById('day-title').textContent = currentDay;
+        if (dayRoutine) {
+            document.getElementById('day-title').textContent = currentDay;
 
-      const currentTask = dayRoutine.find(task => {
-        const [start, end] = task.time.split(' - ');
-        const startTimeInMinutes = convertTo24Hour(start);
-        const endTimeInMinutes = convertTo24Hour(end);
+            const currentTask = dayRoutine.find(task => {
+                const [start, end] = task.time.split(' - ');
+                const startTimeInMinutes = convertTo24Hour(start);
+                const endTimeInMinutes = convertTo24Hour(end);
 
-        return currentTimeInMinutes >= startTimeInMinutes && currentTimeInMinutes <= endTimeInMinutes;
-      });
+                return currentTimeInMinutes >= startTimeInMinutes && currentTimeInMinutes <= endTimeInMinutes;
+            });
 
-      if (currentTask) {
-        document.getElementById('current-task').innerHTML = `
+            if (currentTask) {
+                document.getElementById('current-task').innerHTML = `
     <div class="time">${currentTask.time}</div>
     <div class="task-box">${currentTask.task}</div>
     ${currentTask.message ? `<div class="message-container"><div class="message-text">${currentTask.message}</div></div>` : ''}
   `;
-        if (currentTask.message) setScrollingMessage();
-      } else {
-        document.getElementById('current-task').innerHTML = "No ongoing task.";
-      }
+                if (currentTask.message) setScrollingMessage();
+            } else {
+                document.getElementById('current-task').innerHTML = "No ongoing task.";
+            }
 
-      const currentTaskIndex = dayRoutine.indexOf(currentTask);
-      const nextTasks = dayRoutine.slice(currentTaskIndex + 1, currentTaskIndex + 3);
-      let nextTasksHTML = '';
-      nextTasks.forEach(task => {
-        nextTasksHTML += `<div class=task>${task.time} - ${task.task}</div>`;
-      });
-      const nextTasksElement = document.getElementById('next-tasks');
-      if (nextTasks.length === 0) {
-        nextTasksElement.style.display = 'none';
-      } else {
-        nextTasksElement.style.display = 'block';
-        nextTasksElement.innerHTML = nextTasksHTML;
-      }
+            const currentTaskIndex = dayRoutine.indexOf(currentTask);
+            const nextTasks = dayRoutine.slice(currentTaskIndex + 1, currentTaskIndex + 3);
+            let nextTasksHTML = '';
+            nextTasks.forEach(task => {
+                nextTasksHTML += `<div class=task>${task.time} - ${task.task}</div>`;
+            });
+            const nextTasksElement = document.getElementById('next-tasks');
+            if (nextTasks.length === 0) {
+                nextTasksElement.style.display = 'none';
+            } else {
+                nextTasksElement.style.display = 'block';
+                nextTasksElement.innerHTML = nextTasksHTML;
+            }
 
-      let fullDayHTML = '';
-      dayRoutine.forEach(task => {
-        fullDayHTML += `<li>${task.time} - ${task.task}</li>`;
-      });
-      document.getElementById('full-schedule').innerHTML = fullDayHTML;
-    }
-  }
-
-  function showFullSchedule() {
-    const fullDayModal = document.getElementById('full-day-modal');
-    fullDayModal.style.display = 'block';
-    document.body.classList.add('modal-open');
-  }
-
-  function showNextDaySchedule() {
-    const currentDayIndex = getCurrentDayIndex();
-    const nextDayIndex = currentDayIndex + 1;
-    const nextDay = `Day ${nextDayIndex}`;
-    const nextDayRoutine = routines[nextDay];
-
-    let nextDayHTML = '';
-    if (nextDayRoutine) {
-      nextDayRoutine.forEach(task => {
-        nextDayHTML += `<li>${task.time} - ${task.task}</li>`;
-      });
-      document.getElementById('next-day-schedule').innerHTML = nextDayHTML;
-      const nextDayModal = document.getElementById('next-day-modal');
-      nextDayModal.style.display = 'block';
-      document.body.classList.add('modal-open');
-    }
-  }
-
-  function closeModal(modalId) {
-    const modal = document.getElementById(modalId);
-    modal.style.display = 'none';
-    document.body.classList.remove('modal-open');
-  }
-
-  window.onclick = function(event) {
-    if (event.target === document.getElementById('full-day-modal') || event.target === document.getElementById('next-day-modal')) {
-      closeModal(event.target.id);
-    }
-  };
-
-
-
-  function openScheduleSelector() {
-    const modal = document.getElementById("scheduleModal");
-    const selector = document.getElementById("daySelector");
-    selector.innerHTML = "";
-
-    for (let i = 0; i < 10; i++) {
-      const day = `Day ${i + 1}`;
-      const date = new Date(startDate);
-      date.setDate(startDate.getDate() + i);
-      const dateStr = date.toLocaleDateString("en-GB", {day: "2-digit", month: "2-digit", year: "numeric"});
-      const opt = document.createElement("option");
-      opt.value = day;
-      opt.text = `${day} — ${dateStr}`;
-      selector.appendChild(opt);
+            let fullDayHTML = '';
+            dayRoutine.forEach(task => {
+                fullDayHTML += `<li>${task.time} - ${task.task}</li>`;
+            });
+            document.getElementById('full-schedule').innerHTML = fullDayHTML;
+        }
     }
 
-    modal.style.display = "block";
-  }
-
-  function closeScheduleSelector() {
-    document.getElementById("scheduleModal").style.display = "none";
-  }
-
-  function submitDaySelection() {
-    const selectedDay = document.getElementById("daySelector").value;
-    const list = document.getElementById("scheduleDetails");
-    const title = document.getElementById("scheduleTitle");
-    list.innerHTML = "";
-
-    const dayNum = parseInt(selectedDay.split(" ")[1]);
-    const date = new Date(startDate);
-    date.setDate(startDate.getDate() + dayNum - 1);
-    const dateStr = date.toLocaleDateString("en-GB", {day: "2-digit", month: "2-digit", year: "numeric"});
-
-    title.textContent = `${selectedDay} – ${dateStr}`;
-
-    if (routines[selectedDay]) {
-      routines[selectedDay].forEach(item => {
-        const li = document.createElement("li");
-        li.innerHTML = `${item.time} → ${item.task}`;
-        list.appendChild(li);
-      });
-    } else {
-      list.innerHTML = "<li>No schedule found for this day.</li>";
+    function showFullSchedule() {
+        const fullDayModal = document.getElementById('full-day-modal');
+        fullDayModal.style.display = 'block';
+        document.body.classList.add('modal-open');
     }
 
-    document.getElementById("scheduleModal").style.display = "none";
-    document.getElementById("dayScheduleModal").style.display = "block";
-  }
+    function showNextDaySchedule() {
+        const currentDayIndex = getCurrentDayIndex();
+        const nextDayIndex = currentDayIndex + 1;
+        const nextDay = `Day ${nextDayIndex}`;
+        const nextDayRoutine = routines[nextDay];
 
-  function closeDaySchedule() {
-    document.getElementById("dayScheduleModal").style.display = "none";
-  }
-
-  document.addEventListener('DOMContentLoaded', () => {
-    const messageContainer = document.querySelector('#current-task .message-container');
-    const messageText = document.querySelector('#current-task .message-text');
-
-    if (messageContainer && messageText) {
-      messageContainer.style.display = 'block';
-      const containerWidth = messageContainer.offsetWidth;
-      const textWidth = messageText.offsetWidth;
-
-      if (textWidth > containerWidth) {
-        const duration = Math.max((textWidth / 50), 5);
-        messageText.style.animationDuration = `${duration}s`;
-      } else {
-        messageText.style.animation = 'none';
-        messageText.style.left = '50%';
-        messageText.style.transform = 'translate(-50%, -50%)';
-      }
+        let nextDayHTML = '';
+        if (nextDayRoutine) {
+            nextDayRoutine.forEach(task => {
+                nextDayHTML += `<li>${task.time} - ${task.task}</li>`;
+            });
+            document.getElementById('next-day-schedule').innerHTML = nextDayHTML;
+            const nextDayModal = document.getElementById('next-day-modal');
+            nextDayModal.style.display = 'block';
+            document.body.classList.add('modal-open');
+        }
     }
-  });
 
-  function setScrollingMessage() {
-    setTimeout(() => {
-      const messageContainer = document.querySelector('#current-task .message-container');
-      const messageText = document.querySelector('#current-task .message-text');
-      if (!messageContainer || !messageText) return;
+    function closeModal(modalId) {
+        const modal = document.getElementById(modalId);
+        modal.style.display = 'none';
+        document.body.classList.remove('modal-open');
+    }
 
-      messageText.style.animation = 'none';
-      messageText.style.left = '0';
-      messageText.style.transform = 'none';
+    window.onclick = function(event) {
+        if (event.target === document.getElementById('full-day-modal') || event.target === document.getElementById('next-day-modal')) {
+            closeModal(event.target.id);
+        }
+    };
 
-      const containerWidth = messageContainer.offsetWidth;
-      const textWidth = messageText.scrollWidth;
 
-      const totalDistance = containerWidth + textWidth;
-      const duration = Math.max(totalDistance / 50, 7) * 1000; // ms
 
-      messageText.style.transform = `translateX(${containerWidth}px)`;
+    function openScheduleSelector() {
+        const modal = document.getElementById("scheduleModal");
+        const selector = document.getElementById("daySelector");
+        selector.innerHTML = "";
 
-      if (messageText._ticker) {
-        messageText._ticker.cancel();
-        messageText._ticker = null;
-      }
+        for (let i = 0; i < 10; i++) {
+            const day = `Day ${i + 1}`;
+            const date = new Date(startDate);
+            date.setDate(startDate.getDate() + i);
+            const dateStr = date.toLocaleDateString("en-GB", {day: "2-digit", month: "2-digit", year: "numeric"});
+            const opt = document.createElement("option");
+            opt.value = day;
+            opt.text = `${day} — ${dateStr}`;
+            selector.appendChild(opt);
+        }
 
-      messageText._ticker = messageText.animate([
-        { transform: `translateX(${containerWidth}px)` },
-        { transform: `translateX(-${textWidth}px)` }
-      ], {
-        duration: duration,
-        iterations: Infinity,
-        easing: 'linear'
-      });
-    }, 60);
-  }
-  updateSchedule();
+        modal.style.display = "block";
+    }
+
+    function closeScheduleSelector() {
+        document.getElementById("scheduleModal").style.display = "none";
+    }
+
+    function submitDaySelection() {
+        const selectedDay = document.getElementById("daySelector").value;
+        const list = document.getElementById("scheduleDetails");
+        const title = document.getElementById("scheduleTitle");
+        list.innerHTML = "";
+
+        const dayNum = parseInt(selectedDay.split(" ")[1]);
+        const date = new Date(startDate);
+        date.setDate(startDate.getDate() + dayNum - 1);
+        const dateStr = date.toLocaleDateString("en-GB", {day: "2-digit", month: "2-digit", year: "numeric"});
+
+        title.textContent = `${selectedDay} – ${dateStr}`;
+
+        if (routines[selectedDay]) {
+            routines[selectedDay].forEach(item => {
+                const li = document.createElement("li");
+                li.innerHTML = `${item.time} → ${item.task}`;
+                list.appendChild(li);
+            });
+        } else {
+            list.innerHTML = "<li>No schedule found for this day.</li>";
+        }
+
+        document.getElementById("scheduleModal").style.display = "none";
+        document.getElementById("dayScheduleModal").style.display = "block";
+    }
+
+    function closeDaySchedule() {
+        document.getElementById("dayScheduleModal").style.display = "none";
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        const messageContainer = document.querySelector('#current-task .message-container');
+        const messageText = document.querySelector('#current-task .message-text');
+
+        if (messageContainer && messageText) {
+            messageContainer.style.display = 'block';
+            const containerWidth = messageContainer.offsetWidth;
+            const textWidth = messageText.offsetWidth;
+
+            if (textWidth > containerWidth) {
+                const duration = Math.max((textWidth / 50), 5);
+                messageText.style.animationDuration = `${duration}s`;
+            } else {
+                messageText.style.animation = 'none';
+                messageText.style.left = '50%';
+                messageText.style.transform = 'translate(-50%, -50%)';
+            }
+        }
+    });
+
+    function setScrollingMessage() {
+        setTimeout(() => {
+            const messageContainer = document.querySelector('#current-task .message-container');
+            const messageText = document.querySelector('#current-task .message-text');
+            if (!messageContainer || !messageText) return;
+
+            messageText.style.animation = 'none';
+            messageText.style.left = '0';
+            messageText.style.transform = 'none';
+
+            const containerWidth = messageContainer.offsetWidth;
+            const textWidth = messageText.scrollWidth;
+
+            const totalDistance = containerWidth + textWidth;
+            const duration = Math.max(totalDistance / 50, 7) * 1000; // ms
+
+            messageText.style.transform = `translateX(${containerWidth}px)`;
+
+            if (messageText._ticker) {
+                messageText._ticker.cancel();
+                messageText._ticker = null;
+            }
+
+            messageText._ticker = messageText.animate([
+                { transform: `translateX(${containerWidth}px)` },
+                { transform: `translateX(-${textWidth}px)` }
+            ], {
+                duration: duration,
+                iterations: Infinity,
+                easing: 'linear'
+            });
+        }, 60);
+    }
+    updateSchedule();
 </script>
 </body>
 </html>
