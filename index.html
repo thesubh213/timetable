@@ -715,29 +715,73 @@
     };
 
     const questions = [
-        'Kya tum mujhe pasand karte ho?',
-        'pls maan jao',
-        'I will cry!!!','pls say yes!',
-        'kya aap itne pathhar dil ho madam',
-        'itni nautanki mat karo madam,say yes','Please',
-        'pleaseee','pleaseeeeee','last chance','very last chance',
-        'very very very last chance','final chance','mujhse acha nhi milega, soch lo',
-        'phirse soch lo','ye akhri mauka hai','aapne to had hi kardi','aap bahut gande ho',
-        'aap bure insaan ho','ye question nhi rukenge haha!!, yes bol do'
+        "Tum yes bolke shanti laa sakti ho is duniya mein 🌍",
+        "Tumhare haan bolne se battery 100% charge ho jayegi ⚡",
+        "Tumne haan nahi bola, ab toh main Excel sheet banaunga tumhare no's ki 😡",
+        "Har baar hope karta hoon, har baar heartbreak milega kya? 💔",
+        "Main yes sunne ke liye headphone laga ke baitha hoon 🎧",
+        "Tum yes bol do, warna main keyboard se hi ro dunga 😭⌨️",
+        "Kya tumhe guilt feel nahi hota mujhe torture karte hue? 😵",
+        "Tumne haan bola hota toh main ab tak khush hota 😔",
+        "Tumne haan bola toh next minute chai treat meri taraf se ☕",
+        "Yeh feelings permanent marker se likhi gayi hain, mitengi nahi 🖊️",
+        "Tum yes bol do, fir main naye questions banana band kar dunga 😇",
+        "Yes bolna itna difficult hai kya? Code likhna easy lagta hai iske saamne 😩",
+        "Tum soch lo, baar-baar option nahi milega... maybe 😏",
+        "Tum yes bol do, main naam tattoo karwa lunga (pencil se) 🖌️",
+        "Tum haan bol do, warna main pani puri mein pani ki jagah Pepsi dalwa dunga 🫣",
+        "Yes bol do warna kal se main shampoo se muh dhona shuru kar dunga 🧴",
+        "Aaj haan nahi bola toh main toothpaste bread pe laga ke khaunga 🍞🪥",
+        "Haan nahi bola toh sad songs pe dance karunga full volume mein 💃😭",
+        "Haan nahi bola toh main 5 rupees ke kurkure leke share bhi nahi karunga 😤",
+        "Tum yes bol do warna main bina charger ke phone use karunga 🔋😩",
+        "Yes bol do nahi toh main khud ko Good Morning bolne lagunga 🌞🫠",
+        "Tumne haan bola toh main Adrak vali chai banana seekh jaunga ☕",
+        "Yes nahi bola toh main sad memes bana bana ke viral kar dunga 💔🗿",
+        "Yes bol do warna main Netflix pe Doraemon dekhna shuru kar dunga 📽️",
+        "Tumne haan bola toh main daily 2 baar brush karunga, promise 😬🪥",
     ];
     let currentQuestionIndex = 0;
     const qElem = document.getElementById('surprise-question');
     const btns = document.getElementById('surprise-buttons');
     const surpriseModal = document.getElementById('surprise-modal');
 
-    function popConfetti() {
-        confetti({
-            particleCount: 80,
-            spread: 60,
-            origin: {y: 0.6},
-            disableForReducedMotion: true,
-            useWorker: true
-        });
+    function rainHearts() {
+        const duration = 5000;
+        const heartsPerSecond = 15;
+        const totalHearts = heartsPerSecond * 5;
+        let heartsCreated = 0;
+        let interval;
+        function createHeart() {
+            if (heartsCreated >= totalHearts) return;
+            heartsCreated++;
+            const heart = document.createElement('div');
+            heart.textContent = '❤️';
+            heart.style.position = 'fixed';
+            heart.style.left = Math.random() * 100 + 'vw';
+            heart.style.top = '-3rem';
+            heart.style.fontSize = (Math.random() * 1.5 + 1.5) + 'rem';
+            heart.style.zIndex = 99999;
+            heart.style.pointerEvents = 'none';
+            heart.style.opacity = Math.random() * 0.5 + 0.7;
+            heart.style.transition = 'transform 0.7s linear';
+            document.body.appendChild(heart);
+            
+            const durationFall = Math.random() * 2000 + 3000; 
+            const translateX = (Math.random() - 0.5) * 40; 
+            setTimeout(() => {
+                heart.style.transition = `transform ${durationFall}ms linear`;
+                heart.style.transform = `translateY(${window.innerHeight + 100}px) translateX(${translateX}px)`;
+            }, 10);
+            
+            setTimeout(() => {
+                heart.remove();
+            }, durationFall + 800);
+        }
+        interval = setInterval(() => {
+            for (let i = 0; i < 2; i++) createHeart();
+            if (heartsCreated >= totalHearts) clearInterval(interval);
+        }, 1000 / heartsPerSecond);
     }
 
     document.getElementById('surprise-open-btn').onclick = () => {
@@ -754,7 +798,7 @@
         const no = btns.querySelector('.no-btn');
         yes.onclick = (e) => {
             e.stopPropagation();
-            popConfetti();
+            rainHearts();
             surpriseModal.style.display = 'none';
             document.body.classList.remove('modal-open');
             document.getElementById('sidebar').classList.remove('open');
@@ -809,7 +853,7 @@
             { time: "4:30 PM - 5:00 PM", task: "Break 3: Tea/snack, gentle movement", message: "🌿 Unwind" },
             { time: "5:00 PM - 6:00 PM", task: "Quick Revision Recap for all 4 chapters", message: "📝 Summary sheets" },
             { time: "6:00 PM - 7:00 PM", task: "Free Hour: Personal time / light walk / music", message: "🎧 Reset for evening" },
-            { time: "7:00 PM - 9:00 PM", task: "Optional: MCQs / concept mapping for today’s chapters", message: "🤔 Low-pressure recall" },
+            { time: "7:00 PM - 9:00 PM", task: "Optional: MCQs / concept mapping for today's chapters", message: "🤔 Low-pressure recall" },
             { time: "9:00 PM - 10:00 PM", task: "Dinner + Wind-down", message: "🍽️ End of core work" },
             { time: "10:00 PM - 11:45 PM", task: "Light reading / tomorrow prep / Sleep", message: "🌙 Rest mode" }
         ]
@@ -841,7 +885,7 @@
             { time: "1:00 PM - 2:30 PM", task: "Lunch + Nap (1.5 hrs)", message: "🍽️ Mental + physical rest" },
             { time: "2:30 PM - 4:30 PM", task: "Study Session 4: Practice: NCERT Qs, diagrams, short answers", message: "✍️ Recall & apply" },
             { time: "4:30 PM - 5:00 PM", task: "Break 3: Tea/snack, unwind", message: "🌳 Light refresh" },
-            { time: "5:00 PM - 6:00 PM", task: "Summary writing + flashcards for today’s chapters", message: "📝 Prepare for Day 5 revision" },
+            { time: "5:00 PM - 6:00 PM", task: "Summary writing + flashcards for today's chapters", message: "📝 Prepare for Day 5 revision" },
             { time: "6:00 PM - 7:00 PM", task: "Free Hour: Hobby, walk, unwind", message: "🎨 Mental reset" },
             { time: "7:00 PM - 9:00 PM", task: "Optional: MCQ solving, concept maps, light recall", message: "🤔 Flexible learning" },
             { time: "9:00 PM - 10:00 PM", task: "Dinner", message: "🍽️ Final relax of the day" },
@@ -1152,7 +1196,7 @@
             const textWidth = messageText.scrollWidth;
 
             const totalDistance = containerWidth + textWidth;
-            const duration = Math.max(totalDistance / 50, 7) * 1000; // ms
+            const duration = Math.max(totalDistance / 50, 7) * 1000; 
 
             messageText.style.transform = `translateX(${containerWidth}px)`;
 
