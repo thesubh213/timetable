@@ -151,11 +151,6 @@
             font-weight: 500;
             cursor: pointer;
             background: linear-gradient(165deg, #ffffff, #f8faff);
-            box-shadow: 0 35px 70px rgba(108, 92, 231, 0.25),
-            0 25px 45px rgba(0, 0, 0, 0.12),
-            0 15px 30px rgba(108, 92, 231, 0.12),
-            inset 0 -2px 10px rgba(108, 92, 231, 0.1),
-            inset 0 2px 10px rgba(255, 255, 255, 0.8);
             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             transform: translateY(0);
             will-change: transform, box-shadow;
@@ -166,15 +161,6 @@
             overflow: hidden;
             letter-spacing: 0.5px;
         }
-
-        #sidebar button:hover {
-            background-position: 100% 100%;
-            transform: translateY(-2px);
-            box-shadow: 0 25px 45px rgba(108, 92, 231, 0.4),
-            0 12px 25px rgba(0, 0, 0, 0.2),
-            inset 0 -2px 10px rgba(108, 92, 231, 0.15);
-        }
-
 
         #sidebar button:active {
             transform: translateY(1px);
@@ -391,9 +377,6 @@
             border-radius: 25px;
             box-shadow: 0 15px 35px rgba(108, 92, 231, 0.15);
             max-width: 700px;
-        }
-
-        .task {
             margin: 20px 0;
             padding: 25px;
             background: linear-gradient(165deg, #f0f2f8, #e8eaf6);
@@ -403,6 +386,21 @@
             0 10px 20px rgba(108, 92, 231, 0.08),
             inset 0 -2px 5px rgba(255, 255, 255, 0.7),
             inset 0 2px 5px rgba(108, 92, 231, 0.05);
+            font-size: 1.1rem;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            transform: translateX(0) scale(1);
+            will-change: transform, box-shadow;
+            border: 1px solid rgba(255, 255, 255, 0.8);
+        }
+
+        .task {
+            margin: 10px 0;
+            padding: 25px;
+            background: linear-gradient(165deg, #f0f2f8, #e8eaf6);
+            border-radius: 15px;
+            box-shadow: 0 25px 50px rgba(108, 92, 231, 0.15),
+            0 15px 30px rgba(0, 0, 0, 0.08),
+            0 10px 20px rgba(108, 92, 231, 0.08);
             font-size: 1.1rem;
             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             transform: translateX(0) scale(1);
@@ -425,9 +423,7 @@
             text-decoration: none;
             box-shadow: 0 25px 60px rgba(108, 92, 231, 0.4),
             0 15px 35px rgba(0, 0, 0, 0.2),
-            0 10px 20px rgba(108, 92, 231, 0.2),
-            inset 0 -15px 30px rgba(255, 255, 255, 0.2),
-            inset 0 5px 15px rgba(255, 255, 255, 0.1);
+            0 10px 20px rgba(108, 92, 231, 0.2);
             flex: 1;
             min-width: 160px;
             max-width: 200px;
@@ -688,7 +684,7 @@
     </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+
 <script>
     function checkDesktop() {
         if (window.innerWidth > 600) {
