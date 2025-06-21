@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="description" content="Interactive study timetable with daily schedules and tasks">
     <link rel="icon" type="image/png"
           href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==">
@@ -14,13 +14,16 @@
         body {
             font-family: 'Poppins', sans-serif;
             margin: 0;
-            padding: 20px;
+            padding: 0;
             scroll-behavior: smooth;
             background: linear-gradient(145deg, #f8faff 0%, #eef2f7 100%);
             color: #2d3748;
             min-height: 100vh;
             overflow-x: hidden;
             overflow-y: auto;
+            -webkit-text-size-adjust: 100%;
+            -ms-text-size-adjust: 100%;
+            text-size-adjust: 100%;
         }
         body.modal-open { overflow: hidden; }
 
@@ -44,14 +47,11 @@
             display: block;
         }
 
-
-
-
         #desktop-overlay {
             display: none;
             position: fixed;
             inset: 0;
-            background: rgba(0,0,0,254);
+            background: rgba(0,0,0,0.95);
             color: white;
             font-size: 1.6rem;
             text-align: center;
@@ -59,30 +59,285 @@
             z-index: 9999;
         }
 
+        .nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 30px auto;
+            max-width: 600px;
+            padding: 0 20px;
+        }
 
-        #hamburger {
-            position: fixed;
-            right: 20px;
-            z-index: 999;
-            animation: pulse 2s ease-in-out infinite;
-            font-size: 2rem;
-            cursor: pointer;
-            color: rgba(108, 92, 231, 0.9);
-            opacity: 0.9;
-            transition: all 0.3s ease;
-            border: none;
-            background: rgba(255, 255, 255, 0.95);
+        .nav-buttons #day-title {
+            font-size: 2.4rem;
+            font-weight: bold;
+            text-align: center;
+            color: #6c5ce7;
+            text-shadow: 2px 2px 4px rgba(108, 92, 231, 0.1);
+            letter-spacing: 1px;
+            position: relative;
+            flex: 1;
+            margin: 0 15px;
+        }
+
+        .nav-btn {
+            background: rgba(108, 92, 231, 0.1);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            color: #6c5ce7;
+            border: 2px solid rgba(108, 92, 231, 0.3);
             padding: 15px 20px;
-            border-radius: 25px;
-            box-shadow: 0 10px 25px rgba(108, 92, 231, 0.2),
-            0 5px 15px rgba(0, 0, 0, 0.1),
-            inset 0 -2px 5px rgba(108, 92, 231, 0.1);
-            transform: scale(1);
-            bottom: 30px;
+            border-radius: 20px;
+            font-size: 1.8rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 8px 25px rgba(108, 92, 231, 0.15),
+            0 4px 10px rgba(0, 0, 0, 0.1);
+            transform: translateY(0);
+            will-change: transform;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+            min-width: 80px;
+            height: 60px;
+        }
+
+        .nav-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(108, 92, 231, 0.1), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .nav-btn:hover::before {
+            left: 100%;
         }
 
 
 
+        .nav-btn:active {
+            transform: translateY(1px);
+            box-shadow: 0 4px 15px rgba(108, 92, 231, 0.2);
+        }
+
+        .page-container {
+            position: relative;
+            width: 100%;
+            overflow-x: hidden;
+            margin: 0;
+            padding: 0;
+        }
+
+        .page {
+            width: 100%;
+            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .page.slide-left {
+            transform: translateX(-100%);
+        }
+
+        .page.slide-right {
+            transform: translateX(100%);
+        }
+
+        .menu-page {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: linear-gradient(145deg, #f8faff 0%, #eef2f7 100%);
+            transform: translateX(100%);
+            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 1001;
+            box-sizing: border-box;
+            overflow: hidden;
+        }
+
+        .menu-page.active {
+            transform: translateX(0);
+        }
+
+        .menu-page.slide-out {
+            transform: translateX(100%);
+        }
+
+        .menu-content {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            box-sizing: border-box;
+        }
+
+        .menu-header {
+            text-align: center;
+            margin-bottom: 20px;
+            margin-top: 80px;
+        }
+
+        .menu-header h2 {
+            font-size: 2.5rem;
+            color: #6c5ce7;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(108, 92, 231, 0.1);
+            border-bottom: 3px solid rgba(108, 92, 231, 0.3);
+            padding-bottom: 10px;
+            display: inline-block;
+        }
+
+        .menu-header p {
+            font-size: 1.1rem;
+            color: #4a5568;
+            font-family: 'Dancing Script', cursive;
+        }
+
+        .menu-nav-buttons {
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            margin: 0;
+            padding: 0;
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            z-index: 10;
+        }
+
+        .menu-nav-btn {
+            color: rgba(108, 92, 231, 0.9);
+            border: none;
+            padding: 15px;
+            margin: 0;
+            border-radius: 10px;
+            font-size: 1.5rem;
+            font-weight: 500;
+            cursor: pointer;
+            background: transparent;
+            transition: all 0.3s ease;
+            transform: translateY(0);
+            will-change: transform;
+            width: auto;
+            position: relative;
+            overflow: hidden;
+            letter-spacing: 0.5px;
+            min-width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .menu-nav-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(108, 92, 231, 0.1), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .menu-nav-btn:hover::before {
+            left: 100%;
+        }
+
+        .menu-nav-btn:hover {
+            transform: translateY(0);
+            color: rgba(108, 92, 231, 1);
+        }
+
+        .menu-nav-btn:active {
+            transform: translateY(0);
+        }
+
+        .menu-options {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            flex: 1;
+            margin-top: 20px;
+        }
+
+        .menu-option {
+            color: rgba(108, 92, 231, 0.9);
+            border: 3px solid rgba(108, 92, 231, 0.35);
+            padding: 18px 25px;
+            margin: 5px auto;
+            border-radius: 30px;
+            font-size: 2rem;
+            font-weight: 500;
+            cursor: pointer;
+            background: linear-gradient(165deg, #ffffff, #f8faff);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            transform: translateY(0);
+            will-change: transform, box-shadow;
+            display: block;
+            width: 45%;
+            max-width: 350px;
+            position: relative;
+            overflow: hidden;
+            letter-spacing: 1px;
+            text-align: center;
+        }
+
+        .menu-option::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(108, 92, 231, 0.1), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .menu-option:hover::before {
+            left: 100%;
+        }
+
+        .menu-option:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(108, 92, 231, 0.25),
+            0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .menu-option:active {
+            transform: translateY(-2px);
+        }
+
+        .menu-option h3 {
+            color: #6c5ce7;
+            margin-bottom: 10px;
+            font-size: 1.3rem;
+            font-weight: 600;
+            position: relative;
+            z-index: 1;
+        }
+
+        .menu-option p {
+            color: #4a5568;
+            font-size: 1rem;
+            margin: 0;
+            position: relative;
+            z-index: 1;
+        }
 
         #sidebar {
             position: fixed;
@@ -112,8 +367,6 @@
             border-top: 1px solid rgba(255, 255, 255, 0.8);
         }
 
-
-
         #sidebar.open {
             transform: translateY(0%);
         }
@@ -129,7 +382,6 @@
             transition: transform 0.3s ease;
             z-index: 2;
         }
-
 
         #sidebar .content {
             flex: 1;
@@ -172,7 +424,6 @@
             margin-top: auto;
             opacity: 0.2;
         }
-
 
         .modal {
             display: none;
@@ -235,14 +486,13 @@
             }
         }
 
-
         header {
             background: linear-gradient(165deg, #4834d4 0%, #686de0 25%, #7a6eea 50%, #686de0 75%, #4834d4 100%);
             background-size: 400% 400%;
             animation: gradientHeader 15s ease-in-out infinite;
             color: white;
             text-align: center;
-            padding: 45px 40px 65px 40px;
+            padding: 0;
             margin: -20px -20px 35px -20px;
             border-bottom: 1px solid rgba(255, 255, 255, 0.4);
             border-radius: 0 0 35px 35px;
@@ -260,16 +510,7 @@
             transition: all 0.3s ease-out;
         }
         h1 { font-size: 2.8rem; margin:0; font-weight:600 }
-        #day-title {
-            font-size: 2.4rem;
-            font-weight: bold;
-            text-align: center;
-            margin: 30px 0;
-            color: #6c5ce7;
-            text-shadow: 2px 2px 4px rgba(108, 92, 231, 0.1);
-            letter-spacing: 1px;
-            position: relative;
-        }
+       
 
         @keyframes gradientTask {
             0% {
@@ -286,7 +527,6 @@
             }
         }
 
-
         #current-task {
             font-size: 1.8rem;
             font-weight: 500;
@@ -299,11 +539,9 @@
             backdrop-filter: blur(15px);
             -webkit-backdrop-filter: blur(15px);
             margin: 0 auto 30px auto;
-            box-shadow: 0 35px 70px rgba(108, 92, 231, 0.15),
-            0 25px 45px rgba(0, 0, 0, 0.1),
-            0 15px 30px rgba(108, 92, 231, 0.1),
-            inset 0 -2px 10px rgba(255, 255, 255, 0.9),
-            inset 0 2px 10px rgba(108, 92, 231, 0.12);
+            box-shadow: 0 35px 70px rgba(108, 92, 231, 0.2),
+            0 25px 45px rgba(0, 0, 0, 0.15),
+            inset 0 -3px 15px rgba(255, 255, 255, 0.9);
             border: 1px solid rgba(255, 255, 255, 0.9);
             transform: translateY(0);
             transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
@@ -311,12 +549,6 @@
             max-width: 650px;
             will-change: transform, box-shadow;
             overflow: hidden;
-        }
-
-        #current-task {
-            box-shadow: 0 35px 70px rgba(108, 92, 231, 0.2),
-            0 25px 45px rgba(0, 0, 0, 0.15),
-            inset 0 -3px 15px rgba(255, 255, 255, 0.9);
         }
 
         #current-task .time {
@@ -351,7 +583,6 @@
             line-height: 40px;
         }
 
-
         #current-task .message-text {
             position: absolute;
             white-space: nowrap;
@@ -366,18 +597,10 @@
             align-items: center;
         }
 
-
-
         #next-tasks {
-            font-size: 1.5rem;
+            font-size: 1.1rem;
             color: #4a5568;
-            margin: 30px auto;
-            padding: 25px;
-            background: linear-gradient(145deg, #ffffff, #f8faff);
-            border-radius: 25px;
-            box-shadow: 0 15px 35px rgba(108, 92, 231, 0.15);
-            max-width: 700px;
-            margin: 20px 0;
+            margin: 20px auto;
             padding: 25px;
             background: linear-gradient(165deg, #f0f2f8, #e8eaf6);
             border-radius: 15px;
@@ -386,11 +609,11 @@
             0 10px 20px rgba(108, 92, 231, 0.08),
             inset 0 -2px 5px rgba(255, 255, 255, 0.7),
             inset 0 2px 5px rgba(108, 92, 231, 0.05);
-            font-size: 1.1rem;
             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             transform: translateX(0) scale(1);
             will-change: transform, box-shadow;
             border: 1px solid rgba(255, 255, 255, 0.8);
+            max-width: 700px;
         }
 
         .task {
@@ -406,7 +629,6 @@
             transform: translateX(0) scale(1);
             will-change: transform, box-shadow;
             border: 1px solid rgba(255, 255, 255, 0.8);
-
         }
 
         .show-full, .show-next {
@@ -424,7 +646,7 @@
             box-shadow: 0 25px 60px rgba(108, 92, 231, 0.4),
             0 15px 35px rgba(0, 0, 0, 0.2),
             0 10px 20px rgba(108, 92, 231, 0.2);
-            flex: 1;
+            flex: 0 1 auto;
             min-width: 160px;
             max-width: 200px;
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -438,11 +660,9 @@
             box-shadow: 0 15px 30px rgba(108, 92, 231, 0.4);
         }
 
-
         .show-full:active, .show-next:active {
             transform: translateY(1px);
         }
-
 
         .modal {
             display: none;
@@ -456,7 +676,6 @@
             padding-top: 60px;
             overflow: hidden;
         }
-
 
         .modal-content {
             background: linear-gradient(165deg, #ffffff, #f8faff);
@@ -477,7 +696,6 @@
             border: 1px solid rgba(255, 255, 255, 0.8);
             animation: modalFadeIn 0.5s cubic-bezier(0.4, 0, 0.2, 1);
             position: relative;
-
         }
 
         @keyframes modalFadeIn {
@@ -555,34 +773,199 @@
             align-items: center;
         }
 
-
         @media (max-width: 600px) {
+            .page {
+                padding: 15px;
+            }
+
             header {
                 padding: 20px;
+                margin: -15px -15px 35px -15px;
+            }
+
+            .nav-buttons, .menu-nav-buttons {
+                margin: 20px auto;
+                padding: 0 15px;
+            }
+
+            .nav-buttons #day-title {
+                font-size: 2rem;
+                margin: 0 10px;
+            }
+
+            .nav-btn, .menu-nav-btn {
+                min-width: 60px;
+                height: 50px;
+                padding: 12px 15px;
+                font-size: 1.4rem;
             }
 
             #current-task {
                 font-size: 1.6rem;
                 padding: 15px;
+                margin: 0 auto 30px auto;
             }
 
             #next-tasks {
-                font-size: 1.1rem;
-                padding: 12px;
+                font-size: 1rem;
+                padding: 15px;
+                margin: 20px auto;
             }
 
             .task {
                 font-size: 0.9rem;
-                padding: 8px;
+                padding: 15px;
             }
 
             .show-full, .show-next {
                 font-size: 0.9rem;
-                padding: 10px 16px;
+                padding: 12px 20px;
                 min-width: 140px;
+            }
+
+            .menu-content {
+                padding: 15px;
+            }
+
+            .menu-nav-buttons {
+                top: 15px;
+                left: 15px;
+            }
+
+            .menu-nav-btn {
+                padding: 12px;
+                font-size: 1.3rem;
+                min-width: 45px;
+                height: 45px;
+            }
+
+            .menu-header {
+                margin-top: 70px;
+            }
+
+            .menu-header h2 {
+                font-size: 2rem;
+                border-bottom: 2px solid rgba(108, 92, 231, 0.3);
+                padding-bottom: 8px;
+            }
+
+            .menu-option {
+                padding: 15px 20px;
+                font-size: 0.9rem;
+                width: 85%;
+                border-radius: 12px;
+            }
+
+            .menu-option h3 {
+                font-size: 1rem;
+            }
+
+            .menu-option p {
+                font-size: 0.9rem;
+            }
+
+            div[style*="display:flex"] {
+                padding: 0 15px !important;
             }
         }
 
+        @media (min-width: 601px) and (max-width: 1200px) {
+            .page {
+                padding: 30px;
+            }
+
+            header {
+                margin: -30px -30px 35px -30px;
+            }
+
+            .nav-buttons, .menu-nav-buttons {
+                max-width: 800px;
+                margin: 30px auto;
+                padding: 0 30px;
+            }
+
+            .nav-buttons #day-title {
+                font-size: 2.2rem;
+            }
+
+            .nav-btn, .menu-nav-btn {
+                min-width: 70px;
+                height: 55px;
+                font-size: 1.6rem;
+            }
+
+            #current-task {
+                max-width: 800px;
+                margin: 0 auto 30px auto;
+            }
+
+            #next-tasks {
+                max-width: 800px;
+                margin: 20px auto;
+            }
+
+            .menu-content {
+                max-width: 800px;
+            }
+
+            .modal-content {
+                max-width: 600px;
+            }
+
+            div[style*="display:flex"] {
+                max-width: 800px !important;
+                padding: 0 30px !important;
+            }
+        }
+
+        @media (min-width: 1201px) {
+            .page {
+                padding: 40px;
+            }
+
+            header {
+                margin: -40px -40px 35px -40px;
+            }
+
+            .nav-buttons, .menu-nav-buttons {
+                max-width: 1000px;
+                margin: 40px auto;
+                padding: 0 40px;
+            }
+
+            .nav-buttons #day-title {
+                font-size: 2.6rem;
+            }
+
+            .nav-btn, .menu-nav-btn {
+                min-width: 80px;
+                height: 60px;
+                font-size: 1.8rem;
+            }
+
+            #current-task {
+                max-width: 1000px;
+                margin: 0 auto 40px auto;
+            }
+
+            #next-tasks {
+                max-width: 1000px;
+                margin: 30px auto;
+            }
+
+            .menu-content {
+                max-width: 1000px;
+            }
+
+            .modal-content {
+                max-width: 800px;
+            }
+
+            div[style*="display:flex"] {
+                max-width: 1000px !important;
+                padding: 0 40px !important;
+            }
+        }
 
         .modal-content.top-modal {
             margin: 5vh auto;
@@ -600,30 +983,110 @@
             }
         }
 
+        .menu-nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 30px auto;
+            max-width: 600px;
+            padding: 0 20px;
+        }
 
+        .menu-nav-btn {
+            background: linear-gradient(165deg, #ffffff, #f8faff);
+            padding: 20px;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(108, 92, 231, 0.15),
+            0 10px 20px rgba(0, 0, 0, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            text-align: center;
+            transform: translateY(0);
+            will-change: transform, box-shadow;
+            position: relative;
+            overflow: hidden;
+            font-size: 1.8rem;
+            color: #6c5ce7;
+            min-width: 80px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
 
+        .menu-nav-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(108, 92, 231, 0.1), transparent);
+            transition: left 0.5s ease;
+        }
 
+        .menu-nav-btn:hover::before {
+            left: 100%;
+        }
+
+        .menu-nav-btn:hover {
+            transform: translateY(0);
+            color: rgba(108, 92, 231, 1);
+        }
+
+        .menu-nav-btn:active {
+            transform: translateY(0);
+        }
     </style>
 </head>
 <body>
-<div id="desktop-overlay">This website is not designed for desktop viewing. Switch to mobile.</div>
-<button id="hamburger" aria-label="Open menu">&#9776;</button>
+<div id="desktop-overlay">This website is optimized for mobile and tablet viewing. For the best experience, please use a smaller screen or rotate your device.</div>
 
-<header role="banner">
-    <h1>Study Timetable</h1>
-    <div style="font-family: 'Dancing Script', cursive; font-size: 1.2rem; margin-top: -5px; opacity: 0.9;">for
-        adyasha
+<div class="page-container">
+    <div class="page" id="main-page">
+        <header role="banner">
+            <h1>Study Timetable</h1>
+            <div style="font-family: 'Dancing Script', cursive; font-size: 1.2rem; margin-top: -5px; opacity: 0.9;">for
+                adyasha
+            </div>
+        </header>
+
+        <div class="nav-buttons">
+            <div id="day-title"></div>
+            <button class="nav-btn" onclick="openMenu()" title="Menu">☰</button>
+        </div>
+
+        <div id="current-task"><div class=time>Loading…</div><div class="task-box"></div></div>
+        <div id="next-tasks"></div>
+
+        <div style="display:flex;justify-content:center;gap:15px;margin:20px auto;max-width:600px;padding:0 20px;">
+            <a class="show-full" onclick="showFullSchedule()">Show Full Day's Schedule</a>
+            <a class="show-next" onclick="showNextDaySchedule()">Show Next Day's Schedule</a>
+        </div>
     </div>
-</header>
 
-<div id="day-title">
-</div>
-<div id="current-task"><div class=time>Loading…</div><div class="task-box"></div></div>
-<div id="next-tasks"></div>
-
-<div style="display:flex;justify-content:center;gap:15px;margin:20px auto;max-width:600px;">
-    <a class="show-full" onclick="showFullSchedule()">Show Full Day's Schedule</a>
-    <a class="show-next" onclick="showNextDaySchedule()">Show Next Day's Schedule</a>
+    <div class="menu-page" id="menu-page">
+        <div class="menu-content">
+            <div class="menu-header">
+                <h2>Menu</h2>
+            </div>
+            
+            <div class="menu-nav-buttons">
+                <button class="menu-nav-btn" onclick="goHome()" title="Back">←</button>
+            </div>
+            
+            <div class="menu-options">
+                <div class="menu-option" onclick="openSurprise()">
+                    <h3>🎁 Surprise</h3>
+                </div>
+                
+                <div class="menu-option" onclick="openScheduleSelector()">
+                    <h3>📅 Complete Schedule</h3>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 <div id="full-day-modal" class="modal">
@@ -634,7 +1097,6 @@
     </div>
 </div>
 
-
 <div id="next-day-modal" class="modal">
     <div class="modal-content">
         <span class="close" onclick="closeModal('next-day-modal')">&times;</span>
@@ -642,7 +1104,6 @@
         <ul id="next-day-schedule"></ul>
     </div>
 </div>
-
 
 <div id="sidebar">
     <div class="close-btn">&times;</div>
@@ -684,24 +1145,46 @@
     </div>
 </div>
 
-
 <script>
     function checkDesktop() {
-        if (window.innerWidth > 600) {
+        if (window.innerWidth > 1200) {
             document.body.style.overflow='hidden';
             document.getElementById('desktop-overlay').style.display='block';
+        } else {
+            document.body.style.overflow='auto';
+            document.getElementById('desktop-overlay').style.display='none';
         }
     }
     window.addEventListener('load', checkDesktop);
     window.addEventListener('resize', checkDesktop);
 
-    document.getElementById('hamburger').onclick = () => {
-        const sidebar = document.getElementById('sidebar');
-        const overlay = document.getElementById('sidebar-overlay');
-        sidebar.classList.add('open');
-        overlay.classList.add('visible');
+    function goHome() {
+        const mainPage = document.getElementById('main-page');
+        const menuPage = document.getElementById('menu-page');
+        
+        menuPage.classList.add('slide-out');
+        
+        setTimeout(() => {
+            menuPage.classList.remove('active', 'slide-out');
+        }, 600);
+    }
+
+    function openMenu() {
+        const mainPage = document.getElementById('main-page');
+        const menuPage = document.getElementById('menu-page');
+        
+        menuPage.classList.add('active');
+    }
+
+    function openSurprise() {
+        currentQuestionIndex = 0;
+        qElem.textContent = questions[currentQuestionIndex];
+        btns.innerHTML = `<button class="yes-btn">Yes</button><button class="no-btn">No</button>`;
+        surpriseModal.style.display = 'block';
         document.body.classList.add('modal-open');
-    };
+        setupHandlers();
+    }
+
     document.querySelector('#sidebar .close-btn').onclick = () => {
         const sidebar = document.getElementById('sidebar');
         const overlay = document.getElementById('sidebar-overlay');
@@ -762,14 +1245,14 @@
             heart.style.opacity = Math.random() * 0.5 + 0.7;
             heart.style.transition = 'transform 0.7s linear';
             document.body.appendChild(heart);
-            
-            const durationFall = Math.random() * 2000 + 3000; 
-            const translateX = (Math.random() - 0.5) * 40; 
+
+            const durationFall = Math.random() * 2000 + 3000;
+            const translateX = (Math.random() - 0.5) * 40;
             setTimeout(() => {
                 heart.style.transition = `transform ${durationFall}ms linear`;
                 heart.style.transform = `translateY(${window.innerHeight + 100}px) translateX(${translateX}px)`;
             }, 10);
-            
+
             setTimeout(() => {
                 heart.remove();
             }, durationFall + 800);
@@ -797,8 +1280,11 @@
             rainHearts();
             surpriseModal.style.display = 'none';
             document.body.classList.remove('modal-open');
-            document.getElementById('sidebar').classList.remove('open');
-            document.getElementById('sidebar-overlay').classList.remove('visible');
+            // Close menu if it's open
+            const menuPage = document.getElementById('menu-page');
+            if (menuPage.classList.contains('active')) {
+                goHome();
+            }
         };
         no.onclick = (e) => {
             e.stopPropagation();
@@ -809,16 +1295,14 @@
         };
     }
 
-    window.onclick = e => {
-        if (e.target.classList.contains('modal')) {
-            if (!e.target.id.includes('surprise')) {
-                e.target.style.display = 'none';
-                document.body.classList.remove('modal-open');
-            }
+    window.onclick = function(event) {
+        if (event.target === document.getElementById('full-day-modal') || 
+            event.target === document.getElementById('next-day-modal') ||
+            event.target === document.getElementById('scheduleModal') ||
+            event.target === document.getElementById('dayScheduleModal')) {
+            closeModal(event.target.id);
         }
     };
-
-
 
     const routines = {
         "Day 1": [
@@ -939,7 +1423,6 @@
             { time: "10:00 PM - 11:45 PM", task: "Light read / mock test setup for Day 9", message: "🌙 Prepare mind for revision" }
         ]
         ,
-
         "Day 8": [
             { time: "5:00 AM - 6:00 AM", task : "Wake Uppp!", message: "Good Morning❤️"},
             { time: "6:00 AM - 8:00 AM", task: "Session 1 – Physics Deep Dive", message: "📘 Dual Nature of Radiation, Atoms, Nuclei" },
@@ -991,7 +1474,6 @@
             { time: "6:00 PM - 9:00 PM", task: "Optional: Soft review of marked questions, relax, revisit errors", message: "Free review space" },
             { time: "9:00 PM - 11:45 PM", task: "Dinner + full rest", message: "🍽️ Wind down" }
         ]
-
     };
 
     function convertTo24Hour(time) {
@@ -1001,7 +1483,6 @@
         else if (period === 'PM' && hours !== 12) { hours += 12; }
         return hours * 60 + minutes;
     }
-
 
     const startDate = new Date("2025-06-19");
 
@@ -1070,6 +1551,11 @@
         const fullDayModal = document.getElementById('full-day-modal');
         fullDayModal.style.display = 'block';
         document.body.classList.add('modal-open');
+        
+        const menuPage = document.getElementById('menu-page');
+        if (menuPage.classList.contains('active')) {
+            goHome();
+        }
     }
 
     function showNextDaySchedule() {
@@ -1087,6 +1573,11 @@
             const nextDayModal = document.getElementById('next-day-modal');
             nextDayModal.style.display = 'block';
             document.body.classList.add('modal-open');
+            
+            const menuPage = document.getElementById('menu-page');
+            if (menuPage.classList.contains('active')) {
+                goHome();
+            }
         }
     }
 
@@ -1094,15 +1585,12 @@
         const modal = document.getElementById(modalId);
         modal.style.display = 'none';
         document.body.classList.remove('modal-open');
-    }
-
-    window.onclick = function(event) {
-        if (event.target === document.getElementById('full-day-modal') || event.target === document.getElementById('next-day-modal')) {
-            closeModal(event.target.id);
+        
+        const menuPage = document.getElementById('menu-page');
+        if (menuPage.classList.contains('active')) {
+            goHome();
         }
-    };
-
-
+    }
 
     function openScheduleSelector() {
         const modal = document.getElementById("scheduleModal");
@@ -1121,10 +1609,17 @@
         }
 
         modal.style.display = "block";
+        document.body.classList.add('modal-open');
+        
+        const menuPage = document.getElementById('menu-page');
+        if (menuPage.classList.contains('active')) {
+            goHome();
+        }
     }
 
     function closeScheduleSelector() {
         document.getElementById("scheduleModal").style.display = "none";
+        document.body.classList.remove('modal-open');
     }
 
     function submitDaySelection() {
@@ -1156,6 +1651,7 @@
 
     function closeDaySchedule() {
         document.getElementById("dayScheduleModal").style.display = "none";
+        document.body.classList.remove('modal-open');
     }
 
     document.addEventListener('DOMContentLoaded', () => {
@@ -1192,7 +1688,7 @@
             const textWidth = messageText.scrollWidth;
 
             const totalDistance = containerWidth + textWidth;
-            const duration = Math.max(totalDistance / 50, 7) * 1000; 
+            const duration = Math.max(totalDistance / 50, 7) * 1000;
 
             messageText.style.transform = `translateX(${containerWidth}px)`;
 
