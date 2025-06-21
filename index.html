@@ -61,11 +61,12 @@
 
         .nav-buttons {
             display: flex;
-            justify-content: space-between;
+            justify-content: flex-end;
             align-items: center;
             margin: 30px auto;
             max-width: 600px;
             padding: 0 20px;
+            position: relative;
         }
 
         .nav-buttons #day-title {
@@ -75,9 +76,10 @@
             color: #6c5ce7;
             text-shadow: 2px 2px 4px rgba(108, 92, 231, 0.1);
             letter-spacing: 1px;
-            position: relative;
-            flex: 1;
-            margin: 0 15px;
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            margin: 0;
         }
 
         .nav-btn {
@@ -220,24 +222,19 @@
         }
 
         .menu-nav-btn {
-            color: rgba(108, 92, 231, 0.9);
-            border: none;
-            padding: 15px;
-            margin: 0;
-            border-radius: 10px;
-            font-size: 1.5rem;
-            font-weight: 500;
+            padding: 20px;
+            border-radius: 20px;
             cursor: pointer;
-            background: transparent;
-            transition: all 0.3s ease;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            text-align: center;
             transform: translateY(0);
-            will-change: transform;
-            width: auto;
+            will-change: transform, box-shadow;
             position: relative;
             overflow: hidden;
-            letter-spacing: 0.5px;
-            min-width: 50px;
-            height: 50px;
+            font-size: 1.8rem;
+            color: #6c5ce7;
+            min-width: 80px;
+            height: 60px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -1037,6 +1034,12 @@
 
         .menu-nav-btn:active {
             transform: translateY(0);
+        }
+
+        .menu-nav-btn {
+            background: transparent !important;
+            border: none !important;
+            box-shadow: none !important;
         }
     </style>
 </head>
