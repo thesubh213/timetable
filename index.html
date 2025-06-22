@@ -3,9 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta name="description" content="Interactive study timetable with daily schedules and tasks">
-    <link rel="icon" type="image/png"
-          href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==">
+    <meta name="description" content="Study Timetable for pyari adyashaaaa">
     <title>Study Timetable</title>
 
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&family=Dancing+Script:wght@400;700&display=swap"
@@ -25,7 +23,26 @@
             -ms-text-size-adjust: 100%;
             text-size-adjust: 100%;
         }
+        
+        @media (prefers-reduced-motion: reduce) {
+            *,
+            *::before,
+            *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+                scroll-behavior: auto !important;
+            }
+        }
+        
         body.modal-open { overflow: hidden; }
+        
+        body.menu-open { 
+            overflow: hidden; 
+            position: fixed;
+            width: 100%;
+            height: 100%;
+        }
 
         #desktop-overlay {
             display: none;
@@ -47,10 +64,11 @@
             max-width: 600px;
             padding: 0 20px;
             position: relative;
+            height: 80px; 
         }
 
         .nav-buttons #day-title {
-            font-size: 2.4rem;
+            font-size: 2rem;
             font-weight: bold;
             text-align: center;
             color: #1f0d92;
@@ -58,11 +76,25 @@
             letter-spacing: 1px;
             position: absolute;
             left: 50%;
+            top: -10px;
             transform: translateX(-50%);
             margin: 0;
+            padding: 15px 30px;
+            background: none;
+            border-top: none;
+            border-bottom: 2px solid rgba(31, 13, 146, 0.3);
+            border-left: none;
+            border-right: none;
+            border-radius: 0;
+            box-shadow: none;
+            min-width: auto;
+            width: auto;
+            white-space: nowrap;
         }
 
-        .nav-btn, .menu-nav-btn {
+
+
+        .nav-btn {
             background: #1f0d92;
             color: #fff;
             border: 2px solid rgba(108, 92, 231, 0.3);
@@ -82,11 +114,11 @@
             transition: none !important;
         }
 
-        .nav-btn::before, .menu-nav-btn::before {
+        .nav-btn::before {
             display: none;
         }
 
-        .nav-btn:active, .menu-nav-btn:active {
+        .nav-btn:active {
             transform: none;
             box-shadow: 0 6px 15px rgba(31, 13, 146, 0.25);
         }
@@ -133,11 +165,10 @@
             left: 0;
             width: 100vw;
             height: 100vh;
-            background: linear-gradient(145deg, #f8faff 0%, #eef2f7 100%);
+            background: linear-gradient(145deg, #f8faff 0%, #eef2f7 50%, #f0f2ff 100%);
             transform: translateX(100%);
-            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
             z-index: 1001;
-            box-sizing: border-box;
             overflow: hidden;
         }
 
@@ -150,206 +181,296 @@
         }
 
         .menu-content {
-            max-width: 600px;
-            margin: 0 auto;
-            padding: 0 0 0 56px;
+            width: 100%;
             height: 100vh;
             display: flex;
             flex-direction: column;
-            justify-content: space-between;
+            justify-content: center;
+            align-items: center;
+            padding: 40px 20px;
             box-sizing: border-box;
-            overflow: hidden;
+            position: relative;
         }
 
         .menu-header {
-            position: relative;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 100%;
-            min-height: 64px;
-            text-align: center;
-            margin: 0;
-            padding: 0 80px 0 80px;
-            background-color: #1f0d92;
-            background-size: 400% 400%;
-            color: white;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.4);
-            box-shadow: 0 15px 35px rgba(108, 92, 231, 0.3),
-                0 8px 20px rgba(0, 0, 0, 0.15),
-                0 5px 12px rgba(108, 92, 231, 0.15),
-                inset 0 -8px 20px rgba(255, 255, 255, 0.15),
-                inset 0 3px 8px rgba(255, 255, 255, 0.1);
-            transform: translateZ(0);
-            backface-visibility: hidden;
-            z-index: 10;
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(255, 255, 255, 0.1);
             backdrop-filter: blur(10px);
-            will-change: transform;
-            transition: none;
-            flex-shrink: 0;
-            border-radius: 0 !important;
-        }
-        .menu-header h2 {
-            font-size: 2.2rem;
-            color: #ffffff;
-            margin: 0;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
-            letter-spacing: 1px;
-            font-weight: 600;
-            flex: 1;
+            padding: 30px 20px;
             text-align: center;
-            position: relative;
-            z-index: 1;
-        }
-        .menu-nav-btn {
-            background: rgba(255,255,255,0.15);
-            color: #fff;
-            border: none;
-            padding: 12px 16px;
-            border-radius: 12px;
-            cursor: pointer;
-            box-shadow: none;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: absolute;
-            left: 16px;
-            top: 50%;
-            transform: translateY(-50%);
-            font-size: 1.8rem;
-            font-weight: 700;
-            z-index: 11;
-            min-width: 45px;
-            height: 45px;
-            transition: none !important;
-        }
-        .menu-nav-btn:active {
-            background: rgba(255,255,255,0.25);
-        }
-        
-        .nav-btn:hover, .menu-nav-btn:hover, .show-full:hover, .show-next:hover, .menu-option:hover, .close:hover, .menu-nav-btn:hover::before, .nav-btn:hover::before, .menu-option:hover::before {
-             color: unset; 
-             background: unset; 
-             box-shadow: unset;
-             border: unset; 
-             transform: unset; 
-             text-decoration: unset; 
-        }
-        
-        .menu-nav-btn::before {
-            display: none;
-        }
-        
-        .menu-nav-btn:hover::before {
-            display: none;
-        }
-        
-        .menu-option, .show-full, .show-next, .nav-btn, .menu-nav-btn { 
-            transition: none !important; 
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
         }
 
-        .menu-nav-buttons {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin: 30px auto;
-            max-width: 600px;
-            padding: 0 20px;
+        .menu-header h2 {
+            color: white;
+            font-size: 2.2rem;
+            margin: 0 0 10px 0;
+            font-weight: 600;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
         }
 
-        .menu-nav-btn {
-            background: rgba(255,255,255,0.15);
-            color: #fff;
-            border: none;
-            padding: 10px 16px;
-            border-radius: 10px;
-            cursor: pointer;
-            box-shadow: none;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: absolute;
-            left: 20px;
-            top: 50%;
-            transform: translateY(-50%);
-            font-size: 1.6rem;
-            font-weight: 700;
-            z-index: 11;
-        }
-        .menu-nav-btn:active {
-            background: rgba(255,255,255,0.25);
+        .menu-header p {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 1rem;
+            margin: 0;
+            font-weight: 300;
         }
 
         .menu-options {
             display: flex;
             flex-direction: column;
-            gap: 5px;
-            flex: 1;
-            margin: 20px 0;
-            justify-content: center;
             align-items: center;
-            padding: 0 20px;
+            gap: 25px;
             width: 100%;
+            max-width: 400px;
         }
 
         .menu-option {
-            padding: 18px 25px;
-            margin: 10px auto;
-            border-radius: 30px;
-            font-size: 2rem;
+            background: #1f0d92;
+            color: white;
+            padding: 25px 30px;
+            border-radius: 20px;
+            font-size: 1.4rem;
             font-weight: 500;
             cursor: pointer;
-            background: #1f0d92;
-            color: #fff;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            text-align: center;
+            box-shadow: 0 8px 20px rgba(31, 13, 146, 0.3);
+            transition: none;
             width: 100%;
-            max-width: 350px;
             position: relative;
             overflow: hidden;
-            letter-spacing: 1px;
-            text-align: center;
-            box-shadow: 0 10px 25px rgba(31, 13, 146, 0.2);
-            transition: none !important;
+            border: 2px solid rgba(108, 92, 231, 0.3);
+        }
+
+        .menu-option::before {
+            display: none;
+        }
+
+        .menu-option:hover::before {
+            display: none;
+        }
+
+        .menu-option:hover {
+            background: #1f0d92;
+            transform: none;
+            box-shadow: 0 8px 20px rgba(31, 13, 146, 0.3);
+        }
+
+        .menu-option:active {
+            transform: none;
         }
 
         .menu-option h3 {
-            color: #ffffff;
-            margin-bottom: 0;
+            margin: 0;
             font-size: 1.3rem;
             font-weight: 600;
             position: relative;
             z-index: 1;
-            width: 100%;
-            text-align: center;
-            display: flex;
-            align-items: center;
-            justify-content: center;
         }
 
         .menu-option p {
-            color: #4a5568;
-            font-size: 1rem;
-            margin: 0;
-            position: relative;
-            z-index: 1;
-            width: 100%;
-            text-align: center;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            margin: 8px 0 0 0;
+            font-size: 0.9rem;
+            opacity: 0.9;
+            font-weight: 300;
         }
 
         .menu-footer {
-            margin-top: auto;
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
             text-align: center;
-            font-size: 1.1rem;
+            font-size: 1.2rem;
             color: #6c5ce7;
-            opacity: 0.85;
             font-family: 'Dancing Script', cursive;
-            padding-bottom: 10px;
-            flex-shrink: 0;
+            font-weight: 500;
+            opacity: 0.85;
+        }
+
+        .menu-close-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            background: #1f0d92;
+            border: 2px solid rgba(108, 92, 231, 0.3);
+            border-radius: 50%;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            box-shadow: 0 6px 15px rgba(31, 13, 146, 0.25);
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1002;
+        }
+
+
+
+        .menu-close-btn:hover {
+            background: #1f0d92;
+            transform: none;
+            box-shadow: 0 6px 15px rgba(31, 13, 146, 0.25);
+        }
+
+        .menu-close-btn:active {
+            transform: none;
+        }
+
+        @media (max-width: 600px) {
+            .menu-content {
+                padding: 20px 15px;
+            }
+
+            .menu-options {
+                gap: 20px;
+            }
+
+            .menu-option {
+                padding: 20px 25px;
+                font-size: 1.2rem;
+            }
+
+            .menu-option h3 {
+                font-size: 1.1rem;
+            }
+
+            .menu-option p {
+                font-size: 0.8rem;
+            }
+
+            .menu-footer {
+                font-size: 1rem;
+                bottom: 20px;
+            }
+
+            .menu-close-btn {
+                width: 45px;
+                height: 45px;
+                font-size: 1.3rem;
+                top: 15px;
+                right: 15px;
+            }
+
+            div[style*="display:flex"] {
+                padding: 0 15px !important;
+            }
+        }
+
+        @media (min-width: 601px) and (max-width: 1200px) {
+            .page {
+                padding: 30px;
+            }
+
+            header {
+                margin: -30px -30px 35px -30px;
+            }
+
+            .nav-buttons {
+                max-width: 800px;
+                margin: 30px auto;
+                padding: 0 30px;
+                height: 80px; 
+            }
+
+            .nav-buttons #day-title {
+                font-size: 2.2rem;
+                padding: 15px 30px; 
+                width: auto;
+                border-top: none;
+                border-bottom: 2px solid rgba(31, 13, 146, 0.3);
+                background: none;
+                box-shadow: none;
+            }
+
+            .nav-btn {
+                min-width: 70px;
+                height: 55px;
+                font-size: 1.6rem;
+            }
+
+            #current-task {
+                max-width: 800px;
+                margin: 0 auto 30px auto;
+            }
+
+            #next-tasks {
+                max-width: 800px;
+                margin: 20px auto;
+            }
+
+            .menu-content {
+                max-width: 800px;
+            }
+
+            .modal-content {
+                max-width: 600px;
+            }
+
+            div[style*="display:flex"] {
+                max-width: 800px !important;
+                padding: 0 30px !important;
+            }
+        }
+
+        @media (min-width: 1201px) {
+            .page {
+                padding: 40px;
+            }
+
+            header {
+                margin: -40px -40px 35px -40px;
+            }
+
+            .nav-buttons {
+                max-width: 1000px;
+                margin: 40px auto;
+                padding: 0 40px;
+                height: 90px; 
+            }
+
+            .nav-buttons #day-title {
+                font-size: 2.6rem;
+                padding: 18px 0; 
+                width: 100vw;
+                border-top: 3px solid #1f0d92;
+                border-bottom: 3px solid #1f0d92;
+            }
+
+            .nav-btn {
+                min-width: 80px;
+                height: 60px;
+                font-size: 1.8rem;
+            }
+
+            #current-task {
+                max-width: 1000px;
+                margin: 0 auto 40px auto;
+            }
+
+            #next-tasks {
+                max-width: 1000px;
+                margin: 30px auto;
+            }
+
+            .menu-content {
+                max-width: 1000px;
+            }
+
+            .modal-content {
+                max-width: 800px;
+            }
+
+            div[style*="display:flex"] {
+                max-width: 1000px !important;
+                padding: 0 40px !important;
+            }
         }
 
         header {
@@ -374,6 +495,8 @@
             will-change: transform;
             transition: all 0.3s ease-out;
         }
+
+
         h1 { font-size: 2.8rem; margin:0; font-weight:600 }
        
 
@@ -399,7 +522,9 @@
             max-width: 650px;
             overflow: hidden;
             line-height: 1.6;
+            position: relative;
         }
+
 
         #current-task .time {
             font-size: 2.2rem;
@@ -418,34 +543,72 @@
 
         #current-task .message-container {
             display: none;
-            position: relative;
-            overflow: hidden;
-            background-color: #e8eaf6;
-            border-radius: 16px;
-            margin-top: 20px;
-            padding: 15px;
-            box-shadow: 0 8px 25px rgba(108, 92, 231, 0.15);
-            border: 1px solid rgba(255, 255, 255, 0.8);
-            backdrop-filter: blur(10px);
-            transition: all 0.3s ease;
-            width: calc(100% - 30px);
-            height: 40px;
-            line-height: 40px;
         }
 
         #current-task .message-text {
+            display: none;
+        }
+
+        .hanging-message {
+            position: absolute;
+            bottom: -15px;
+            right: 0;
+            background-color: #1f0d92;
+            border-radius: 20px 0 20px 20px;
+            padding: 8px 15px;
+            box-shadow: 0 4px 12px rgba(31, 13, 146, 0.25);
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+            max-width: 338px;
+            min-width: 188px;
+            height: 34px;
+            line-height: 34px;
+            z-index: 2;
+            overflow: hidden;
+        }
+
+    
+
+        .hanging-message-text {
             position: absolute;
             white-space: nowrap;
-            color: #000000;
+            color: #ffffff;
             font-weight: 500;
+            font-size: 0.9rem;
             letter-spacing: 0.5px;
-            text-shadow: 0 1px 2px rgba(108, 92, 231, 0.1);
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
             will-change: transform;
             top: 0;
             height: 100%;
             display: flex;
             align-items: center;
         }
+
+        .greeting-message {
+            position: absolute;
+            top: -30px;
+            left: 0;
+            background-color: #1f0d92;
+            border-radius: 20px 20px 20px 0;
+            padding: 8px 15px;
+            box-shadow: 0 4px 12px rgba(31, 13, 146, 0.25);
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+            z-index: 2;
+            overflow: hidden;
+            white-space: nowrap;
+            color: #ffffff;
+            font-weight: 500;
+            font-size: 0.9rem;
+            letter-spacing: 0.5px;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+            display: flex;
+            align-items: center;
+            height: 34px;
+            line-height: 34px;
+        }
+
+        
 
         #next-tasks {
             font-size: 1.8rem;
@@ -467,6 +630,7 @@
             max-width: 700px;
             overflow: hidden;
         }
+
 
         .task-container {
             position: relative;
@@ -576,18 +740,25 @@
         }
 
         .close {
-            color: #aaa;
-            float: right;
-            font-size: 30px;
-            font-weight: bold;
+            position: absolute;
+            top: 8px;
+            right: 12px;
+            color: #888;
+            font-size: 1.5rem;
+            font-weight: 400;
+            background: none;
+            border: none;
             cursor: pointer;
-            transition: none !important;
+            opacity: 1;
+            z-index: 10;
+            transition: none;
         }
 
         .close:focus {
-            color: black;
+            color: #000;
             text-decoration: none;
             cursor: pointer;
+            opacity: 1;
         }
 
         #full-schedule, #next-day-schedule, #scheduleDetails {
@@ -652,11 +823,18 @@
             .nav-buttons, .menu-nav-buttons {
                 margin: 20px auto;
                 padding: 0 15px;
+                height: 70px;
             }
 
             .nav-buttons #day-title {
                 font-size: 2rem;
                 margin: 0 10px;
+                padding: 12px 30px; 
+                width: auto;
+                border-top: none;
+                border-bottom: 2px solid rgba(31, 13, 146, 0.3);
+                background: none;
+                box-shadow: none;
             }
 
             .nav-btn, .menu-nav-btn {
@@ -690,9 +868,7 @@
             }
 
             .menu-content {
-                padding: 0;
-                height: 100vh;
-                overflow: hidden;
+                padding: 20px 15px;
             }
 
             .menu-nav-buttons {
@@ -774,17 +950,24 @@
                 margin: -30px -30px 35px -30px;
             }
 
-            .nav-buttons, .menu-nav-buttons {
+            .nav-buttons {
                 max-width: 800px;
                 margin: 30px auto;
                 padding: 0 30px;
+                height: 80px; 
             }
 
             .nav-buttons #day-title {
                 font-size: 2.2rem;
+                padding: 15px 30px;
+                width: auto;
+                border-top: none;
+                border-bottom: 2px solid rgba(31, 13, 146, 0.3);
+                background: none;
+                box-shadow: none;
             }
 
-            .nav-btn, .menu-nav-btn {
+            .nav-btn {
                 min-width: 70px;
                 height: 55px;
                 font-size: 1.6rem;
@@ -823,7 +1006,7 @@
                 margin: -40px -40px 35px -40px;
             }
 
-            .nav-buttons, .menu-nav-buttons {
+            .nav-buttons {
                 max-width: 1000px;
                 margin: 40px auto;
                 padding: 0 40px;
@@ -833,7 +1016,7 @@
                 font-size: 2.6rem;
             }
 
-            .nav-btn, .menu-nav-btn {
+            .nav-btn {
                 min-width: 80px;
                 height: 60px;
                 font-size: 1.8rem;
@@ -866,102 +1049,109 @@
         .modal-content.top-modal {
             background: linear-gradient(165deg, #ffffff, #f8faff);
             margin: 5vh auto;
-            padding: 35px;
+            padding: 30px;
             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
-            border-radius: 35px;
+            border-radius: 25px;
             width: 85%;
-            max-width: 420px;
-            box-shadow: 0 40px 80px rgba(108, 92, 231, 0.15),
-            0 30px 60px rgba(0, 0, 0, 0.1),
-            0 15px 30px rgba(108, 92, 231, 0.1),
+            max-width: 400px;
+            box-shadow: 0 25px 60px rgba(108, 92, 231, 0.15),
+            0 15px 35px rgba(0, 0, 0, 0.1),
+            0 10px 20px rgba(108, 92, 231, 0.1),
             inset 0 2px 12px rgba(255, 255, 255, 0.5);
             overflow-y: auto;
-            max-height: 85vh;
+            max-height: 90vh;
             border: 1px solid rgba(255, 255, 255, 0.8);
             animation: modalFadeIn 0.5s cubic-bezier(0.4, 0, 0.2, 1);
             position: relative;
+            text-align: center;
         }
+        
         .modal-content.top-modal h3 {
-            font-size: 1.1rem;
-            color: #222;
-            margin-bottom: 16px;
+            font-size: 1.4rem;
+            color: #1f0d92;
+            margin-bottom: 25px;
             font-weight: 600;
-            letter-spacing: 0;
-            text-align: left;
+            letter-spacing: 0.5px;
+            text-align: center;
+            text-shadow: 0 1px 2px rgba(31, 13, 146, 0.1);
         }
+        
         #daySelector {
             width: 100%;
-            padding: 8px;
-            font-size: 1rem;
-            border-radius: 0;
-            border: 1px solid #ccc;
-            margin-bottom: 1rem;
-            background: #fff;
-            box-shadow: none;
+            padding: 15px 20px;
+            font-size: 1.1rem;
+            border-radius: 15px;
+            border: 2px solid rgba(108, 92, 231, 0.2);
+            margin-bottom: 25px;
+            background: #ffffff;
+            box-shadow: 0 4px 12px rgba(31, 13, 146, 0.08);
             outline: none;
-            transition: none;
+            transition: all 0.3s ease;
+            font-family: 'Poppins', sans-serif;
+            color: #2d3748;
         }
+        
+        #daySelector:focus {
+            border-color: #1f0d92;
+            box-shadow: 0 6px 20px rgba(31, 13, 146, 0.15);
+            transform: translateY(-1px);
+        }
+        
         .modal-content.top-modal button {
             width: 100%;
-            padding: 8px 0;
-            font-size: 1rem;
-            border-radius: 8px;
-            border: none;
+            padding: 15px 0;
+            font-size: 1.1rem;
+            border-radius: 15px;
+            border: 2px solid rgba(108, 92, 231, 0.3);
             background: #1f0d92;
             color: #fff;
-            font-weight: 500;
-            box-shadow: none;
+            font-weight: 600;
+            box-shadow: 0 6px 15px rgba(31, 13, 146, 0.25);
             cursor: pointer;
-            margin-top: 8px;
-            transition: none;
+            margin-top: 10px;
+            transition: all 0.3s ease;
+            font-family: 'Poppins', sans-serif;
+            letter-spacing: 0.5px;
         }
+        
         .modal-content.top-modal button:hover {
             background: #1f0d92;
             color: #fff;
-            box-shadow: none;
+            box-shadow: 0 8px 25px rgba(31, 13, 146, 0.35);
+            transform: translateY(-2px);
         }
+        
+        .modal-content.top-modal button:active {
+            transform: translateY(0);
+        }
+        
         .modal-content.top-modal .close {
             position: absolute;
-            top: 8px;
-            right: 12px;
-            color: #888;
-            font-size: 1.5rem;
+            top: 15px;
+            right: 20px;
+            color: #6c5ce7;
+            font-size: 1.8rem;
             font-weight: 400;
-            background: none;
+            background: rgba(108, 92, 231, 0.1);
             border: none;
+            border-radius: 50%;
+            width: 35px;
+            height: 35px;
             cursor: pointer;
             opacity: 1;
             z-index: 10;
-            transition: none;
-        }
-        .modal-content.top-modal .close:hover {
-            color: #000;
-            opacity: 1;
-        }
-        #scheduleDetails {
-            margin-top: 12px;
-        }
-        #scheduleDetails li {
-            padding: 18px;
-            font-size: 1.1rem;
-            background-color: #f4f6f9;
-            border-radius: 15px;
-            margin: 20px auto;
-            border: 2px solid rgba(255, 255, 255, 0.8);
-            box-shadow: 6px 6px 12px rgba(0, 0, 0, 0.1);
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            color: #333;
-            line-height: 1.6;
-            transition: all 0.3s ease-in-out;
-            text-align: center;
+            transition: all 0.3s ease;
             display: flex;
-            flex-direction: column;
-            justify-content: center;
             align-items: center;
-            width: calc(100% - 40px);
-            max-width: 600px;
+            justify-content: center;
+        }
+        
+        .modal-content.top-modal .close:hover {
+            background: rgba(108, 92, 231, 0.2);
+            color: #1f0d92;
+            transform: scale(1.1);
         }
 
         .menu-nav-btn:hover::before {
@@ -986,6 +1176,32 @@
         .menu-nav-btn {
             transition: none !important;
         }
+        
+        #scheduleDetails {
+            margin-top: 12px;
+        }
+        
+        #scheduleDetails li {
+            padding: 18px;
+            font-size: 1.1rem;
+            background-color: #f4f6f9;
+            border-radius: 15px;
+            margin: 20px auto;
+            border: 2px solid rgba(255, 255, 255, 0.8);
+            box-shadow: 6px 6px 12px rgba(0, 0, 0, 0.1);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #333;
+            line-height: 1.6;
+            transition: all 0.3s ease-in-out;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            width: calc(100% - 40px);
+            max-width: 600px;
+        }
+
     </style>
 </head>
 <body>
@@ -1005,7 +1221,11 @@
             <button class="nav-btn" onclick="openMenu()" title="Menu">☰</button>
         </div>
 
-        <div id="current-task"><div class=time>Loading…</div><div class="task-box"></div></div>
+        <div class="current-task-wrapper" style="position: relative;">
+            <div id="current-task"><div class=time>Loading…</div><div class="task-box"></div></div>
+            <div id="hanging-message" class="hanging-message" style="display: none;"></div>
+            <div id="greeting-message" class="greeting-message" style="display: none;"></div>
+        </div>
         <div id="next-tasks"></div>
 
         <div style="display:flex;justify-content:center;gap:15px;margin:20px auto;max-width:600px;padding:0 20px;">
@@ -1016,13 +1236,14 @@
 
     <div class="menu-page" id="menu-page">
         <div class="menu-content">
-            <button style="position:absolute;left:16px;top:16px;font-size:2rem;background:transparent;border:none;color:#1f0d92;z-index:1002;cursor:pointer;" onclick="document.getElementById('menu-page').classList.remove('active')">✕</button>
+            <button class="menu-close-btn" onclick="document.getElementById('menu-page').classList.remove('active')">✕</button>
             <div class="menu-options">
                 <div class="menu-option" onclick="openScheduleSelector()">
                     <h3>📅 Complete Schedule</h3>
+                    <p>View detailed schedules for any day</p>
                 </div>
             </div>
-            <div class="menu-footer" style="margin-top:auto;text-align:center;font-size:1.1rem;color:#6c5ce7;opacity:0.85;font-family:'Dancing Script',cursive;padding-bottom:10px;">
+            <div class="menu-footer">
                 made with ❤️ by subha for adyashaaaa :)
             </div>
         </div>
@@ -1237,6 +1458,8 @@ const routines = {
         ]
     };
 
+
+
     const cache = {
         elements: {},
         timeouts: new Map(),
@@ -1266,6 +1489,7 @@ const routines = {
     function goHome() {
         const menuPage = getElement('menu-page');
         menuPage.classList.add('slide-out');
+        document.body.classList.remove('menu-open');
         
         if (cache.timeouts.has('goHome')) {
             clearTimeout(cache.timeouts.get('goHome'));
@@ -1280,16 +1504,9 @@ const routines = {
 
     function openMenu() {
         getElement('menu-page').classList.add('active');
+        document.body.classList.add('menu-open');
     }
 
-    function openSurprise() {
-        currentQuestionIndex = 0;
-        qElem.textContent = questions[currentQuestionIndex];
-        btns.innerHTML = `<button class="yes-btn">Yes</button><button class="no-btn">No</button>`;
-        surpriseModal.style.display = 'block';
-        document.body.classList.add('modal-open');
-        setupHandlers();
-    }
 
     const sidebarCloseBtn = document.querySelector('#sidebar .close-btn');
     if (sidebarCloseBtn) {
@@ -1302,84 +1519,7 @@ const routines = {
         };
     }
 
-    let currentQuestionIndex = 0;
-    const qElem = getElement('surprise-question');
-    const btns = getElement('surprise-buttons');
-    const surpriseModal = getElement('surprise-modal');
 
-    function rainHearts() {
-        const duration = 5000;
-        const heartsPerSecond = 15;
-        const totalHearts = heartsPerSecond * 5;
-        let heartsCreated = 0;
-        let interval;
-        
-        const heartPool = [];
-        
-        function createHeart() {
-            if (heartsCreated >= totalHearts) return;
-            heartsCreated++;
-            
-            let heart;
-            if (heartPool.length > 0) {
-                heart = heartPool.pop();
-            } else {
-                heart = document.createElement('div');
-                heart.textContent = '❤️';
-            }
-            
-            const styles = {
-                position: 'fixed',
-                left: Math.random() * 100 + 'vw',
-                top: '-3rem',
-                fontSize: (Math.random() * 1.5 + 1.5) + 'rem',
-                zIndex: '99999',
-                pointerEvents: 'none',
-                opacity: String(Math.random() * 0.5 + 0.7),
-                transition: 'transform 0.7s linear',
-                willChange: 'transform'
-            };
-            
-            Object.assign(heart.style, styles);
-            document.body.appendChild(heart);
-
-            const durationFall = Math.random() * 2000 + 3000;
-            const translateX = (Math.random() - 0.5) * 40;
-            
-            requestAnimationFrame(() => {
-                heart.style.transition = `transform ${durationFall}ms linear`;
-                heart.style.transform = `translateY(${window.innerHeight + 100}px) translateX(${translateX}px)`;
-            });
-
-            const cleanupTimeout = setTimeout(() => {
-                if (heart.parentNode) {
-                    heart.parentNode.removeChild(heart);
-                }
-                heartPool.push(heart);
-            }, durationFall + 800);
-            
-            cache.timeouts.set(`heart-${heartsCreated}`, cleanupTimeout);
-        }
-        
-        interval = setInterval(() => {
-            for (let i = 0; i < 2; i++) createHeart();
-            if (heartsCreated >= totalHearts) {
-                clearInterval(interval);
-            }
-        }, 1000 / heartsPerSecond);
-    }
-
-    const surpriseOpenBtn = getElement('surprise-open-btn');
-    if (surpriseOpenBtn) {
-        surpriseOpenBtn.onclick = () => {
-            currentQuestionIndex = 0;
-            qElem.textContent = questions[currentQuestionIndex];
-            btns.innerHTML = `<button class="yes-btn">Yes</button><button class="no-btn">No</button>`;
-            surpriseModal.style.display = 'block';
-            document.body.classList.add('modal-open');
-            setupHandlers();
-        };
-    }
 
     function setupHandlers() {
         const yes = btns.querySelector('.yes-btn');
@@ -1444,10 +1584,25 @@ const routines = {
         return dayIndex;
     }
 
+    function getTimeBasedGreeting() {
+        const currentTime = new Date();
+        const currentHour = currentTime.getHours();
+        
+        if (currentHour >= 5 && currentHour < 12) {
+            return "Good Morning ☀️";
+        } else if (currentHour >= 12 && currentHour < 17) {
+            return "Good Afternoon 🌤️";
+        } else if (currentHour >= 17 && currentHour < 21) {
+            return "Good Evening 🌅";
+        } else {
+            return "Good Night 🌙";
+        }
+    }
+
     let lastUpdateTime = 0;
     function updateSchedule() {
         const now = Date.now();
-        if (now - lastUpdateTime < 1000) return;
+        if (now - lastUpdateTime < 5000) return;
         lastUpdateTime = now;
         
         const currentDayIndex = getCurrentDayIndex();
@@ -1471,21 +1626,29 @@ const routines = {
             });
 
             const currentTaskElement = getElement('current-task');
+            const hangingMessageElement = getElement('hanging-message');
+            const greetingMessageElement = getElement('greeting-message');
+            
+            const greeting = getTimeBasedGreeting();
+            greetingMessageElement.textContent = greeting;
+            greetingMessageElement.style.display = 'block';
+            
             if (currentTask) {
-                const messageHTML = currentTask.message ? 
-                    `<div class="message-container"><div class="message-text">${currentTask.message}</div></div>` : '';
-                
                 currentTaskElement.innerHTML = `
                     <div class="time">${currentTask.time}</div>
                     <div class="task-box">${currentTask.task}</div>
-                    ${messageHTML}
                 `;
                 
                 if (currentTask.message) {
-                    requestAnimationFrame(() => setScrollingMessage());
+                    hangingMessageElement.innerHTML = `<div class="hanging-message-text">${currentTask.message}</div>`;
+                    hangingMessageElement.style.display = 'block';
+                    setTimeout(() => setScrollingMessage(), 100);
+                } else {
+                    hangingMessageElement.style.display = 'none';
                 }
             } else {
                 currentTaskElement.innerHTML = "No ongoing task.";
+                hangingMessageElement.style.display = 'none';
             }
 
             const currentTaskIndex = dayRoutine.indexOf(currentTask);
@@ -1621,32 +1784,10 @@ const routines = {
         document.body.classList.remove('modal-open');
     }
 
-    document.addEventListener('DOMContentLoaded', () => {
-        const messageContainer = document.querySelector('#current-task .message-container');
-        const messageText = document.querySelector('#current-task .message-text');
-
-        if (messageContainer && messageText) {
-            messageContainer.style.display = 'block';
-            const containerWidth = messageContainer.offsetWidth;
-            const textWidth = messageText.offsetWidth;
-
-            if (textWidth > containerWidth) {
-                const duration = Math.max((textWidth / 50), 5);
-                messageText.style.animationDuration = `${duration}s`;
-            } else {
-                Object.assign(messageText.style, {
-                    animation: 'none',
-                    left: '50%',
-                    transform: 'translate(-50%, -50%)'
-                });
-            }
-        }
-    });
-
     function setScrollingMessage() {
         requestAnimationFrame(() => {
-            const messageContainer = document.querySelector('#current-task .message-container');
-            const messageText = document.querySelector('#current-task .message-text');
+            const messageContainer = getElement('hanging-message');
+            const messageText = messageContainer.querySelector('.hanging-message-text');
             if (!messageContainer || !messageText) return;
 
             if (cache.animations.has('messageScroll')) {
@@ -1665,7 +1806,7 @@ const routines = {
             const textWidth = messageText.scrollWidth;
 
             const totalDistance = containerWidth + textWidth;
-            const duration = Math.max(totalDistance / 50, 7) * 1000;
+            const duration = Math.max(totalDistance / 25, 8) * 1000; 
 
             messageText.style.transform = `translateX(${containerWidth}px)`;
 
@@ -1683,6 +1824,10 @@ const routines = {
     }
 
     updateSchedule();
+
+    document.addEventListener('DOMContentLoaded', () => {
+        updateSchedule();
+    });
 </script>
 </body>
 </html>
