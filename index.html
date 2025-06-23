@@ -1236,7 +1236,7 @@
 
     <div class="menu-page" id="menu-page">
         <div class="menu-content">
-            <button class="menu-close-btn" onclick="document.getElementById('menu-page').classList.remove('active')">✕</button>
+            <button class="menu-close-btn" onclick="closeMenu()">✕</button>
             <div class="menu-options">
                 <div class="menu-option" onclick="openScheduleSelector()">
                     <h3>📅 Complete Schedule</h3>
@@ -1507,6 +1507,11 @@ const routines = {
         document.body.classList.add('menu-open');
     }
 
+    function closeMenu() {
+        const menuPage = getElement('menu-page');
+        menuPage.classList.remove('active');
+        document.body.classList.remove('menu-open');
+    }
 
     const sidebarCloseBtn = document.querySelector('#sidebar .close-btn');
     if (sidebarCloseBtn) {
