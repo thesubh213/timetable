@@ -539,6 +539,11 @@
             padding: 20px;
             margin-top: 15px;
             box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+            font-family: 'Poppins', 'Segoe UI', Arial, sans-serif;
+            font-weight: 700;
+            font-size: 1.5rem;
+            letter-spacing: 0.5px;
+            color: #000;
         }
 
         #current-task .message-container {
@@ -626,7 +631,7 @@
             0 8px 20px rgba(0, 0, 0, 0.1),
             inset 0 -3px 15px rgba(255, 255, 255, 0.9);
             border: 1px solid rgba(255, 255, 255, 0.9);
-            text-align: center;
+            text-align: left !important;
             max-width: 700px;
             overflow: hidden;
         }
@@ -661,10 +666,13 @@
             box-shadow: 0 8px 25px rgba(31, 13, 146, 0.08),
                        0 4px 12px rgba(0, 0, 0, 0.05),
                        inset 0 1px 0 rgba(255, 255, 255, 0.8);
-            font-size: 1.1rem;
+            font-size: 1.2rem;
             border: 1px solid rgba(255, 255, 255, 0.9);
             line-height: 1.5;
-            color: #2d3748;
+            color: #000;
+            font-family: 'Poppins', 'Segoe UI', Arial, sans-serif;
+            font-weight: 700;
+            letter-spacing: 0.5px;
         }
 
         .show-full, .show-next {
@@ -795,8 +803,11 @@
         }
 
         #full-schedule li .task, #next-day-schedule li .task,#scheduleDetails li .task {
-            font-size: 1rem;
-            color: #333;
+            font-size: 1.1rem;
+            color: #000;
+            font-family: 'Poppins', 'Segoe UI', Arial, sans-serif;
+            font-weight: 700;
+            letter-spacing: 0.5px;
         }
 
         #full-schedule li:last-child, #next-day-schedule li:last-child, #scheduleDetails li:last-child {
@@ -1202,6 +1213,13 @@
             max-width: 600px;
         }
 
+        .task-text {
+            font-family: 'Poppins', 'Segoe UI', Arial, sans-serif;
+            font-weight: 700;
+            color: #000;
+            letter-spacing: 0.5px;
+        }
+
     </style>
 </head>
 <body>
@@ -1211,6 +1229,7 @@
     <div class="page" id="main-page">
         <header role="banner">
             <h1>Study Timetable</h1>
+            <hr style="width: 60%; margin: 10px auto; border: 0; border-top: 3px solid #fff; opacity: 1;">
             <div style="font-family: 'Dancing Script', cursive; font-size: 1.2rem; margin-top: -5px; opacity: 0.9;">for
                 adyasha
             </div>
@@ -1641,7 +1660,7 @@ const routines = {
             if (currentTask) {
                 currentTaskElement.innerHTML = `
                     <div class="time">${currentTask.time}</div>
-                    <div class="task-box">${currentTask.task}</div>
+                    <div class="task-box"><span class="task-text">${currentTask.task}</span></div>
                 `;
                 
                 if (currentTask.message) {
@@ -1667,14 +1686,14 @@ const routines = {
                 const nextTasksHTML = nextTasks.map(task => 
                     `<div class="task-container">
                         <div class="task-time">${task.time}</div>
-                        <div class="task">${task.task}</div>
+                        <div class="task"><span class="task-text">${task.task}</span></div>
                     </div>`
                 ).join('');
                 nextTasksElement.innerHTML = nextTasksHTML;
             }
 
             const fullDayHTML = dayRoutine.map(task => 
-                `<li>${task.time} - ${task.task}</li>`
+                `<li>${task.time} - <span class="task-text">${task.task}</span></li>`
             ).join('');
             getElement('full-schedule').innerHTML = fullDayHTML;
         }
@@ -1699,7 +1718,7 @@ const routines = {
 
         if (nextDayRoutine) {
             const nextDayHTML = nextDayRoutine.map(task => 
-                `<li>${task.time} - ${task.task}</li>`
+                `<li>${task.time} - <span class="task-text">${task.task}</span></li>`
             ).join('');
             getElement('next-day-schedule').innerHTML = nextDayHTML;
             
@@ -1773,7 +1792,7 @@ const routines = {
 
         if (routines[selectedDay]) {
             const scheduleHTML = routines[selectedDay].map(item => 
-                `<li>${item.time} → ${item.task}</li>`
+                `<li>${item.time} → <span class="task-text">${item.task}</span></li>`
             ).join('');
             list.innerHTML = scheduleHTML;
         } else {
