@@ -78,12 +78,98 @@
             display: none;
             position: fixed;
             inset: 0;
-            background: rgba(0,0,0,0.95);
+            background: linear-gradient(135deg, #1f0d92 0%, #6c5ce7 100%);
             color: white;
-            font-size: 1.6rem;
-            text-align: center;
-            padding-top: 40vh;
             z-index: 9999;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            animation: fadeInOverlay 1s;
+            display: flex !important;
+        }
+        #desktop-overlay .desktop-overlay-content {
+            position: relative;
+            top: 0;
+            left: 0;
+            transform: none;
+            max-width: 420px;
+            margin: 0 auto;
+            background: rgba(255,255,255,0.08);
+            border-radius: 30px;
+            box-shadow: 0 8px 40px rgba(31,13,146,0.25), 0 2px 8px rgba(0,0,0,0.15);
+            padding: 48px 32px 40px 32px;
+            text-align: center;
+            z-index: 2;
+        }
+        #desktop-overlay .desktop-overlay-icon {
+            font-size: 4rem;
+            margin-bottom: 18px;
+            animation: bounceIcon 2s infinite;
+        }
+        #desktop-overlay h2 {
+            font-size: 2.1rem;
+            font-weight: 700;
+            margin-bottom: 18px;
+            letter-spacing: 1px;
+            text-shadow: 0 2px 8px rgba(31,13,146,0.12);
+        }
+        #desktop-overlay p {
+            font-size: 1.2rem;
+            line-height: 1.7;
+            color: #f8faff;
+            margin-bottom: 0;
+            opacity: 0.95;
+        }
+        .desktop-floating-bg, .desktop-floating-bg2, .desktop-floating-bg3 {
+            position: absolute;
+            border-radius: 50%;
+            opacity: 0.18;
+            z-index: 1;
+            pointer-events: none;
+        }
+        .desktop-floating-bg {
+            width: 180px; height: 180px;
+            background: linear-gradient(135deg, #6c5ce7 0%, #1f0d92 100%);
+            top: -60px; left: -60px;
+            animation: float1 7s ease-in-out infinite;
+        }
+        .desktop-floating-bg2 {
+            width: 120px; height: 120px;
+            background: linear-gradient(135deg, #fff 0%, #6c5ce7 100%);
+            bottom: -40px; right: -40px;
+            animation: float2 8s ease-in-out infinite;
+        }
+        .desktop-floating-bg3 {
+            width: 80px; height: 80px;
+            background: linear-gradient(135deg, #1f0d92 0%, #fff 100%);
+            top: 50%; left: 80%;
+            transform: translateY(-50%);
+            animation: float3 6s ease-in-out infinite;
+        }
+        @keyframes bounceIcon {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-12px); }
+        }
+        @keyframes float1 {
+            0%, 100% { transform: translateY(0) scale(1); }
+            50% { transform: translateY(18px) scale(1.08); }
+        }
+        @keyframes float2 {
+            0%, 100% { transform: translateY(0) scale(1); }
+            50% { transform: translateY(-14px) scale(1.05); }
+        }
+        @keyframes float3 {
+            0%, 100% { transform: translateY(0) scale(1); }
+            50% { transform: translateY(10px) scale(1.12); }
+        }
+        @keyframes fadeInOverlay {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        @media (max-width: 1200px) {
+            #desktop-overlay {
+                display: none !important;
+            }
         }
 
         .nav-buttons {
@@ -357,29 +443,23 @@
             .menu-content {
                 padding: 20px 15px;
             }
-
             .menu-options {
                 gap: 20px;
             }
-
             .menu-option {
                 padding: 20px 25px;
                 font-size: 1.2rem;
             }
-
             .menu-option h3 {
                 font-size: 1.1rem;
             }
-
             .menu-option p {
                 font-size: 0.8rem;
             }
-
             .menu-footer {
                 font-size: 1rem;
                 bottom: 20px;
             }
-
             .menu-close-btn {
                 width: 45px;
                 height: 45px;
@@ -387,7 +467,6 @@
                 top: 15px;
                 right: 15px;
             }
-
             div[style*="display:flex"] {
                 padding: 0 15px !important;
             }
@@ -1252,10 +1331,49 @@
             letter-spacing: 0.5px;
         }
 
+        .next-tasks-clickable {
+          cursor: pointer;
+          position: relative;
+          transition: box-shadow 0.2s, transform 0.2s;
+        }
+        .next-tasks-clickable:active {
+          transform: scale(0.98);
+        }
+        .next-tasks-clickable:hover {
+          box-shadow: 0 0 0 2px var(--primary, #1f0d92);
+        }
+        .next-tasks-hint {
+          pointer-events: none;
+        }
+
+        /* Modal subtle open/close animation */
+        @keyframes modalFadeInSubtle {
+          0% { opacity: 0; transform: scale(0.96) translateY(30px); }
+          100% { opacity: 1; transform: scale(1) translateY(0); }
+        }
+        @keyframes modalFadeOutSubtle {
+          0% { opacity: 1; transform: scale(1) translateY(0); }
+          100% { opacity: 0; transform: scale(0.96) translateY(30px); }
+        }
+        .modal-content {
+          animation: modalFadeInSubtle 0.35s cubic-bezier(0.4,0,0.2,1);
+        }
+        .modal-content.hide-anim {
+          animation: modalFadeOutSubtle 0.3s cubic-bezier(0.4,0,0.2,1) forwards;
+        }
     </style>
 </head>
 <body>
-<div id="desktop-overlay">This website is optimized for mobile and tablet viewing. For the best experience, please use a smaller screen or rotate your device.</div>
+<div id="desktop-overlay">
+    <div class="desktop-overlay-content">
+        <div class="desktop-overlay-icon">📱</div>
+        <h2>Mobile Experience Only</h2>
+        <p>This website is beautifully optimized for mobile and tablet screens.<br>For the best experience, please use a smaller device or rotate your device vertically.</p>
+        <div class="desktop-floating-bg"></div>
+        <div class="desktop-floating-bg2"></div>
+        <div class="desktop-floating-bg3"></div>
+    </div>
+</div>
 
 <div class="page-container">
     <div class="page" id="main-page">
@@ -1277,10 +1395,14 @@
             <div id="hanging-message" class="hanging-message" style="display: none;"></div>
             <div id="greeting-message" class="greeting-message" style="display: none;"></div>
         </div>
-        <div id="next-tasks"></div>
+        <div id="next-tasks" class="next-tasks-clickable">
+          <div class="next-tasks-hint" style="text-align:center;margin-bottom:4px;font-size:1rem;opacity:0.7;display:flex;align-items:center;justify-content:center;gap:6px;">
+            <span>Click here to see the full day schedule</span>
+            <span style="font-size:1.3em;">⬇️</span>
+          </div>
+        </div>
 
         <div style="display:flex;justify-content:center;gap:15px;margin:20px auto;max-width:600px;padding:0 20px;">
-            <a class="show-full" onclick="showFullSchedule()">Show Full Day's Schedule</a>
             <a class="show-next" onclick="showNextDaySchedule()">Show Next Day's Schedule</a>
         </div>
     </div>
@@ -1510,6 +1632,169 @@ const routines = {
             { time: "5:00 PM - 6:00 PM", task: "Write a reflection on the test performance", message: "📋 Reflect on performance and improvements" },
             { time: "6:00 PM - 9:00 PM", task: "Optional: Soft review of marked questions, relax, revisit errors", message: "Free review space" },
             { time: "9:00 PM - 11:45 PM", task: "Dinner + full rest", message: "🍽️ Wind down" }
+        ],
+        "Day 11": [
+            { time: "5:00 AM - 6:00 AM", task: "Wake Uppp!", message: "Good Morning! " },
+            { time: "6:00 AM - 8:00 AM", task: "Physics: Alternating Current (New)", message: "⚡ Visualize current flow!" },
+            { time: "8:00 AM - 8:30 AM", task: "Break 1: Walk/stretch, breakfast, light refresh", message: "🧘 Take a walk and mentally list AC formulas." },
+            { time: "8:30 AM - 10:30 AM", task: "Chemistry: Chemical Bonding and Molecular Structure (New)", message: "🧪 Build molecule models using objects at hand!" },
+            { time: "10:30 AM - 11:00 AM", task: "Break 2: Relax, snack, do something light", message: "☕ Recap: What bonds did you learn? Quick flashcards!" },
+            { time: "11:00 AM - 1:00 PM", task: "Practice: Numericals & Concepts for today's chapters", message: "🔄 Solve numericals, MCQs, and make summary notes." },
+            { time: "1:00 PM - 2:30 PM", task: "Lunch + Nap (1.5 hrs)", message: "🍽️ Strict rest to re-energize for the afternoon!" },
+            { time: "2:30 PM - 4:30 PM", task: "Active Recall: Mind Maps & Quiz (Today's topics)", message: "🧠 Draw a mind map from memory, quiz yourself!" },
+            { time: "4:30 PM - 5:00 PM", task: "Break 3: Light movement, quick snack", message: "🌳 Move and play 'explain the topic in 1 min' game!" },
+            { time: "5:00 PM - 6:00 PM", task: "Summary + Quick revision notes", message: "📝 Create flashcards for both chapters." },
+            { time: "6:00 PM - 7:00 PM", task: "Free Hour: Hobbies/music/game", message: "🎵 Listen to music or play a logic game!" },
+            { time: "7:00 PM - 9:00 PM", task: "Optional: Concept videos or light revision", message: "📺 Watch a short explainer or do light revision." },
+            { time: "9:00 PM - 10:00 PM", task: "Dinner + Wind-down", message: "🍽️ Unwind, talk about what you learned today." },
+            { time: "10:00 PM - 11:45 PM", task: "Light reading / prep for tomorrow / sleep", message: "🌙 Visualize both chapters before sleep." }
+        ],
+        "Day 12": [
+            { time: "5:00 AM - 6:00 AM", task: "Wake Uppp!", message: "Good Morning! Quick recap: Day 11 flashcards!" },
+            { time: "6:00 AM - 8:00 AM", task: "Physics: Electromagnetic Waves (New)", message: "📡 Arrange EM spectrum cards from memory!" },
+            { time: "8:00 AM - 8:30 AM", task: "Break 1: Breakfast, short walk/stretch", message: "🍎 List all EM spectrum components during your walk." },
+            { time: "8:30 AM - 10:30 AM", task: "Chemistry: Thermodynamics (New)", message: "🌡️ Play 'sequence the process' for thermodynamic laws!" },
+            { time: "10:30 AM - 11:00 AM", task: "Break 2: Relax, snack, light reset", message: "🧘 Recap: What's entropy? Quick flash explanation." },
+            { time: "11:00 AM - 1:00 PM", task: "Revision/Practice: Day 11 chapters (AC & Bonding)", message: "🔄 Solve MCQs, recall mind map, and summarize key points." },
+            { time: "1:00 PM - 2:30 PM", task: "Lunch + Nap (1.5 hrs)", message: "🍽️ Mental & physical reset" },
+            { time: "2:30 PM - 4:30 PM", task: "Practice: Numericals & Concepts for today's chapters", message: "🧠 Solve numericals and make summary notes for EM Waves & Thermodynamics." },
+            { time: "4:30 PM - 5:00 PM", task: "Break 3: Tea/snack, gentle movement", message: "🌿 Recap: Sketch the EM spectrum or main laws." },
+            { time: "5:00 PM - 6:00 PM", task: "Summary flashcards + Quick revision notes", message: "📝 Create flashcards for both chapters." },
+            { time: "6:00 PM - 7:00 PM", task: "Free Hour: Music, hobby, walk", message: "🎨 Draw a quick spectrum or thermodynamic cycle." },
+            { time: "7:00 PM - 9:00 PM", task: "Optional: Light revision of all four chapters so far", message: "🔍 Shuffle flashcards from both days." },
+            { time: "9:00 PM - 10:00 PM", task: "Dinner + Wind-down", message: "🍽️ Share your favorite concept from today." },
+            { time: "10:00 PM - 11:45 PM", task: "Prep for tomorrow / sleep", message: "🌙 Visualize the process flow of today's chapters." }
+        ],
+        "Day 13": [
+            { time: "5:00 AM - 6:00 AM", task: "Wake Uppp!", message: "Good Morning! Flash recap: Day 12 flashcards!" },
+            { time: "6:00 AM - 8:00 AM", task: "Botany: Morphology of Flowering Plants (New)", message: "🌱 Go outside, identify and sketch plant parts!" },
+            { time: "8:00 AM - 8:30 AM", task: "Break 1: Breakfast, move around, brain reset", message: "☕ List parts of a plant during your walk." },
+            { time: "8:30 AM - 10:30 AM", task: "Zoology: Human Health and Disease (New)", message: "🦠 Draw a disease mind map and explain one aloud." },
+            { time: "10:30 AM - 11:00 AM", task: "Break 2: Snack, breathing, rest", message: "🍎 Recap: What are the main disease types?" },
+            { time: "11:00 AM - 1:00 PM", task: "Revision/Practice: Day 12 chapters (EM Waves & Thermodynamics)", message: "🔄 Recap main formulas, MCQs, and key points." },
+            { time: "1:00 PM - 2:30 PM", task: "Lunch + Nap (1.5 hrs)", message: "🍽️ Rest and visualize plant diagrams and disease flowcharts." },
+            { time: "2:30 PM - 4:30 PM", task: "Practice: Numericals & Concepts for today's chapters", message: "🧠 Practice MCQs and flashcards for Morphology & Human Health." },
+            { time: "4:30 PM - 5:00 PM", task: "Break 3: Stretch, snack, light walk", message: "🌿 Recall 5 plant facts and 5 disease facts." },
+            { time: "5:00 PM - 6:00 PM", task: "Summary flashcards + Quick revision notes", message: "📝 Create flashcards for both chapters." },
+            { time: "6:00 PM - 7:00 PM", task: "Free Hour: Chill, art, music", message: "🎶 Draw or color something from today's study." },
+            { time: "7:00 PM - 9:00 PM", task: "Optional: Recap all six chapters so far", message: "🧠 Play '20 facts in 2 mins' for each chapter." },
+            { time: "9:00 PM - 10:00 PM", task: "Dinner", message: "🍽️ Share a new learning from today." },
+            { time: "10:00 PM - 11:45 PM", task: "Wind down + light reading / sleep", message: "🌙 Picture a healthy plant and immune system before sleep." }
+        ],
+        "Day 14": [
+            { time: "5:00 AM - 6:00 AM", task: "Wake Uppp!", message: "Good Morning! Review Day 13 flashcards!" },
+            { time: "6:00 AM - 8:00 AM", task: "Botany: Anatomy of Flowering Plants (New)", message: "🌳 Draw all tissue types from memory!" },
+            { time: "8:00 AM - 8:30 AM", task: "Break 1: Breakfast, light stretch/walk", message: "☕ Recall yesterday's plant parts." },
+            { time: "8:30 AM - 10:30 AM", task: "Zoology: Human Health and Disease – Prevention & Control (New)", message: "🦠 Create a mind map of all prevention strategies." },
+            { time: "10:30 AM - 11:00 AM", task: "Break 2: Snack, rest", message: "🍎 List 5 disease prevention tips." },
+            { time: "11:00 AM - 1:00 PM", task: "Revision/Practice: Day 13 chapters (Morphology & Health)", message: "🔄 Rapid MCQ recap and summary notes." },
+            { time: "1:00 PM - 2:30 PM", task: "Lunch + Nap (1.5 hrs)", message: "🍽️ Visualize plant anatomy and disease flowcharts." },
+            { time: "2:30 PM - 4:30 PM", task: "Practice: Numericals & Concepts for today's chapters", message: "🧠 Practice MCQs and summary sheets for Anatomy & Disease Control." },
+            { time: "4:30 PM - 5:00 PM", task: "Break 3: Snack, movement", message: "🌿 Recap 5 terms from each chapter." },
+            { time: "5:00 PM - 6:00 PM", task: "Summary flashcards + Quick revision notes", message: "📝 Make flashcards for today's chapters." },
+            { time: "6:00 PM - 7:00 PM", task: "Free Hour: Hobby, music, art", message: "🎨 Sketch or listen to a science podcast." },
+            { time: "7:00 PM - 9:00 PM", task: "Optional: MCQ blitz on new and old chapters", message: "🤔 Set a timer for each subject." },
+            { time: "9:00 PM - 10:00 PM", task: "Dinner", message: "🍽️ Recall your favorite learning from this week." },
+            { time: "10:00 PM - 11:45 PM", task: "Wind-down, sleep", message: "🌙 Imagine teaching today's chapters to a friend." }
+        ],
+        "Day 15": [
+            { time: "5:00 AM - 6:00 AM", task: "Wake Uppp!", message: "Good Morning! Final new chapter day!" },
+            { time: "6:00 AM - 8:00 AM", task: "Physics: Ray Optics and Optical Instruments (New)", message: "🔦 Draw ray diagrams, label all parts!" },
+            { time: "8:00 AM - 8:30 AM", task: "Break 1: Breakfast, stretch, walk", message: "☕ Recap: Day 14's Anatomy & Disease Control." },
+            { time: "8:30 AM - 10:30 AM", task: "Revision/Practice: Day 14 chapters (Anatomy & Disease Control)", message: "🌳 Review, MCQs, summary sheets." },
+            { time: "10:30 AM - 11:00 AM", task: "Break 2: Snack, rest", message: "🍎 Recall diagrams and main concepts." },
+            { time: "11:00 AM - 1:00 PM", task: "Revision/Practice: All previous Physics chapters", message: "🔄 Recap AC, EM Waves, Ray Optics." },
+            { time: "1:00 PM - 2:30 PM", task: "Lunch + Nap (1.5 hrs)", message: "🍽️ Visualize light rays and optics as you nap." },
+            { time: "2:30 PM - 4:30 PM", task: "Practice: Numericals & Concepts for today's chapter", message: "🧠 Practice MCQs and summary sheets for Ray Optics." },
+            { time: "4:30 PM - 5:00 PM", task: "Break 3: Snack, movement", message: "🌿 List 5 key facts from Ray Optics." },
+            { time: "5:00 PM - 6:00 PM", task: "Summary flashcards + Quick revision notes", message: "📝 Make flashcards for Ray Optics." },
+            { time: "6:00 PM - 7:00 PM", task: "Free Hour: Music, walk, art", message: "🎵 Listen or draw while thinking about today's study." },
+            { time: "7:00 PM - 9:00 PM", task: "Optional: MCQ blitz, recap all", message: "🤔 One last rapid-fire MCQ session for all chapters." },
+            { time: "9:00 PM - 10:00 PM", task: "Dinner", message: "🍽️ Celebrate completing all chapters!" },
+            { time: "10:00 PM - 11:45 PM", task: "Wind-down, sleep", message: "🌙 Reflect on your journey so far." }
+        ],
+        "Day 16": [
+            { time: "5:00 AM - 6:00 AM", task: "Wake Uppp!", message: "Start your revision marathon! Rate your confidence on each topic." },
+            { time: "6:00 AM - 8:00 AM", task: "Revision: Physics (All Previous Chapters , Focus on Weakest First)", message: "🔄 MCQ race, flashcards, and memory recall games." },
+            { time: "8:00 AM - 8:30 AM", task: "Break 1: Breakfast, walk", message: "☕ Recap: Explain a physics topic aloud during your walk." },
+            { time: "8:30 AM - 10:30 AM", task: "Revision: Chemistry (All Previous Chapters, Random Order)", message: "🧪 Solve MCQs, draw diagrams, and link concepts across chapters." },
+            { time: "10:30 AM - 11:00 AM", task: "Break 2: Snack, rest", message: "🍎 Recall: List all formulas or key terms from chemistry." },
+            { time: "11:00 AM - 1:00 PM", task: "Revision: Botany (All Chapters, Mind Maps)", message: "🌱 Draw mind maps, recall flowcharts, and discuss with a friend or aloud." },
+            { time: "1:00 PM - 2:30 PM", task: "Lunch + Nap (1.5 hrs)", message: "🍽️ Nap while visualizing plant diagrams and their functions." },
+            { time: "2:30 PM - 4:30 PM", task: "Revision: Zoology (All Previous Chapters, Case Studies & MCQs)", message: "🦠 Review diseases, do case study games, and MCQ streaks." },
+            { time: "4:30 PM - 5:00 PM", task: "Break 3: Snack, walk", message: "🌿 List 5 random facts from each subject during your break." },
+            { time: "5:00 PM - 6:00 PM", task: "Summary flashcards: All topics", message: "📝 Shuffle and answer flashcards as fast as possible." },
+            { time: "6:00 PM - 7:00 PM", task: "Free Hour: Art, music, walk", message: "🎨 Draw your favorite chapter concept or listen to a science podcast." },
+            { time: "7:00 PM - 9:00 PM", task: "Optional: Group quiz, MCQ race, or peer teaching", message: "🗣️ Teach a topic to someone (or to yourself in the mirror)." },
+            { time: "9:00 PM - 10:00 PM", task: "Dinner", message: "🍽️ Share a new mnemonic you created today." },
+            { time: "10:00 PM - 11:45 PM", task: "Wind-down, sleep", message: "🌙 Reflect on your most improved subject today." }
+        ],
+        "Day 17": [
+            { time: "5:00 AM - 6:00 AM", task: "Wake Uppp!", message: "Almost there! Random recap: Pick one chapter and explain it out loud." },
+            { time: "6:00 AM - 8:00 AM", task: "Revision: Chemistry (Mix Theory & Problem Solving)", message: "🧪 Solve one MCQ, one short note, and one diagram per chapter." },
+            { time: "8:00 AM - 8:30 AM", task: "Break 1: Breakfast, walk", message: "☕ Recall three tricky formulas over breakfast." },
+            { time: "8:30 AM - 10:30 AM", task: "Revision: Physics (Mix Theory & Diagrams)", message: "🔦 Draw ray diagrams, solve one numerical per chapter." },
+            { time: "10:30 AM - 11:00 AM", task: "Break 2: Snack, relax", message: "🍎 Share a physics trick or mnemonic with someone." },
+            { time: "11:00 AM - 1:00 PM", task: "Revision: Botany (MCQs + Mind Maps)", message: "🌸 Mind map the entire plant kingdom, solve MCQs." },
+            { time: "1:00 PM - 2:30 PM", task: "Lunch + Nap (1.5 hrs)", message: "🍽️ Nap and visualize a flowchart from any subject." },
+            { time: "2:30 PM - 4:30 PM", task: "Revision: Zoology (Case Studies & Random Quiz)", message: "🦠 Draw a disease process, quiz yourself or others." },
+            { time: "4:30 PM - 5:00 PM", task: "Break 3: Snack, walk", message: "🌳 List all key terms you remember from the day." },
+            { time: "5:00 PM - 6:00 PM", task: "Summary flashcards: All topics", message: "📝 Flashcard streak: how many can you do in 10 mins?" },
+            { time: "6:00 PM - 7:00 PM", task: "Free Hour: Music, hobby, relax", message: "🎵 Reset your mind with relaxation." },
+            { time: "7:00 PM - 9:00 PM", task: "Optional: MCQ blitz, peer review", message: "🤔 Challenge a friend or family to ask you questions." },
+            { time: "9:00 PM - 10:00 PM", task: "Dinner", message: "🍽️ Share the best analogy or shortcut you used today." },
+            { time: "10:00 PM - 11:45 PM", task: "Wind-down, sleep", message: "🌙 Picture your strongest and weakest chapter, set a plan for tomorrow." }
+        ],
+        "Day 18": [
+            { time: "5:00 AM - 6:00 AM", task: "Wake Uppp!", message: "Final revision sprint! Start with a big smile and a deep breath." },
+            { time: "6:00 AM - 8:00 AM", task: "Revision: Botany (Combine All Topics)", message: "🌻 Rapid-fire MCQs, mind map, and a quick oral quiz." },
+            { time: "8:00 AM - 8:30 AM", task: "Break 1: Breakfast, walk", message: "☕ Recap: Recall a diagram from each botany chapter." },
+            { time: "8:30 AM - 10:30 AM", task: "Revision: Zoology (Full Review)", message: "🦠 Write a mini-essay on each disease, then quiz yourself." },
+            { time: "10:30 AM - 11:00 AM", task: "Break 2: Snack, rest", message: "🍎 Try explaining a disease process to a family member." },
+            { time: "11:00 AM - 1:00 PM", task: "Revision: Physics (MCQs + Diagrams)", message: "🔬 One diagram, one formula, and one tricky MCQ per topic." },
+            { time: "1:00 PM - 2:30 PM", task: "Lunch + Nap (1.5 hrs)", message: "🍽️ Dream up a new mnemonic for any hard topic." },
+            { time: "2:30 PM - 4:30 PM", task: "Revision: Chemistry (Summary & MCQs)", message: "🧪 Solve, check, and review any mistakes instantly." },
+            { time: "4:30 PM - 5:00 PM", task: "Break 3: Snack, walk", message: "🌿 Recap new memory tricks you invented today." },
+            { time: "5:00 PM - 6:00 PM", task: "Summary flashcards: All topics", message: "📝 Set a new record for speed and accuracy." },
+            { time: "6:00 PM - 7:00 PM", task: "Free Hour: Music, art, walk", message: "🎨 Enjoy your favorite creative activity." },
+            { time: "7:00 PM - 9:00 PM", task: "Optional: MCQ marathon, mind map connections", message: "🧠 Link chapters and quiz yourself randomly." },
+            { time: "9:00 PM - 10:00 PM", task: "Dinner", message: "🍽️ Share the strangest or funniest fact you learned." },
+            { time: "10:00 PM - 11:45 PM", task: "Wind-down, sleep", message: "🌙 Visualize your exam success, sleep well!" }
+        ],
+        "Day 19": [
+            { time: "5:00 AM - 6:00 AM", task: "Wake Uppp!", message: "Good Morning❤️ Almost there! Visualize success." },
+            { time: "6:00 AM - 7:00 AM", task: "Light Review – Flashcards & Visuals (no new material)", message: "🧘 Confidence booster" },
+            { time: "7:00 AM - 7:30 AM", task: "Breakfast", message: "🍳 Balanced meal" },
+            { time: "7:30 AM - 9:00 AM", task: "Skim through key summary notes (2–3 mins per chapter)", message: "📑 Gentle refresh, no overload" },
+            { time: "9:00 AM - 9:30 AM", task: "Break: Short walk/stretch, deep breathing", message: "🍵 Mental reset" },
+            { time: "9:30 AM - 11:00 AM", task: "Light MCQ practice (15–20 mixed Qs, timed blocks)", message: "🧠 Build rhythm" },
+            { time: "11:00 AM - 12:30 PM", task: "Relax: Hobby / music / calm zone", message: "🛋️ Avoid cognitive fatigue" },
+            { time: "12:30 PM - 1:00 PM", task: "Light lunch (easy to digest)", message: "🍽️ Pre-test nutrition" },
+            { time: "1:00 PM - 1:30 PM", task: "Quiet time – meditation / positive affirmations", message: "😌 Mental grounding" },
+            { time: "1:30 PM - 2:00 PM", task: "Test setup: water, test sheets, pens, clock", message: "Final prep" },
+            { time: "2:00 PM - 5:00 PM", task: "Mock Test (Full syllabus)", message: "📝 Give your best effort!" },
+            { time: "5:00 PM - 5:30 PM", task: "Light snack, hydrate", message: "🍉 Recovery" },
+            { time: "5:30 PM - 6:30 PM", task: "Test Reflection – mark paper, identify strengths & gaps", message: "🧾 Learn from performance" },
+            { time: "6:30 PM - 7:30 PM", task: "Chill time – walk, hobby, music", message: "🧘 Mindful recovery" },
+            { time: "7:30 PM - 9:00 PM", task: "Optional: Review 1–2 weak areas or unclear answers", message: "Gentle recap" },
+            { time: "9:00 PM - 10:00 PM", task: "Dinner + wind down", message: "🍽️ No study" },
+            { time: "10:00 PM - 11:45 PM", task: "Rest, track your progress, or sleep early", message: "Closure + reset" }
+        ],
+        "Day 20": [
+            { time: "5:00 AM - 6:00 AM", task: "Wake Uppp!", message: "It's the last day! Reflect on your journey." },
+            { time: "6:00 AM - 8:00 AM", task: "Review performance – Check score, mark distribution by subject", message: "📊 Visualize improvement, celebrate progress." },
+            { time: "8:00 AM - 8:30 AM", task: "Breakfast, walk", message: "🍳 Enjoy your favorite breakfast!" },
+            { time: "8:30 AM - 10:30 AM", task: "Review Chemistry – Go over wrong/right MCQs & concepts", message: "🧪 Celebrate your chemistry wins!" },
+            { time: "10:30 AM - 11:00 AM", task: "Break 2: Snack, relax", message: "🍎 Think about your best moments." },
+            { time: "11:00 AM - 1:00 PM", task: "Review Physics – Identify calculation, concept, or logic errors", message: "🔬 Find your clever mistakes and laugh at them." },
+            { time: "1:00 PM - 2:30 PM", task: "Lunch + Nap (1.5 hrs)", message: "🍽️ Celebrate your achievement, rest well." },
+            { time: "2:30 PM - 4:30 PM", task: "Review Biology (Botany & Zoology) – Reasoning, examples, process-based gaps", message: "🌿 Give yourself a 'bio star' for every new insight." },
+            { time: "4:30 PM - 5:00 PM", task: "Break 3: Snack, walk", message: "🌳 You did it! Smile." },
+            { time: "5:00 PM - 6:00 PM", task: "Reflection & future planning", message: "📋 Write a letter to your future self." },
+            { time: "6:00 PM - 7:00 PM", task: "Free Hour: Music, art, hobby", message: "🎶 Enjoy your time, you've earned it." },
+            { time: "7:00 PM - 9:00 PM", task: "Optional: Light review or relax", message: "🛋️ Do whatever feels restorative." },
+            { time: "9:00 PM - 10:00 PM", task: "Dinner", message: "🍽️ Celebrate—you did it!" },
+            { time: "10:00 PM - 11:45 PM", task: "Full rest", message: "🌙 Sleep with the satisfaction of a job well done." }
         ]
     };
 
@@ -1910,6 +2195,38 @@ const routines = {
             });
         }
     })();
+
+    getElement('next-tasks').addEventListener('click', function() {
+      showFullScheduleWithAnim();
+    });
+
+    function showFullScheduleWithAnim() {
+      const fullDayModal = getElement('full-day-modal');
+      const modalContent = fullDayModal.querySelector('.modal-content');
+      fullDayModal.style.display = 'block';
+      modalContent.classList.remove('hide-anim');
+      document.body.classList.add('modal-open');
+      setTimeout(() => { modalContent.scrollIntoView({behavior:'smooth', block:'center'}); }, 100);
+      const menuPage = getElement('menu-page');
+      if (menuPage.classList.contains('active')) { goHome(); }
+    }
+
+    const fullDayModalClose = getElement('full-day-modal').querySelector('.close');
+    fullDayModalClose.onclick = function() {
+      const modal = getElement('full-day-modal');
+      const modalContent = modal.querySelector('.modal-content');
+      modalContent.classList.add('hide-anim');
+      setTimeout(() => {
+        modal.style.display = 'none';
+        modalContent.classList.remove('hide-anim');
+        document.body.classList.remove('modal-open');
+      }, 280);
+      setTimeout(() => {
+        getElement('next-tasks').scrollIntoView({behavior:'smooth', block:'center'});
+      }, 320);
+      const menuPage = getElement('menu-page');
+      if (menuPage.classList.contains('active')) { goHome(); }
+    };
 </script>
 </body>
 </html>
