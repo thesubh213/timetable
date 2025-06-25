@@ -1198,26 +1198,68 @@
             list-style-type: none;
             padding-left: 0;
         }
-
+        @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@500;700&display=swap');
         #full-schedule li, #next-day-schedule li, #scheduleDetails li {
-            padding: 18px;
-            font-size: 1.1rem;
-            background: var(--bg-secondary);
-            border-radius: 15px;
-            margin: 20px auto;
-            border: 1.5px solid var(--border-color);
-            box-shadow: 6px 6px 12px rgba(0, 0, 0, 0.1);
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            position: relative;
+            padding: 9px 8px 9px 14px;
+            font-size: 0.97rem;
+            background: linear-gradient(120deg, #f8faff 60%, #f3eaff 100%);
+            border-radius: 9px;
+            margin: 7px auto;
+            border: 1px solid #e3d7fa;
+            font-family: 'Quicksand', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             color: var(--text-main);
-            line-height: 1.6;
-            transition: all 0.3s ease-in-out;
-            text-align: center;
+            line-height: 1.5;
+            text-align: left;
             display: flex;
             flex-direction: column;
             justify-content: center;
-            align-items: center;
-            width: calc(100% - 40px);
-            max-width: 600px;
+            align-items: flex-start;
+            width: calc(100% - 4px);
+            max-width: 340px;
+            letter-spacing: 0.01em;
+            box-sizing: border-box;
+        }
+        #full-schedule li::before, #next-day-schedule li::before, #scheduleDetails li::before {
+            content: '';
+            position: absolute;
+            left: 0; top: 7px; bottom: 7px;
+            width: 3px;
+            border-radius: 2px;
+            background: linear-gradient(180deg, #a48be0 0%, #6c5ce7 100%);
+            opacity: 0.7;
+        }
+        .schedule-time {
+            font-size: 1.05em;
+            font-weight: 700;
+            color: #6c5ce7;
+            margin-bottom: 4px;
+            font-family: 'Quicksand', 'Segoe UI', Arial, sans-serif;
+            letter-spacing: 0.01em;
+        }
+        .schedule-separator {
+            border: none;
+            border-top: 1px dashed #bba6e7;
+            margin: 4px 0 4px 0;
+            width: 55%;
+            opacity: 0.45;
+        }
+        .task-text {
+            font-family: 'Quicksand', 'Segoe UI', Arial, sans-serif;
+            font-weight: 500;
+            color: var(--text-main);
+            letter-spacing: 0.01em;
+            text-align: center;
+            width: 100%;
+            display: block;
+        }
+        #full-schedule li, #next-day-schedule li, #scheduleDetails li {
+            transition: none !important;
+        }
+        #full-schedule li:hover, #next-day-schedule li:hover, #scheduleDetails li:hover {
+            box-shadow: none;
+            background: linear-gradient(120deg, #f8faff 60%, #f3eaff 100%);
+            transform: none;
         }
 
         #full-schedule li .time, #next-day-schedule li .time, #scheduleDetails li .time {
@@ -1619,24 +1661,28 @@
         }
         
         #scheduleDetails li {
-            padding: 18px;
-            font-size: 1.1rem;
-            background: var(--bg-secondary);
-            border-radius: 15px;
-            margin: 20px auto;
-            border: 1.5px solid var(--border-color);
-            box-shadow: 6px 6px 12px rgba(0, 0, 0, 0.1);
+            padding: 12px 10px;
+            font-size: 1rem;
+            background: linear-gradient(120deg, var(--bg-secondary) 80%, #f3eaff 100%);
+            border-radius: 14px;
+            margin: 10px auto;
+            border: 1px solid rgba(108, 92, 231, 0.10);
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             color: var(--text-main);
-            line-height: 1.6;
-            transition: all 0.3s ease-in-out;
+            line-height: 1.5;
             text-align: center;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            width: calc(100% - 40px);
-            max-width: 600px;
+            width: calc(100% - 18px);
+            max-width: 410px;
+            letter-spacing: 0.01em;
+        }
+        #scheduleDetails li:hover {
+            box-shadow: none;
+            background: linear-gradient(120deg, var(--bg-secondary) 80%, #f3eaff 100%);
+            transform: none;
         }
 
         .task-text {
@@ -1702,6 +1748,20 @@
             align-items: center;
             justify-content: center;
             transition: height 0.2s;
+        }
+        .schedule-time {
+            font-size: 1.15em;
+            font-weight: 600;
+            color: var(--primary);
+            margin-bottom: 6px;
+            display: block;
+        }
+        .schedule-separator {
+            border: none;
+            border-top: 1.5px dashed var(--primary);
+            margin: 8px 0 8px 0;
+            width: 60%;
+            opacity: 0.5;
         }
     </style>
 </head>
@@ -2024,7 +2084,7 @@ const routines = {
             { time: "3:30 PM - 4:00 PM", task: "Practice: Mixed Revision Drills", message: "🔁 30-min rapid-fire short questions from both chapters." },
             { time: "4:00 PM - 4:30 PM", task: "Break 3: Light movement, quick snack", message: "🌳 Move and play 'explain the topic in 1 min' game!" },
             { time: "4:30 PM - 5:30 PM", task: "Summary + Quick revision notes", message: "📝 Create flashcards for both chapters." },
-            { time: "5:30 PM - 6:00 PM", task: "Practice: Error Review (Today’s Work)", message: "🔎 Target your mistakes: note 2 errors per subject and fix." },
+            { time: "5:30 PM - 6:00 PM", task: "Practice: Error Review (Today's Work)", message: "🔎 Target your mistakes: note 2 errors per subject and fix." },
             { time: "6:00 PM - 7:00 PM", task: "Free Hour: Hobbies/music/game", message: "🎵 Listen to music or play a logic game!" },
             { time: "7:00 PM - 9:00 PM", task: "Optional: Concept videos or light revision", message: "📺 Watch a short explainer or do light revision." },
             { time: "9:00 PM - 10:00 PM", task: "Dinner + Wind-down", message: "🍽️ Unwind, talk about what you learned today." },
@@ -2043,11 +2103,11 @@ const routines = {
             { time: "11:00 AM - 12:00 PM", task: "Revision: Flashcard Review (Day 11 & Today)", message: "🔄 MCQs, recall mind map, and summarize key points." },
             { time: "12:00 PM - 1:00 PM", task: "Practice: Mixed Drills (Both Subjects)", message: "🧠 30-min rapid revision per subject." },
             { time: "1:00 PM - 2:30 PM", task: "Lunch + Nap (1.5 hrs)", message: "🍽️ Mental & physical reset" },
-            { time: "2:30 PM - 3:30 PM", task: "Practice: Numericals & Concepts (Today’s chapters)", message: "🧠 Solve numericals and make summary notes for EM Waves & Thermodynamics." },
+            { time: "2:30 PM - 3:30 PM", task: "Practice: Numericals & Concepts (Today's chapters)", message: "🧠 Solve numericals and make summary notes for EM Waves & Thermodynamics." },
             { time: "3:30 PM - 4:00 PM", task: "Practice: Rapid Recap/Quiz", message: "⚡ Speed-recall round: main laws & formulas." },
             { time: "4:00 PM - 4:30 PM", task: "Break 3: Tea/snack, gentle movement", message: "🌿 Recap: Sketch the EM spectrum or main laws." },
             { time: "4:30 PM - 5:30 PM", task: "Summary flashcards + Quick revision notes", message: "📝 Create flashcards for both chapters." },
-            { time: "5:30 PM - 6:00 PM", task: "Practice: Error Review (Today’s Work)", message: "🔎 Target your mistakes: note 2 errors per subject and fix." },
+            { time: "5:30 PM - 6:00 PM", task: "Practice: Error Review (Today's Work)", message: "🔎 Target your mistakes: note 2 errors per subject and fix." },
             { time: "6:00 PM - 7:00 PM", task: "Free Hour: Music, hobby, walk", message: "🎨 Draw a quick spectrum or thermodynamic cycle." },
             { time: "7:00 PM - 9:00 PM", task: "Optional: Light revision of all four chapters so far", message: "🔍 Shuffle flashcards from both days." },
             { time: "9:00 PM - 10:00 PM", task: "Dinner + Wind-down", message: "🍽️ Share your favorite concept from today." },
@@ -2070,7 +2130,7 @@ const routines = {
             { time: "3:30 PM - 4:00 PM", task: "Practice: Quick Quiz & Recall", message: "⚡ 30-min 'teach back' session for both chapters." },
             { time: "4:00 PM - 4:30 PM", task: "Break 3: Stretch, snack, light walk", message: "🌿 Recall 5 plant facts and 5 disease facts." },
             { time: "4:30 PM - 5:30 PM", task: "Summary flashcards + Quick revision notes", message: "📝 Create flashcards for both chapters." },
-            { time: "5:30 PM - 6:00 PM", task: "Practice: Error Review (Today’s Work)", message: "🔎 Target your mistakes: note 2 errors per subject and fix." },
+            { time: "5:30 PM - 6:00 PM", task: "Practice: Error Review (Today's Work)", message: "🔎 Target your mistakes: note 2 errors per subject and fix." },
             { time: "6:00 PM - 7:00 PM", task: "Free Hour: Chill, art, music", message: "🎶 Draw or color something from today's study." },
             { time: "7:00 PM - 9:00 PM", task: "Optional: Recap all six chapters so far", message: "🧠 Play '20 facts in 2 mins' for each chapter." },
             { time: "9:00 PM - 10:00 PM", task: "Dinner", message: "🍽️ Share a new learning from today." },
@@ -2093,7 +2153,7 @@ const routines = {
             { time: "3:30 PM - 4:00 PM", task: "Practice: Quick Quiz & Recall", message: "⚡ 30-min 'teach back' session for both chapters." },
             { time: "4:00 PM - 4:30 PM", task: "Break 3: Snack, movement", message: "🌿 Recap 5 terms from each chapter." },
             { time: "4:30 PM - 5:30 PM", task: "Summary flashcards + Quick revision notes", message: "📝 Make flashcards for today's chapters." },
-            { time: "5:30 PM - 6:00 PM", task: "Practice: Error Review (Today’s Work)", message: "🔎 Target your mistakes: note 2 errors per subject and fix." },
+            { time: "5:30 PM - 6:00 PM", task: "Practice: Error Review (Today's Work)", message: "🔎 Target your mistakes: note 2 errors per subject and fix." },
             { time: "6:00 PM - 7:00 PM", task: "Free Hour: Hobby, music, art", message: "🎨 Sketch or listen to a science podcast." },
             { time: "7:00 PM - 9:00 PM", task: "Optional: MCQ blitz on new and old chapters", message: "🤔 Set a timer for each subject." },
             { time: "9:00 PM - 10:00 PM", task: "Dinner", message: "🍽️ Recall your favorite learning from this week." },
@@ -2116,7 +2176,7 @@ const routines = {
             { time: "3:30 PM - 4:00 PM", task: "Practice: Quick Quiz & Recall", message: "⚡ 30-min summary of all optics-related facts." },
             { time: "4:00 PM - 4:30 PM", task: "Break 3: Snack, movement", message: "🌿 List 5 key facts from Ray Optics." },
             { time: "4:30 PM - 5:30 PM", task: "Summary flashcards + Quick revision notes", message: "📝 Make flashcards for Ray Optics." },
-            { time: "5:30 PM - 6:00 PM", task: "Practice: Error Review (Today’s Work)", message: "🔎 Note your top 3 mistakes and fix them." },
+            { time: "5:30 PM - 6:00 PM", task: "Practice: Error Review (Today's Work)", message: "🔎 Note your top 3 mistakes and fix them." },
             { time: "6:00 PM - 7:00 PM", task: "Free Hour: Music, walk, art", message: "🎵 Listen or draw while thinking about today's study." },
             { time: "7:00 PM - 9:00 PM", task: "Optional: MCQ blitz, recap all", message: "🤔 One last rapid-fire MCQ session for all chapters." },
             { time: "9:00 PM - 10:00 PM", task: "Dinner", message: "🍽️ Celebrate completing all chapters!" },
@@ -2434,7 +2494,7 @@ const routines = {
             }
 
             const fullDayHTML = dayRoutine.map(task => 
-                `<li>${task.time} - <span class="task-text">${task.task}</span></li>`
+                `<li><span class="schedule-time">${task.time}</span><hr class="schedule-separator"><span class="task-text">${task.task}</span></li>`
             ).join('');
             getElement('full-schedule').innerHTML = fullDayHTML;
 
@@ -2491,7 +2551,7 @@ const routines = {
 
         if (nextDayRoutine) {
             const nextDayHTML = nextDayRoutine.tasks.map(task => 
-                `<li>${task.time} - <span class="task-text">${task.task}</span></li>`
+                `<li><span class="schedule-time">${task.time}</span><hr class="schedule-separator"><span class="task-text">${task.task}</span></li>`
             ).join('');
             getElement('next-day-schedule').innerHTML = nextDayHTML;
             
@@ -2565,7 +2625,7 @@ const routines = {
 
         if (routines[selectedDay]) {
             const scheduleHTML = routines[selectedDay].tasks.map(item => 
-                `<li>${item.time} → <span class="task-text">${item.task}</span></li>`
+                `<li><span class="schedule-time">${item.time}</span><hr class="schedule-separator"><span class="task-text">${item.task}</span></li>`
             ).join('');
             list.innerHTML = scheduleHTML;
         } else {
