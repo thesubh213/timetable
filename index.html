@@ -1763,6 +1763,31 @@
             width: 60%;
             opacity: 0.5;
         }
+        body.dark-mode #full-schedule li,
+        body.dark-mode #next-day-schedule li,
+        body.dark-mode #scheduleDetails li {
+            background: linear-gradient(120deg, #232634 60%, #2d2e3a 100%);
+            border-radius: 9px;
+            border: 1px solid #353a45;
+            color: var(--text-main);
+            box-shadow: none;
+        }
+        body.dark-mode #full-schedule li::before,
+        body.dark-mode #next-day-schedule li::before,
+        body.dark-mode #scheduleDetails li::before {
+            background: linear-gradient(180deg, #a48be0 0%, #3b5bdb 100%);
+            opacity: 0.7;
+        }
+        body.dark-mode .schedule-time {
+            color: #a48be0;
+        }
+        body.dark-mode .task-text {
+            color: var(--text-main);
+        }
+        body.dark-mode .schedule-separator {
+            border-top: 1px dashed #3b5bdb;
+            opacity: 0.45;
+        }
     </style>
 </head>
 <body>
