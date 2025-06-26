@@ -324,7 +324,7 @@
             --white: #fff;
             --modal-bg: #ffffff;
             --modal-bg-gradient: linear-gradient(165deg, #ffffff, #f8faff);
-            --box-shadow: 0 25px 60px rgba(108, 92, 231, 0.4), 0 15px 35px rgba(0, 0, 0, 0.2), 0 10px 20px rgba(108, 92, 231, 0.2), inset 0 -15px 30px rgba(255, 255, 255, 0.2), inset 0 5px 15px rgba(255, 255, 255, 0.1);
+            --box-shadow: none !important;
             --card-bg: #fff;
             --input-bg: #fff;
             --border-color: rgba(255,255,255,0.8);
@@ -340,7 +340,7 @@
             --white: #232634;
             --modal-bg: #232634;
             --modal-bg-gradient: linear-gradient(165deg, #232634 60%, #232634 100%);
-            --box-shadow: 0 4px 24px rgba(0,0,0,0.7), 0 1px 4px rgba(0,0,0,0.4);
+            --box-shadow: none !important;
             --card-bg: #232634;
             --input-bg: #232634;
             --border-color: #353a45;
@@ -663,12 +663,12 @@
             font-weight: 500;
             cursor: pointer;
             text-align: center;
-            box-shadow: 0 8px 20px rgba(31, 13, 146, 0.3);
+            box-shadow: none;
+            border: 2.5px solid var(--primary);
             transition: none;
             width: 100%;
             position: relative;
             overflow: hidden;
-            border: 2px solid var(--border-color);
         }
 
         .menu-option::before {
@@ -682,7 +682,7 @@
         .menu-option:hover {
             background: #1f0d92;
             transform: none;
-            box-shadow: 0 8px 20px rgba(31, 13, 146, 0.3);
+            box-shadow: none;
         }
 
         .menu-option:active {
@@ -933,8 +933,8 @@
             backdrop-filter: blur(15px);
             -webkit-backdrop-filter: blur(15px);
             margin: 0 auto 35px auto;
-            box-shadow: var(--box-shadow);
-            border: 1.5px solid var(--border-color);
+            box-shadow: none;
+            border: 2.5px solid var(--primary);
             text-align: center;
             max-width: 650px;
             overflow: hidden;
@@ -955,7 +955,8 @@
             border-radius: 20px;
             padding: 20px;
             margin-top: 15px;
-            box-shadow: var(--box-shadow);
+            box-shadow: none;
+            border: 2px solid var(--primary);
             font-family: 'Poppins', 'Segoe UI', Arial, sans-serif;
             font-weight: 700;
             font-size: 1.5rem;
@@ -978,8 +979,8 @@
             background-color: var(--primary);
             border-radius: 20px 0 20px 20px;
             padding: 8px 15px;
-            box-shadow: var(--box-shadow);
-            border: 1px solid var(--border-color);
+            box-shadow: none;
+            border: 2px solid var(--primary);
             backdrop-filter: blur(10px);
             max-width: 338px;
             min-width: 188px;
@@ -1013,8 +1014,8 @@
             background-color: var(--primary);
             border-radius: 20px 20px 20px 0;
             padding: 8px 15px;
-            box-shadow: var(--box-shadow);
-            border: 1px solid var(--border-color);
+            box-shadow: none;
+            border: 2px solid var(--primary);
             backdrop-filter: blur(10px);
             z-index: 2;
             overflow: hidden;
@@ -1044,8 +1045,8 @@
             backdrop-filter: blur(15px);
             -webkit-backdrop-filter: blur(15px);
             margin: 20px auto;
-            box-shadow: var(--box-shadow);
-            border: 1.5px solid var(--border-color);
+            box-shadow: none;
+            border: 2.5px solid var(--primary);
             text-align: left !important;
             max-width: 700px;
             overflow: hidden;
@@ -1068,7 +1069,7 @@
             font-size: 0.85rem;
             font-weight: 600;
             z-index: 2;
-            box-shadow: var(--box-shadow);
+            box-shadow: none;
             letter-spacing: 0.5px;
         }
 
@@ -1078,9 +1079,9 @@
             padding-top: 38px;
             background: var(--bg-secondary);
             border-radius: 18px;
-            box-shadow: var(--box-shadow);
+            box-shadow: none;
+            border: 2px solid var(--primary);
             font-size: 1.2rem;
-            border: 1.5px solid var(--border-color);
             line-height: 1.5;
             color: var(--text-main);
             font-family: 'Poppins', 'Segoe UI', Arial, sans-serif;
@@ -1098,17 +1099,18 @@
             border-radius: 20px;
             cursor: pointer;
             text-decoration: none;
-            box-shadow: 0 8px 20px rgba(31, 13, 146, 0.3);
+            box-shadow: none;
             flex: 0 1 auto;
             min-width: 160px;
             max-width: 200px;
             transition: none !important;
+            border: 2.5px solid var(--primary);
         }
 
         .show-full:focus, .show-next:focus {
             outline: none;
             transform: none;
-            box-shadow: 0 8px 20px rgba(31, 13, 146, 0.3);
+            box-shadow: none;
         }
 
         .show-full:active, .show-next:active {
@@ -1138,16 +1140,14 @@
             border-radius: 35px;
             width: 85%;
             max-width: 700px;
-            box-shadow: 0 40px 80px rgba(108, 92, 231, 0.15),
-            0 30px 60px rgba(0, 0, 0, 0.1),
-            0 15px 30px rgba(108, 92, 231, 0.1),
-            inset 0 2px 12px rgba(255, 255, 255, 0.5);
+            box-shadow: none;
             overflow-y: auto;
             max-height: 85vh;
-            border: 1.5px solid var(--border-color);
+            border: 2.5px solid var(--primary);
             animation: modalFadeIn 0.5s cubic-bezier(0.4, 0, 0.2, 1);
             position: relative;
             color: var(--text-main);
+            text-align: center;
         }
 
         @keyframes modalFadeIn {
@@ -1197,28 +1197,32 @@
         #full-schedule, #next-day-schedule, #scheduleDetails {
             list-style-type: none;
             padding-left: 0;
+            margin-left: auto;
+            margin-right: auto;
+            display: block;
         }
         @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@500;700&display=swap');
         #full-schedule li, #next-day-schedule li, #scheduleDetails li {
             position: relative;
-            padding: 9px 8px 9px 14px;
+            padding: 9px 8px;
             font-size: 0.97rem;
             background: linear-gradient(120deg, #f8faff 60%, #f3eaff 100%);
             border-radius: 9px;
             margin: 7px auto;
-            border: 1px solid #e3d7fa;
+            border: 2px solid var(--primary);
             font-family: 'Quicksand', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             color: var(--text-main);
             line-height: 1.5;
-            text-align: left;
+            text-align: center;
             display: flex;
             flex-direction: column;
             justify-content: center;
-            align-items: flex-start;
-            width: calc(100% - 4px);
+            align-items: center;
+            width: 100%;
             max-width: 340px;
             letter-spacing: 0.01em;
             box-sizing: border-box;
+            box-shadow: none;
         }
         #full-schedule li::before, #next-day-schedule li::before, #scheduleDetails li::before {
             content: '';
@@ -1535,13 +1539,10 @@
             border-radius: 25px;
             width: 85%;
             max-width: 400px;
-            box-shadow: 0 25px 60px rgba(108, 92, 231, 0.15),
-            0 15px 35px rgba(0, 0, 0, 0.1),
-            0 10px 20px rgba(108, 92, 231, 0.1),
-            inset 0 2px 12px rgba(255, 255, 255, 0.5);
+            box-shadow: none;
             overflow-y: auto;
             max-height: 90vh;
-            border: 1.5px solid var(--border-color);
+            border: 2.5px solid var(--primary);
             animation: modalFadeIn 0.5s cubic-bezier(0.4, 0, 0.2, 1);
             position: relative;
             text-align: center;
@@ -1661,27 +1662,30 @@
         }
         
         #scheduleDetails li {
-            padding: 12px 10px;
-            font-size: 1rem;
-            background: linear-gradient(120deg, var(--bg-secondary) 80%, #f3eaff 100%);
-            border-radius: 14px;
-            margin: 10px auto;
-            border: 1px solid rgba(108, 92, 231, 0.10);
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            position: relative;
+            padding: 9px 8px 9px 14px;
+            font-size: 0.97rem;
+            background: linear-gradient(120deg, #f8faff 60%, #f3eaff 100%);
+            border-radius: 9px;
+            margin: 7px auto;
+            border: 2px solid var(--primary);
+            font-family: 'Quicksand', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             color: var(--text-main);
             line-height: 1.5;
-            text-align: center;
+            text-align: left;
             display: flex;
             flex-direction: column;
             justify-content: center;
-            align-items: center;
-            width: calc(100% - 18px);
-            max-width: 410px;
+            align-items: flex-start;
+            width: calc(100% - 4px);
+            max-width: 340px;
             letter-spacing: 0.01em;
+            box-sizing: border-box;
+            box-shadow: none;
         }
         #scheduleDetails li:hover {
             box-shadow: none;
-            background: linear-gradient(120deg, var(--bg-secondary) 80%, #f3eaff 100%);
+            background: linear-gradient(120deg, #f8faff 60%, #f3eaff 100%);
             transform: none;
         }
 
@@ -1788,6 +1792,21 @@
             border-top: 1px dashed #3b5bdb;
             opacity: 0.45;
         }
+        * {
+            box-shadow: none !important;
+            text-shadow: none !important;
+        }
+
+        #scheduleDetails li {
+            
+            align-items: center;
+            text-align: center;
+        }
+
+        #full-schedule li, #next-day-schedule li {
+            align-items: center;
+            text-align: center;
+        }
     </style>
 </head>
 <body>
@@ -1827,7 +1846,7 @@
 <div class="page-container">
     <div class="page" id="main-page">
         <header role="banner">
-            <h1>Study Timetable</h1>
+            <h1>Timetable</h1>
             <hr style="width: 60%; margin: 10px auto; border: 0; border-top: 3px solid #fff; opacity: 1;">
             <div id="adyasha-message" style="margin-top: -5px;"></div>
         </header>
@@ -1904,7 +1923,7 @@
     <div class="modal-content top-modal">
         <span class="close" onclick="closeDaySchedule()">&times;</span>
         <h3 id="scheduleTitle">Schedule for Day</h3>
-        <ul id="scheduleDetails" style="padding-left: 20px;"></ul>
+        <ul id="scheduleDetails"></ul>
     </div>
 </div>
 
