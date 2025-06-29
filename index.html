@@ -588,6 +588,7 @@
             left: 0;
             width: 100vw;
             height: 100vh;
+            min-height: 600px;
             background: linear-gradient(145deg, var(--bg-main) 0%, var(--bg-secondary) 50%, var(--bg-tertiary) 100%);
             transform: translateX(100%);
             transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
@@ -610,9 +611,11 @@
             flex-direction: column;
             justify-content: space-between;
             align-items: center;
-            padding: 40px 20px;
+            padding: 40px 20px 80px 20px;
             box-sizing: border-box;
             position: relative;
+            overflow-y: auto;
+            overflow-x: hidden;
         }
 
         .menu-header {
@@ -715,6 +718,10 @@
             font-family: 'Dancing Script', cursive;
             font-weight: 500;
             opacity: 0.85;
+            z-index: 1003;
+            width: 100%;
+            padding: 0 20px;
+            box-sizing: border-box;
         }
 
         .menu-close-btn {
@@ -1350,7 +1357,7 @@
             }
 
             .menu-content {
-                padding: 20px 15px;
+                padding: 20px 15px 70px 15px;
             }
 
             .menu-nav-buttons {
@@ -1415,7 +1422,8 @@
 
             .menu-footer {
                 font-size: 1rem;
-                padding-bottom: 5px;
+                bottom: 20px;
+                padding: 0 15px;
             }
 
             div[style*="display:flex"] {
@@ -2113,213 +2121,125 @@ const routines = {
         ]
     },
     "Day 11": {
-        "tasks": [
-            { time: "5:00 AM - 6:00 AM", task: "Wake Uppp!", message: "Good Morning! " },
-            { time: "6:00 AM - 7:30 AM", task: "Physics: Alternating Current (New)", message: "⚡ Visualize current flow in less time—focus on key concepts!" },
-            { time: "7:30 AM - 8:00 AM", task: "Practice: Quick MCQs (Physics)", message: "⏱️ 30-min sprint: MCQs and formulas from AC." },
-            { time: "8:00 AM - 8:30 AM", task: "Break 1: Walk/stretch, breakfast, light refresh", message: "🧘 Take a walk and mentally list AC formulas." },
-            { time: "8:30 AM - 10:00 AM", task: "Chemistry: Chemical Bonding and Molecular Structure (New)", message: "🧪 Focus on high-yield bond types, visualize with quick models." },
-            { time: "10:00 AM - 10:30 AM", task: "Practice: Quick MCQs (Chemistry)", message: "⏱️ 30-min sprint: MCQs and bond recognition." },
-            { time: "10:30 AM - 11:00 AM", task: "Break 2: Relax, snack, do something light", message: "☕ Recap: What bonds did you learn? Quick flashcards!" },
-            { time: "11:00 AM - 12:00 PM", task: "Revision: Summary Notes & Flashcards (Physics & Chemistry)", message: "📝 Summarize both chapters in 15 min each, then flashcards." },
-            { time: "12:00 PM - 1:00 PM", task: "Practice: Mixed MCQs & Quick Recap (Both Subjects)", message: "🔄 Solve mixed MCQs, do a 10-min oral recap per subject." },
-            { time: "1:00 PM - 2:30 PM", task: "Lunch + Nap (1.5 hrs)", message: "🍽️ Strict rest to re-energize for the afternoon!" },
-            { time: "2:30 PM - 3:30 PM", task: "Active Recall: Mind Maps & Quiz (Today's topics)", message: "🧠 Draw a mind map from memory, quiz yourself!" },
-            { time: "3:30 PM - 4:00 PM", task: "Practice: Mixed Revision Drills", message: "🔁 30-min rapid-fire short questions from both chapters." },
-            { time: "4:00 PM - 4:30 PM", task: "Break 3: Light movement, quick snack", message: "🌳 Move and play 'explain the topic in 1 min' game!" },
-            { time: "4:30 PM - 5:30 PM", task: "Summary + Quick revision notes", message: "📝 Create flashcards for both chapters." },
-            { time: "5:30 PM - 6:00 PM", task: "Practice: Error Review (Today's Work)", message: "🔎 Target your mistakes: note 2 errors per subject and fix." },
-            { time: "6:00 PM - 7:00 PM", task: "Free Hour: Hobbies/music/game", message: "🎵 Listen to music or play a logic game!" },
-            { time: "7:00 PM - 9:00 PM", task: "Optional: Concept videos or light revision", message: "📺 Watch a short explainer or do light revision." },
-            { time: "9:00 PM - 10:00 PM", task: "Dinner + Wind-down", message: "🍽️ Unwind, talk about what you learned today." },
-            { time: "10:00 PM - 11:45 PM", task: "Light reading / prep for tomorrow / sleep", message: "🌙 Visualize both chapters before sleep." }
-        ]
-    },
-    "Day 12": {
-        "tasks": [
-            { time: "5:00 AM - 6:00 AM", task: "Wake Uppp!", message: "Good Morning! Quick recap: Day 11 flashcards!" },
-            { time: "6:00 AM - 7:30 AM", task: "Physics: Electromagnetic Waves (New)", message: "📡 Arrange EM spectrum cards from memory! Focus only on key facts." },
-            { time: "7:30 AM - 8:00 AM", task: "Practice: MCQs/Short Notes (Physics)", message: "⏱️ Quick-fire MCQs and summary." },
-            { time: "8:00 AM - 8:30 AM", task: "Break 1: Breakfast, short walk/stretch", message: "🍎 List all EM spectrum components during your walk." },
-            { time: "8:30 AM - 10:00 AM", task: "Chemistry: Thermodynamics (New)", message: "🌡️ Play 'sequence the process' for thermodynamic laws! Focused 1.5 hours." },
-            { time: "10:00 AM - 10:30 AM", task: "Practice: MCQs/Short Notes (Chemistry)", message: "⏱️ Quick-fire MCQs and summary." },
-            { time: "10:30 AM - 11:00 AM", task: "Break 2: Relax, snack, light reset", message: "🧘 Recap: What's entropy? Quick flash explanation." },
-            { time: "11:00 AM - 12:00 PM", task: "Revision: Flashcard Review (Day 11 & Today)", message: "🔄 MCQs, recall mind map, and summarize key points." },
-            { time: "12:00 PM - 1:00 PM", task: "Practice: Mixed Drills (Both Subjects)", message: "🧠 30-min rapid revision per subject." },
-            { time: "1:00 PM - 2:30 PM", task: "Lunch + Nap (1.5 hrs)", message: "🍽️ Mental & physical reset" },
-            { time: "2:30 PM - 3:30 PM", task: "Practice: Numericals & Concepts (Today's chapters)", message: "🧠 Solve numericals and make summary notes for EM Waves & Thermodynamics." },
-            { time: "3:30 PM - 4:00 PM", task: "Practice: Rapid Recap/Quiz", message: "⚡ Speed-recall round: main laws & formulas." },
-            { time: "4:00 PM - 4:30 PM", task: "Break 3: Tea/snack, gentle movement", message: "🌿 Recap: Sketch the EM spectrum or main laws." },
-            { time: "4:30 PM - 5:30 PM", task: "Summary flashcards + Quick revision notes", message: "📝 Create flashcards for both chapters." },
-            { time: "5:30 PM - 6:00 PM", task: "Practice: Error Review (Today's Work)", message: "🔎 Target your mistakes: note 2 errors per subject and fix." },
-            { time: "6:00 PM - 7:00 PM", task: "Free Hour: Music, hobby, walk", message: "🎨 Draw a quick spectrum or thermodynamic cycle." },
-            { time: "7:00 PM - 9:00 PM", task: "Optional: Light revision of all four chapters so far", message: "🔍 Shuffle flashcards from both days." },
-            { time: "9:00 PM - 10:00 PM", task: "Dinner + Wind-down", message: "🍽️ Share your favorite concept from today." },
-            { time: "10:00 PM - 11:45 PM", task: "Prep for tomorrow / sleep", message: "🌙 Visualize the process flow of today's chapters." }
-        ]
-    },
-    "Day 13": {
-        "tasks": [
-            { time: "5:00 AM - 6:00 AM", task: "Wake Uppp!", message: "Good Morning! Flash recap: Day 12 flashcards!" },
-            { time: "6:00 AM - 7:30 AM", task: "Botany: Morphology of Flowering Plants (New)", message: "🌱 Go outside, identify and sketch plant parts! Focus on most common types." },
-            { time: "7:30 AM - 8:00 AM", task: "Practice: MCQs/Short Notes (Botany)", message: "🌱 Rapid MCQs & diagrams for plant morphology." },
-            { time: "8:00 AM - 8:30 AM", task: "Break 1: Breakfast, move around, brain reset", message: "☕ List parts of a plant during your walk." },
-            { time: "8:30 AM - 10:00 AM", task: "Zoology: Human Health and Disease (New)", message: "🦠 Draw a disease mind map and explain one aloud. Focus on high-yield diseases." },
-            { time: "10:00 AM - 10:30 AM", task: "Practice: MCQs/Short Notes (Zoology)", message: "🦠 Rapid MCQs & flowcharts for health/disease." },
-            { time: "10:30 AM - 11:00 AM", task: "Break 2: Snack, breathing, rest", message: "🍎 Recap: What are the main disease types?" },
-            { time: "11:00 AM - 12:00 PM", task: "Revision/Practice: Day 12 chapters (EM Waves & Thermodynamics)", message: "🔄 Recap main formulas, MCQs, and key points (30 min each)." },
-            { time: "12:00 PM - 1:00 PM", task: "Practice: Mixed Revision Drills (Today + Yesterday)", message: "🧠 30-min rapid-fire plant/health facts, then previous day's recaps." },
-            { time: "1:00 PM - 2:30 PM", task: "Lunch + Nap (1.5 hrs)", message: "🍽️ Rest and visualize plant diagrams and disease flowcharts." },
-            { time: "2:30 PM - 3:30 PM", task: "Practice: Numericals & Concepts for today's chapters", message: "🧠 Practice MCQs and flashcards for Morphology & Human Health." },
-            { time: "3:30 PM - 4:00 PM", task: "Practice: Quick Quiz & Recall", message: "⚡ 30-min 'teach back' session for both chapters." },
-            { time: "4:00 PM - 4:30 PM", task: "Break 3: Stretch, snack, light walk", message: "🌿 Recall 5 plant facts and 5 disease facts." },
-            { time: "4:30 PM - 5:30 PM", task: "Summary flashcards + Quick revision notes", message: "📝 Create flashcards for both chapters." },
-            { time: "5:30 PM - 6:00 PM", task: "Practice: Error Review (Today's Work)", message: "🔎 Target your mistakes: note 2 errors per subject and fix." },
-            { time: "6:00 PM - 7:00 PM", task: "Free Hour: Chill, art, music", message: "🎶 Draw or color something from today's study." },
-            { time: "7:00 PM - 9:00 PM", task: "Optional: Recap all six chapters so far", message: "🧠 Play '20 facts in 2 mins' for each chapter." },
-            { time: "9:00 PM - 10:00 PM", task: "Dinner", message: "🍽️ Share a new learning from today." },
-            { time: "10:00 PM - 11:45 PM", task: "Wind down + light reading / sleep", message: "🌙 Picture a healthy plant and immune system before sleep." }
-        ]
-    },
-    "Day 14": {
-        "tasks": [
-            { time: "5:00 AM - 6:00 AM", task: "Wake Uppp!", message: "Good Morning! Review Day 13 flashcards!" },
-            { time: "6:00 AM - 7:30 AM", task: "Botany: Anatomy of Flowering Plants (New)", message: "🌳 Draw all tissue types from memory! Focus on most important tissues." },
-            { time: "7:30 AM - 8:00 AM", task: "Practice: MCQs/Short Notes (Botany)", message: "🌳 Quick MCQs & diagrams for anatomy." },
-            { time: "8:00 AM - 8:30 AM", task: "Break 1: Breakfast, light stretch/walk", message: "☕ Recall yesterday's plant parts." },
-            { time: "8:30 AM - 10:00 AM", task: "Zoology: Human Health and Disease – Prevention & Control (New)", message: "🦠 Create a mind map of all prevention strategies. Focused 1.5 hours." },
-            { time: "10:00 AM - 10:30 AM", task: "Practice: MCQs/Short Notes (Zoology)", message: "🦠 Quick MCQs & summary for prevention & control." },
-            { time: "10:30 AM - 11:00 AM", task: "Break 2: Snack, rest", message: "🍎 List 5 disease prevention tips." },
-            { time: "11:00 AM - 12:00 PM", task: "Revision/Practice: Day 13 chapters (Morphology & Health)", message: "🔄 Rapid MCQ recap and summary notes (30 min each)." },
-            { time: "12:00 PM - 1:00 PM", task: "Practice: Mixed Revision Drills (Today + Yesterday)", message: "🧠 30-min recap for both chapters, then previous day's flashcards." },
-            { time: "1:00 PM - 2:30 PM", task: "Lunch + Nap (1.5 hrs)", message: "🍽️ Visualize plant anatomy and disease flowcharts." },
-            { time: "2:30 PM - 3:30 PM", task: "Practice: Numericals & Concepts for today's chapters", message: "🧠 Practice MCQs and summary sheets for Anatomy & Disease Control." },
-            { time: "3:30 PM - 4:00 PM", task: "Practice: Quick Quiz & Recall", message: "⚡ 30-min 'teach back' session for both chapters." },
-            { time: "4:00 PM - 4:30 PM", task: "Break 3: Snack, movement", message: "🌿 Recap 5 terms from each chapter." },
-            { time: "4:30 PM - 5:30 PM", task: "Summary flashcards + Quick revision notes", message: "📝 Make flashcards for today's chapters." },
-            { time: "5:30 PM - 6:00 PM", task: "Practice: Error Review (Today's Work)", message: "🔎 Target your mistakes: note 2 errors per subject and fix." },
-            { time: "6:00 PM - 7:00 PM", task: "Free Hour: Hobby, music, art", message: "🎨 Sketch or listen to a science podcast." },
-            { time: "7:00 PM - 9:00 PM", task: "Optional: MCQ blitz on new and old chapters", message: "🤔 Set a timer for each subject." },
-            { time: "9:00 PM - 10:00 PM", task: "Dinner", message: "🍽️ Recall your favorite learning from this week." },
-            { time: "10:00 PM - 11:45 PM", task: "Wind-down, sleep", message: "🌙 Imagine teaching today's chapters to a friend." }
-        ]
-    },
-    "Day 15": {
-        "tasks": [
-            { time: "5:00 AM - 6:00 AM", task: "Wake Uppp!", message: "Good Morning! Final new chapter day!" },
-            { time: "6:00 AM - 7:30 AM", task: "Physics: Ray Optics and Optical Instruments (New)", message: "🔦 Draw ray diagrams, label all parts! Focus for 1.5 hours." },
-            { time: "7:30 AM - 8:00 AM", task: "Practice: MCQs/Short Notes (Physics)", message: "🔦 Quick-fire MCQs & diagrams for ray optics." },
-            { time: "8:00 AM - 8:30 AM", task: "Break 1: Breakfast, stretch, walk", message: "☕ Recap: Day 14's Anatomy & Disease Control." },
-            { time: "8:30 AM - 10:00 AM", task: "Revision/Practice: Day 14 chapters (Anatomy & Disease Control)", message: "🌳 Review, MCQs, summary sheets (45 min each)." },
-            { time: "10:00 AM - 10:30 AM", task: "Practice: Quick Recap (Ray Optics & Disease Control)", message: "🔦🌳 30-min rapid-fire quiz." },
-            { time: "10:30 AM - 11:00 AM", task: "Break 2: Snack, rest", message: "🍎 Recall diagrams and main concepts." },
-            { time: "11:00 AM - 12:00 PM", task: "Revision/Practice: All previous Physics chapters", message: "🔄 Recap AC, EM Waves, Ray Optics (20 min each, quick points)." },
-            { time: "12:00 PM - 1:00 PM", task: "Practice: MCQ Blitz (All Physics)", message: "⏱️ Timed sprint: 10 MCQs per chapter." },
-            { time: "1:00 PM - 2:30 PM", task: "Lunch + Nap (1.5 hrs)", message: "🍽️ Visualize light rays and optics as you nap." },
-            { time: "2:30 PM - 3:30 PM", task: "Practice: Numericals & Concepts for today's chapter", message: "🧠 Practice MCQs and summary sheets for Ray Optics." },
-            { time: "3:30 PM - 4:00 PM", task: "Practice: Quick Quiz & Recall", message: "⚡ 30-min summary of all optics-related facts." },
-            { time: "4:00 PM - 4:30 PM", task: "Break 3: Snack, movement", message: "🌿 List 5 key facts from Ray Optics." },
-            { time: "4:30 PM - 5:30 PM", task: "Summary flashcards + Quick revision notes", message: "📝 Make flashcards for Ray Optics." },
-            { time: "5:30 PM - 6:00 PM", task: "Practice: Error Review (Today's Work)", message: "🔎 Note your top 3 mistakes and fix them." },
-            { time: "6:00 PM - 7:00 PM", task: "Free Hour: Music, walk, art", message: "🎵 Listen or draw while thinking about today's study." },
-            { time: "7:00 PM - 9:00 PM", task: "Optional: MCQ blitz, recap all", message: "🤔 One last rapid-fire MCQ session for all chapters." },
-            { time: "9:00 PM - 10:00 PM", task: "Dinner", message: "🍽️ Celebrate completing all chapters!" },
-            { time: "10:00 PM - 11:45 PM", task: "Wind-down, sleep", message: "🌙 Reflect on your journey so far." }
-        ]
-    },
-    "Day 16": {
-        tasks: [
-            { time: "5:00 AM - 6:00 AM", task: "Wake Uppp!", message: "Start your revision marathon! Rate your confidence on each topic." },
-            { time: "6:00 AM - 8:00 AM", task: "Revision: Physics (All Previous Chapters , Focus on Weakest First)", message: "🔄 MCQ race, flashcards, and memory recall games." },
-            { time: "8:00 AM - 8:30 AM", task: "Break 1: Breakfast, walk", message: "☕ Recap: Explain a physics topic aloud during your walk." },
-            { time: "8:30 AM - 10:30 AM", task: "Revision: Chemistry (All Previous Chapters, Random Order)", message: "🧪 Solve MCQs, draw diagrams, and link concepts across chapters." },
-            { time: "10:30 AM - 11:00 AM", task: "Break 2: Snack, rest", message: "🍎 Recall: List all formulas or key terms from chemistry." },
-            { time: "11:00 AM - 1:00 PM", task: "Revision: Botany (All Chapters, Mind Maps)", message: "🌱 Draw mind maps, recall flowcharts, and discuss with a friend or aloud." },
-            { time: "1:00 PM - 2:30 PM", task: "Lunch + Nap (1.5 hrs)", message: "🍽️ Nap while visualizing plant diagrams and their functions." },
-            { time: "2:30 PM - 4:30 PM", task: "Revision: Zoology (All Previous Chapters, Case Studies & MCQs)", message: "🦠 Review diseases, do case study games, and MCQ streaks." },
-            { time: "4:30 PM - 5:00 PM", task: "Break 3: Snack, walk", message: "🌿 List 5 random facts from each subject during your break." },
-            { time: "5:00 PM - 6:00 PM", task: "Summary flashcards: All topics", message: "📝 Shuffle and answer flashcards as fast as possible." },
-            { time: "6:00 PM - 7:00 PM", task: "Free Hour: Art, music, walk", message: "🎨 Draw your favorite chapter concept or listen to a science podcast." },
-            { time: "7:00 PM - 9:00 PM", task: "Optional: Group quiz, MCQ race, or peer teaching", message: "🗣️ Teach a topic to someone (or to yourself in the mirror)." },
-            { time: "9:00 PM - 10:00 PM", task: "Dinner", message: "🍽️ Share a new mnemonic you created today." },
-            { time: "10:00 PM - 11:45 PM", task: "Wind-down, sleep", message: "🌙 Reflect on your most improved subject today." }
-        ]
-    },
-    "Day 17": {
-        tasks: [
-            { time: "5:00 AM - 6:00 AM", task: "Wake Uppp!", message: "Almost there! Random recap: Pick one chapter and explain it out loud." },
-            { time: "6:00 AM - 8:00 AM", task: "Revision: Chemistry (Mix Theory & Problem Solving)", message: "🧪 Solve one MCQ, one short note, and one diagram per chapter." },
-            { time: "8:00 AM - 8:30 AM", task: "Break 1: Breakfast, walk", message: "☕ Recall three tricky formulas over breakfast." },
-            { time: "8:30 AM - 10:30 AM", task: "Revision: Physics (Mix Theory & Diagrams)", message: "🔦 Draw ray diagrams, solve one numerical per chapter." },
-            { time: "10:30 AM - 11:00 AM", task: "Break 2: Snack, relax", message: "🍎 Share a physics trick or mnemonic with someone." },
-            { time: "11:00 AM - 1:00 PM", task: "Revision: Botany (MCQs + Mind Maps)", message: "🌸 Mind map the entire plant kingdom, solve MCQs." },
-            { time: "1:00 PM - 2:30 PM", task: "Lunch + Nap (1.5 hrs)", message: "🍽️ Nap and visualize a flowchart from any subject." },
-            { time: "2:30 PM - 4:30 PM", task: "Revision: Zoology (Case Studies & Random Quiz)", message: "🦠 Draw a disease process, quiz yourself or others." },
-            { time: "4:30 PM - 5:00 PM", task: "Break 3: Snack, walk", message: "🌳 List all key terms you remember from the day." },
-            { time: "5:00 PM - 6:00 PM", task: "Summary flashcards: All topics", message: "📝 Flashcard streak: how many can you do in 10 mins?" },
-            { time: "6:00 PM - 7:00 PM", task: "Free Hour: Music, hobby, relax", message: "🎵 Reset your mind with relaxation." },
-            { time: "7:00 PM - 9:00 PM", task: "Optional: MCQ blitz, peer review", message: "🤔 Challenge a friend or family to ask you questions." },
-            { time: "9:00 PM - 10:00 PM", task: "Dinner", message: "🍽️ Share the best analogy or shortcut you used today." },
-            { time: "10:00 PM - 11:45 PM", task: "Wind-down, sleep", message: "🌙 Picture your strongest and weakest chapter, set a plan for tomorrow." }
-        ]
-    },
-    "Day 18": {
-        tasks: [
-            { time: "5:00 AM - 6:00 AM", task: "Wake Uppp!", message: "Final revision sprint! Start with a big smile and a deep breath." },
-            { time: "6:00 AM - 8:00 AM", task: "Revision: Botany (Combine All Topics)", message: "🌻 Rapid-fire MCQs, mind map, and a quick oral quiz." },
-            { time: "8:00 AM - 8:30 AM", task: "Break 1: Breakfast, walk", message: "☕ Recap: Recall a diagram from each botany chapter." },
-            { time: "8:30 AM - 10:30 AM", task: "Revision: Zoology (Full Review)", message: "🦠 Write a mini-essay on each disease, then quiz yourself." },
-            { time: "10:30 AM - 11:00 AM", task: "Break 2: Snack, rest", message: "🍎 Try explaining a disease process to a family member." },
-            { time: "11:00 AM - 1:00 PM", task: "Revision: Physics (MCQs + Diagrams)", message: "🔬 One diagram, one formula, and one tricky MCQ per topic." },
-            { time: "1:00 PM - 2:30 PM", task: "Lunch + Nap (1.5 hrs)", message: "🍽️ Dream up a new mnemonic for any hard topic." },
-            { time: "2:30 PM - 4:30 PM", task: "Revision: Chemistry (Summary & MCQs)", message: "🧪 Solve, check, and review any mistakes instantly." },
-            { time: "4:30 PM - 5:00 PM", task: "Break 3: Snack, walk", message: "🌿 Recap new memory tricks you invented today." },
-            { time: "5:00 PM - 6:00 PM", task: "Summary flashcards: All topics", message: "📝 Set a new record for speed and accuracy." },
-            { time: "6:00 PM - 7:00 PM", task: "Free Hour: Music, art, walk", message: "🎨 Enjoy your favorite creative activity." },
-            { time: "7:00 PM - 9:00 PM", task: "Optional: MCQ marathon, mind map connections", message: "🧠 Link chapters and quiz yourself randomly." },
-            { time: "9:00 PM - 10:00 PM", task: "Dinner", message: "🍽️ Share the strangest or funniest fact you learned." },
-            { time: "10:00 PM - 11:45 PM", task: "Wind-down, sleep", message: "🌙 Visualize your exam success, sleep well!" }
-        ]
-    },
-    "Day 19": {
-        tasks: [
-            { time: "5:00 AM - 6:00 AM", task: "Wake Uppp!", message: "Good Morning❤️ Almost there! Visualize success." },
-            { time: "6:00 AM - 7:00 AM", task: "Light Review – Flashcards & Visuals (no new material)", message: "🧘 Confidence booster" },
-            { time: "7:00 AM - 7:30 AM", task: "Breakfast", message: "🍳 Balanced meal" },
-            { time: "7:30 AM - 9:00 AM", task: "Skim through key summary notes (2–3 mins per chapter)", message: "📑 Gentle refresh, no overload" },
-            { time: "9:00 AM - 9:30 AM", task: "Break: Short walk/stretch, deep breathing", message: "🍵 Mental reset" },
-            { time: "9:30 AM - 11:00 AM", task: "Light MCQ practice (15–20 mixed Qs, timed blocks)", message: "🧠 Build rhythm" },
-            { time: "11:00 AM - 12:30 PM", task: "Relax: Hobby / music / calm zone", message: "🛋️ Avoid cognitive fatigue" },
-            { time: "12:30 PM - 1:00 PM", task: "Light lunch (easy to digest)", message: "🍽️ Pre-test nutrition" },
-            { time: "1:00 PM - 1:30 PM", task: "Quiet time – meditation / positive affirmations", message: "😌 Mental grounding" },
-            { time: "1:30 PM - 2:00 PM", task: "Test setup: water, test sheets, pens, clock", message: "Final prep" },
-            { time: "2:00 PM - 5:00 PM", task: "Mock Test (Full syllabus)", message: "📝 Give your best effort!" },
-            { time: "5:00 PM - 5:30 PM", task: "Light snack, hydrate", message: "🍉 Recovery" },
-            { time: "5:30 PM - 6:30 PM", task: "Test Reflection – mark paper, identify strengths & gaps", message: "🧾 Learn from performance" },
-            { time: "6:30 PM - 7:30 PM", task: "Chill time – walk, hobby, music", message: "🧘 Mindful recovery" },
-            { time: "7:30 PM - 9:00 PM", task: "Optional: Review 1–2 weak areas or unclear answers", message: "Gentle recap" },
-            { time: "9:00 PM - 10:00 PM", task: "Dinner + wind down", message: "🍽️ No study" },
-            { time: "10:00 PM - 11:45 PM", task: "Rest, track your progress, or sleep early", message: "Closure + reset" }
-        ]
-    },
-    "Day 20": {
-        tasks: [
-            { time: "5:00 AM - 6:00 AM", task: "Wake Uppp!", message: "It's the last day! Reflect on your journey." },
-            { time: "6:00 AM - 8:00 AM", task: "Review performance – Check score, mark distribution by subject", message: "📊 Visualize improvement, celebrate progress." },
-            { time: "8:00 AM - 8:30 AM", task: "Breakfast, walk", message: "🍳 Enjoy your favorite breakfast!" },
-            { time: "8:30 AM - 10:30 AM", task: "Review Chemistry – Go over wrong/right MCQs & concepts", message: "🧪 Celebrate your chemistry wins!" },
-            { time: "10:30 AM - 11:00 AM", task: "Break 2: Snack, relax", message: "🍎 Think about your best moments." },
-            { time: "11:00 AM - 1:00 PM", task: "Review Physics – Identify calculation, concept, or logic errors", message: "🔬 Find your clever mistakes and laugh at them." },
-            { time: "1:00 PM - 2:30 PM", task: "Lunch + Nap (1.5 hrs)", message: "🍽️ Celebrate your achievement, rest well." },
-            { time: "2:30 PM - 4:30 PM", task: "Review Biology (Botany & Zoology) – Reasoning, examples, process-based gaps", message: "🌿 Give yourself a 'bio star' for every new insight." },
-            { time: "4:30 PM - 5:00 PM", task: "Break 3: Snack, walk", message: "🌳 You did it! Smile." },
-            { time: "5:00 PM - 6:00 PM", task: "Reflection & future planning", message: "📋 Write a letter to your future self." },
-            { time: "6:00 PM - 7:00 PM", task: "Free Hour: Music, art, hobby", message: "🎶 Enjoy your time, you've earned it." },
-            { time: "7:00 PM - 9:00 PM", task: "Optional: Light review or relax", message: "🛋️ Do whatever feels restorative." },
-            { time: "9:00 PM - 10:00 PM", task: "Dinner", message: "🍽️ Celebrate—you did it!" },
-            { time: "10:00 PM - 11:45 PM", task: "Full rest", message: "🌙 Sleep with the satisfaction of a job well done." }
-        ]
-    }
+    tasks: [
+        { time: "6:00 AM - 11:00 AM", task: "Regular Classes", messsage: "📚 Time to be a model student. Try not to zone out thinking about food!" },
+        { "time": "11:00 AM - 2:30 PM", task: "Regular Work", messsage: "💼 Hustle time! Get your work done and don't let the memes distract you." },
+        { "time": "2:30 PM - 4:30 PM", task: "Physics: Alternating Current (New)", messsage: "⚡ Dive into currents that alternate faster than your motivation after lunch." },
+        { "time": "4:30 PM - 5:00 PM", task: "Break", messsage: "🧃 Stretch, snack, or just stare into the void. Both are important." },
+        { "time": "5:00 PM - 7:00 PM", task: "Chemistry: Chemical Bonding and Molecular Structure (New)", messsage: "🧪 Time to learn what bonds us together—besides group chats!" },
+        { "time": "9:30 PM - 10:00 PM", task: "Dinner + Break", messsage: "🍽 Fuel up! You earned it. Try not to drop food on your notes." },
+        { "time": "10:00 PM - 12:00 AM", task: "Question Practice: AC & Chemical Bonding", messsage: "🔄 Solve, scribble, and maybe even doodle a little. Questions from both new chapters!" }
+    ]
+},
+"Day 12": {
+    tasks: [
+        { "time": "6:00 AM - 11:00 AM", task: "Regular Classes", messsage: "📚 The early bird gets... more lectures!" },
+        { "time": "11:00 AM - 2:30 PM", task: "Regular Work", messsage: "💼 You know the drill. Work hard, meme harder (after work)." },
+        { "time": "2:30 PM - 4:30 PM", task: "Physics: Electromagnetic Waves (New)", messsage: "📡 Ride the wave! EM waves, not the ones on the beach." },
+        { "time": "4:30 PM - 5:00 PM", task: "Break", messsage: "🍪 Snack attack and maybe a quick meme scroll." },
+        { "time": "5:00 PM - 7:00 PM", task: "Chemistry: Thermodynamics (New)", messsage: "🌡 Heat things up—literally. Channel your inner scientist." },
+        { "time": "9:30 PM - 10:00 PM", task: "Dinner + Break", messsage: "🍛 Dinner time! No, you can't eat the chemistry set." },
+        { "time": "10:00 PM - 12:00 AM", task: "Question Practice: EM Waves & Thermodynamics", messsage: "📝 Practice time! May the force (and entropy) be with you." }
+    ]
+},
+"Day 13": {
+    tasks: [
+        { "time": "6:00 AM - 11:00 AM", task: "Regular Classes", messsage: "🎓 Regular classes: try not to doze off before breakfast." },
+        { "time": "11:00 AM - 2:30 PM", task: "Regular Work", messsage: "💡 Work: like regular classes, but with slightly fewer naps." },
+        { "time": "2:30 PM - 4:30 PM", task: "Botany: Morphology of Flowering Plants (New)", messsage: "🌼 Study flowers today— sadly, no actual gardening required." },
+        { "time": "4:30 PM - 5:00 PM", task: "Break", messsage: "🌻 Take a walk. See if you can spot any morphologically interesting plants." },
+        { "time": "5:00 PM - 7:00 PM", task: "Zoology: Human Health and Disease (New)", messsage: "🦠 Germs, diseases, and health—suddenly feeling the urge to wash hands?" },
+        { "time": "9:30 PM - 10:00 PM", task: "Dinner + Break", messsage: "🥗 Re-energize! Maybe avoid googling diseases while eating." },
+        { "time": "10:00 PM - 12:00 AM", task: "Question Practice: Morphology & Health", messsage: "📋 Quiz yourself until your brain feels as fresh as a daisy (or at least a dandelion)." }
+    ]
+},
+"Day 14": {
+    tasks: [
+        { "time": "6:00 AM - 11:00 AM", task: "Regular Classes", messsage: "📚 Let's pretend to be morning people for a bit." },
+        { "time": "11:00 AM - 2:30 PM", task: "Regular Work", messsage: "🗂 Do your work… and don't forget to smile at your screen occasionally." },
+        { "time": "2:30 PM - 4:30 PM", task: "Botany: Anatomy of Flowering Plants (New)", messsage: "🌳 Plant anatomy: dissecting plants without actually hurting any." },
+        { "time": "4:30 PM - 5:00 PM", task: "Break", messsage: "🌱 Snack, stretch, and if you have a plant nearby, apologize for all the diagrams." },
+        { "time": "5:00 PM - 7:00 PM", task: "Zoology: Human Health and Disease – Prevention & Control (New)", messsage: "🦠 Prevention is better than cure—just like not starting a series during exams!" },
+        { "time": "9:30 PM - 10:00 PM", task: "Dinner + Break", messsage: "🍲 Dinner: refuel for your next study power-up." },
+        { "time": "10:00 PM - 12:00 AM", task: "Question Practice: Anatomy & Disease Control", messsage: "📝 Practice time: Because plants and pathogens never sleep." }
+    ]
+},
+"Day 15": {
+    tasks: [
+        { "time": "6:00 AM - 11:00 AM", task: "Regular Classes", messsage: "🎒 Classes: Where your mind wanders while your body stays." },
+        { "time": "11:00 AM - 2:30 PM", task: "Regular Work", messsage: "🔔 Work: Don't forget to move every hour or so!" },
+        { "time": "2:30 PM - 4:30 PM", task: "Physics: Ray Optics and Optical Instruments (New)", messsage: "🔭 See the light—literally! Ray optics time." },
+        { "time": "4:30 PM - 5:00 PM", task: "Break", messsage: "😎 Rest your eyes (and maybe do a dramatic sunglasses pose)." },
+        { "time": "5:00 PM - 7:00 PM", task: "Revision/Practice: Anatomy & Disease Control", messsage: "🌳 Review and practice—because repetition is the mother of retention (and frustration)." },
+        { "time": "9:30 PM - 10:00 PM", task: "Dinner + Break", messsage: "🍕 Dinner break! Extra cheese if you finished all your questions." },
+        { "time": "10:00 PM - 12:00 AM", task: "Question Practice: Ray Optics & Disease Control", messsage: "🔦 Practice session: let your brilliance shine like a laser beam!" }
+    ]
+},
+"Day 16": {
+    tasks: [
+        { "time": "6:00 AM - 11:00 AM", task: "Regular Classes", messsage: "📘 Classes—more knowledge, more yawns (just kidding... or am I?)." },
+        { "time": "11:00 AM - 2:30 PM", task: "Regular Work", messsage: "💻 Work mode: unleash your productivity (or at least try to)." },
+        { "time": "2:30 PM - 4:30 PM", task: "Revision: Physics (All Previous Chapters)", messsage: "⚡ Time to flex those physics muscles. MCQ race, flashcards, and memory recall games!" },
+        { "time": "4:30 PM - 5:00 PM", task: "Break", messsage: "🍩 Reward yourself: snack, scroll or just vibe." },
+        { "time": "5:00 PM - 7:00 PM", task: "Revision: Chemistry (All Previous Chapters)", messsage: "🧪 Chemistry revision—try not to mix up your acids and your memes." },
+        { "time": "9:30 PM - 10:00 PM", task: "Dinner + Break", messsage: "🍚 Dinner: the most important meal before question practice." },
+        { "time": "10:00 PM - 12:00 AM", task: "Question Practice: All Subjects", messsage: "📝 Shuffle those flashcards and chase those MCQs like they're the last French fries in the bowl." }
+    ]
+},
+"Day 17": {
+    tasks: [
+        { "time": "6:00 AM - 11:00 AM", task: "Regular Classes", messsage: "🎓 Classes—try to absorb knowledge faster than your phone battery drains." },
+        { "time": "11:00 AM - 2:30 PM", task: "Regular Work", messsage: "🗂 Power through your work like it's the last episode of your favorite show." },
+        { "time": "2:30 PM - 4:30 PM", task: "Revision: Botany (All Chapters, Mind Maps)", messsage: "🌱 Mind map time—make your notes as pretty as a potted plant." },
+        { "time": "4:30 PM - 5:00 PM", task: "Break", messsage: "🍵 Tea, snack, and contemplate life (or just your notes)." },
+        { "time": "5:00 PM - 7:00 PM", task: "Revision: Zoology (All Chapters, Case Studies & MCQs)", messsage: "🦠 Quiz yourself until you feel like a walking textbook." },
+        { "time": "9:30 PM - 10:00 PM", task: "Dinner + Break", messsage: "🍲 Dinner: the only time when it's okay to go back for seconds." },
+        { "time": "10:00 PM - 12:00 AM", task: "Question Practice: All Subjects", messsage: "📝 MCQ streak—challenge yourself, maybe even race the clock!" }
+    ]
+},
+"Day 18": {
+    tasks: [
+        { "time": "6:00 AM - 11:00 AM", task: "Regular Classes", messsage: "📚 Last day of the regular class grind. Go on, you got this!" },
+        { "time": "11:00 AM - 2:30 PM", task: "Regular Work", messsage: "💼 Finish strong—impress your boss/teacher/neighbor's cat." },
+        { "time": "2:30 PM - 4:30 PM", task: "Revision: All Subjects (Full Review)", messsage: "📖 Quick sweep of everything—like cleaning your room before guests arrive." },
+        { "time": "4:30 PM - 5:00 PM", task: "Break", messsage: "🧁 Take a break, have a treat, or just marvel at how much you’ve covered." },
+        { "time": "5:00 PM - 7:00 PM", task: "Mock Test: Mixed Subjects", messsage: "🎯 Simulate exam mode: MCQs, diagrams, and frantic scribbling encouraged." },
+        { "time": "9:30 PM - 10:00 PM", task: "Dinner + Break", messsage: "🍜 Final dinner before the big two days. Enjoy every bite!" },
+        { "time": "10:00 PM - 12:00 AM", task: "Question Practice: Mock Test Review", messsage: "🔍 Go over your answers, laugh at silly mistakes, and fix them!" }
+    ]
+},
+"Day 19": {
+    tasks: [
+        { "time": "2:00 PM - 3:00 PM", task: "Revision: Full Syllabus Mock Test (Physics Section)", messsage: "📝 Simulate exam: Physics only, time yourself and review errors." },
+        { "time": "3:00 PM - 3:20 PM", task: "Break 1: Snack, walk", messsage: "☕ Recap tricky formulas or mistakes from mock." },
+        { "time": "3:20 PM - 4:20 PM", task: "Revision: Full Syllabus Mock Test (Chemistry Section)", messsage: "📝 Simulate exam: Chemistry only, time yourself and review errors." },
+        { "time": "4:20 PM - 4:40 PM", task: "Break 2: Snack, rest", messsage: "🍎 Try explaining a chemistry answer to a friend." },
+        { "time": "4:40 PM - 5:10 PM", task: "Revision: Full Syllabus Mock Test (Botany Section)", messsage: "📝 Simulate exam: Botany, focus on diagrams and memory recall." },
+        { "time": "5:10 PM - 5:30 PM", task: "Practice: Error Review (Mock Test)", messsage: "🔎 Identify and fix your biggest mistakes of the day." },
+        { "time": "5:30 PM - 6:00 PM", task: "Revision: Full Syllabus Mock Test (Zoology Section)", messsage: "📝 Simulate exam: Zoology, review case studies and diagrams." },
+        { "time": "6:00 PM - 7:00 PM", task: "Free Hour: Chill, music, walk", messsage: "🎶 Relax and stretch after the long mock test!" },
+        { "time": "7:00 PM - 8:00 PM", task: "Score Review & Analysis", messsage: "📊 Analyze your performance: strengths, weaknesses, and key takeaways." },
+        { "time": "8:00 PM - 8:40 PM", task: "Revision: Error Fix & Note Making", messsage: "🔎 Rewrite and correct your top errors from each subject." },
+        { "time": "8:40 PM - 9:00 PM", task: "Break 3: Snack, walk", messsage: "🌳 Celebrate your progress and prepare for dinner." },
+        { "time": "9:00 PM - 10:00 PM", task: "Dinner", messsage: "🍽 Share your biggest learning from the mock test." }
+    ]
+},
+"Day 20": {
+    tasks: [
+        { "time": "2:00 PM - 3:00 PM", task: "Final Revision: Weakest Areas", messsage: "💪 One last push! Attack your weakest spots with all you got." },
+        { "time": "3:00 PM - 3:20 PM", task: "Break: Breathe & Hydrate", messsage: "💧 Deep breath, water, and a pep talk in the mirror." },
+        { "time": "3:20 PM - 4:20 PM", task: "Final Question Practice: Mixed MCQs", messsage: "🎯 Last round of MCQs. You’re almost at the finish line!" },
+        { "time": "4:20 PM - 4:40 PM", task: "Break: Light Walk", messsage: "🚶‍♂ Walk it out and visualize success." },
+        { "time": "4:40 PM - 5:10 PM", task: "Flashcard Blitz: All Subjects", messsage: "⚡ How many flashcards can you blitz through in 30 mins?" },
+        { "time": "5:10 PM - 5:30 PM", task: "Error Correction: Go Over Last Mistakes", messsage: "🔎 Find and fix those last pesky errors." },
+        { "time": "5:30 PM - 6:00 PM", task: "Cheat Sheet Creation", messsage: "📝 Make your ultimate last-minute cheat sheet (for revision, not the exam 😉)." },
+        { "time": "6:00 PM - 7:00 PM", task: "Chill Hour: Do Anything BUT Study", messsage: "🎉 Dance, sing, nap—celebrate how far you’ve come!" },
+        { "time": "7:00 PM - 8:00 PM", task: "Mindful Recap & Success Visualization", messsage: "🧘 Visualize exam success. You got this!" },
+        { "time": "8:00 PM - 8:40 PM", task: "Dinner: Celebrate!", messsage: "🍰 Treat yourself. You survived the marathon!" },
+        { "time": "8:40 PM - 9:00 PM", task: "Wind Down: Light Talk or Music", messsage: "🎶 Relax, chat, or just vibe—tomorrow’s your day!" },
+        { "time": "9:00 PM - 10:00 PM", task: "Sleep Prep", messsage: "😴 Early to bed—dream of checkmarks and MCQ victories." }
+    ]
+}
 };
 
 
